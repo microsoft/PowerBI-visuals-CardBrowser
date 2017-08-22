@@ -14,7 +14,6 @@ module.exports = {
     },
     module: {
         rules: [
-            { test: /\.handlebars$/, loader: "handlebars-loader" },
             {
                 test: new RegExp(regex),
                 loader: path.join(__dirname, 'bin', 'pbiPluginLoader'),
@@ -29,16 +28,21 @@ module.exports = {
                     ],
                 },
             },
+            {
+                test: /\.handlebars$/,
+                loader: 'handlebars-loader',
+                query: {
+                    helperDirs: [
+                        path.resolve(__dirname, 'lib/@uncharted/cards/templates/helpers'),
+                    ],
+                },
+            },
         ]
     },
     externals: [
         {
             jquery: 'jQuery',
             lodash: '_',
-            underscore: '_',
         },
     ],
-    devServer: {
-        https: true
-    }
 };
