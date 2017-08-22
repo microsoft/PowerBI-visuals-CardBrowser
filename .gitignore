@@ -1,0 +1,6 @@
+.idea
+.npmrc
+.tmp
+node_modules
+typings
+dist

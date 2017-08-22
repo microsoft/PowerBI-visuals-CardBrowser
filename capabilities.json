@@ -1,0 +1,244 @@
+{
+  "dataRoles": [
+    {
+      "name": "id",
+      "kind": 0,
+      "displayName": "Document Id",
+      "description": "Unique ID for the document"
+    },
+    {
+      "name": "title",
+      "kind": 0,
+      "displayName": "Title",
+      "description": "Title of the document; shown on thumbnails and in the reader"
+    },
+    {
+      "name": "summary",
+      "displayName": "Summary",
+      "description": "Summary of the content; only displayed on thumbnails",
+      "kind": 0
+    },
+    {
+      "name": "content",
+      "displayName": "Content",
+      "description": "Full content; only displayed in the reader",
+      "kind": 0
+    },
+    {
+      "name": "imageUrl",
+      "displayName": "Title Image (url)",
+      "description": "Main image for the document; displayed on thumbnails and in the reader",
+      "kind": 0
+    },
+    {
+      "name": "author",
+      "displayName": "Author",
+      "description": "Author for the byline displayed on thumbnails and in the reader",
+      "kind": 0
+    },
+    {
+      "name": "source",
+      "displayName": "Source",
+      "description": "Source domain for the document; shown in the reader header bar",
+      "kind": 0
+    },
+    {
+      "name": "sourceUrl",
+      "displayName": "Source URL",
+      "description": "Source link for the document; accessed by clicking the reader header bar",
+      "kind": 0
+    },
+    {
+      "name": "sourceImage",
+      "displayName": "Source Image (url)",
+      "description": "URL for an image to display in the top-right corner of the thumbnail",
+      "kind": 0
+    },
+    {
+      "name": "articleDate",
+      "displayName": "Source Date",
+      "description": "Date for the byline displayed on thumbnails and in the reader",
+      "kind": 0
+    }
+  ],
+  "dataViewMappings": [
+    {
+      "conditions": [
+        {
+          "id": {
+            "max": 1
+          },
+          "title": {
+            "max": 1
+          },
+          "summary": {
+            "max": 1
+          },
+          "content": {
+            "max": 1
+          },
+          "imageUrl": {
+            "max": 1
+          },
+          "author": {
+            "max": 1
+          },
+          "source": {
+            "max": 1
+          },
+          "sourceUrl": {
+            "max": 1
+          },
+          "articleDate": {
+            "max": 1
+          },
+          "sourceImage": {
+            "max": 1
+          }
+        }
+      ],
+      "categorical": {
+        "categories": {
+          "select": [
+            {
+              "bind": {
+                "to": "id"
+              }
+            },
+            {
+              "bind": {
+                "to": "title"
+              }
+            },
+            {
+              "bind": {
+                "to": "summary"
+              }
+            },
+            {
+              "bind": {
+                "to": "content"
+              }
+            },
+            {
+              "bind": {
+                "to": "imageUrl"
+              }
+            },
+            {
+              "bind": {
+                "to": "author"
+              }
+            },
+            {
+              "bind": {
+                "to": "source"
+              }
+            },
+            {
+              "bind": {
+                "to": "sourceUrl"
+              }
+            },
+            {
+              "bind": {
+                "to": "sourceImage"
+              }
+            },
+            {
+              "bind": {
+                "to": "articleDate"
+              }
+            },
+            {
+              "bind": {
+                "to": "entityType"
+              }
+            },
+            {
+              "bind": {
+                "to": "entityId"
+              }
+            },
+            {
+              "bind": {
+                "to": "entityName"
+              }
+            },
+            {
+              "bind": {
+                "to": "entityPosition"
+              }
+            },
+            {
+              "bind": {
+                "to": "entityTypeColor"
+              }
+            },
+            {
+              "bind": {
+                "to": "entityTypeClass"
+              }
+            },
+            {
+              "bind": {
+                "to": "bucket"
+              }
+            }
+          ],
+          "dataReductionAlgorithm": {
+            "window": {
+              "count": 200
+            }
+          }
+        }
+      }
+    }
+  ],
+  "objects": {
+    "presentation": {
+      "properties": {
+        "wrap": {
+          "type": {
+            "bool": true
+          },
+          "displayName": "Wrap",
+          "description": "If true, thumbnail cards wraps on overflow."
+        },
+        "summaryUrl": {
+          "type": {
+            "bool": true
+          },
+          "displayName": "Auto Summary URL",
+          "description": "If true, populate Summary from Content's Readability URL, if applicable. Warning: this may quickly hit your request cap."
+        }
+      },
+      "displayName": "Configuration"
+    },
+    "loadMoreData": {
+      "properties": {
+        "enabled": {
+          "description": "Whether to load more data than the initial rows",
+          "displayName": "Enable",
+          "type": {
+            "bool": "false"
+          }
+        },
+        "limit": {
+          "description": "Stop after loading this many Documents",
+          "displayName": "Limit",
+          "type": {
+            "numeric": 500
+          }
+        }
+      },
+      "description": "Control over data loading",
+      "displayName": "Load More Data"
+    }
+  },
+  "sorting": {
+    "default": {}
+  },
+  "suppressDefaultTitle": true,
+  "supportsHighlight": true
+}

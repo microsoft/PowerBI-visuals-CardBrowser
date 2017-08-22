@@ -1,0 +1,24 @@
+{
+  "visual": {
+    "name": "Cards",
+    "displayName": "Cards",
+    "guid": "Cards8D7CFFDA2E7E400C9474F41B9EDBBA58",
+    "visualClassName": "Cards",
+    "description": "ESSEX Cards",
+    "supportUrl": "http://community.powerbi.com",
+    "gitHubUrl": ""
+  },
+  "author": {
+    "name": "Microsoft (experimental)",
+    "email": "msrvizsupport@microsoft.com"
+  },
+  "apiVersion": "",
+  "assets": {
+    "icon": "assets/icon.png",
+    "thumbnail": "assets/icon.png",
+    "screenshot": "assets/icon.png"
+  },
+  "style": "style/visual.scss",
+  "capabilities": "capabilities.json",
+  "output": "dist/essex.cards.pbiviz"
+}

@@ -1,0 +1,69 @@
+// override default thumbnails style variables
+$outline-reader-disable-entity-bar: true;
+
+@import url("https://opensource.keycdn.com/fontawesome/4.7.0/font-awesome.min.css");
+@import "../lib/@uncharted/cards/style/thumbnails";
+
+body.visual-sandbox {
+    // overflow: auto;
+}
+
+.chart-panel {
+    width: 100%;
+    height: 50%;
+    position: relative;
+}
+
+.visual-container {
+    height: 100%;
+}
+
+.thumbnails-panel {
+    font-size: 12px;
+    height: 50%;
+
+    .reader .readerContentBody.fixed-title {
+        padding-top: 0px;
+        h1 {
+            position: absolute;
+            background: white;
+            top: 32px;
+            padding-top: 8px;
+            padding-bottom: 2px;
+            margin-bottom: 0px;
+        }
+    }
+    .reader .document-part {
+        color: grey;
+        display: inline-block;
+
+        &.hovered {
+            text-decoration: underline;
+            text-decoration: underline #cccccc;
+        }
+
+        &.highlighted {
+            background-color: inherit !important;
+            color: #000;
+        }
+    }
+
+    .summary-document-part {
+        color: grey;
+        display: inline-block;
+        width: 100%;
+        &.highlighted {
+            background-color: inherit !important;
+            // font-family: 'Roboto Slab', 'Segoe UI', 'Helvetica Neue', 'Helvetica', 'Arial';
+            // font-weight: bold;
+            // font-size: 1.1em;
+            color: #000;
+        }
+    }
+
+    .thumbnail .card:after {
+        width: 0;
+        height: 0;
+    }
+}
+
