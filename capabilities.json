@@ -59,6 +59,12 @@
       "displayName": "Source Date",
       "description": "Date for the byline displayed on thumbnails and in the reader",
       "kind": 0
+    },
+    {
+      "name": "metadata",
+      "displayName": "MetaData",
+      "description": "Key-value pairs",
+      "kind": 0
     }
   ],
   "dataViewMappings": [
@@ -94,6 +100,9 @@
           },
           "sourceImage": {
             "max": 1
+          },
+          "metadata": {
+            "max": 10
           }
         }
       ],
@@ -152,37 +161,7 @@
             },
             {
               "bind": {
-                "to": "entityType"
-              }
-            },
-            {
-              "bind": {
-                "to": "entityId"
-              }
-            },
-            {
-              "bind": {
-                "to": "entityName"
-              }
-            },
-            {
-              "bind": {
-                "to": "entityPosition"
-              }
-            },
-            {
-              "bind": {
-                "to": "entityTypeColor"
-              }
-            },
-            {
-              "bind": {
-                "to": "entityTypeClass"
-              }
-            },
-            {
-              "bind": {
-                "to": "bucket"
+                "to": "metadata"
               }
             }
           ],
@@ -204,6 +183,13 @@
           },
           "displayName": "Wrap",
           "description": "If true, thumbnail cards wraps on overflow."
+        },
+        "height": {
+          "type": {
+            "numeric": 250
+          },
+          "displayName": "Height",
+          "description": "Desired thumbnail card height"
         },
         "summaryUrl": {
           "type": {

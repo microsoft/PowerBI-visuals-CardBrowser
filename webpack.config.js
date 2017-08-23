@@ -33,7 +33,7 @@ module.exports = {
                 loader: 'handlebars-loader',
                 query: {
                     helperDirs: [
-                        path.resolve(__dirname, 'lib/@uncharted/cards/templates/helpers'),
+                        path.resolve(__dirname, 'lib/@uncharted/cards/src/handlebarHelper'),
                     ],
                 },
             },
@@ -41,8 +41,7 @@ module.exports = {
     },
     externals: [
         {
-            jquery: 'jQuery',
-            lodash: '_',
+            jquery: 'jQuery'
         },
     ],
 };

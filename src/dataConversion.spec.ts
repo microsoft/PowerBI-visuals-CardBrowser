@@ -54,7 +54,7 @@ describe('dataConversion', () => {
     });
 
     it('convertToDocumentData', () => {
-        documentData = dataConversion.convertToDocumentData(options.dataViews[0], DEFAULT_SETTINGS, {});
+        documentData = dataConversion.convertToDocumentData(options.dataViews[0], {});
         expect(documentData).to.be.ok;
         expect(documentData.documentList.length).to.equal(4);
         expect(documentData.maxNumDocParts).to.equal(6);

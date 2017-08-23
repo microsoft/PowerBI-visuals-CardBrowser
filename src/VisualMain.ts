@@ -37,7 +37,7 @@ import VisualObjectInstance = powerbi.VisualObjectInstance;
 
 import * as Promise from 'bluebird';
 import * as $ from 'jquery';
-import Thumbnails from '@uncharted/cards/src/thumbnails';
+import Thumbnails from '@uncharted/cards/src';
 import * as _ from 'lodash';
 import * as utils from './utils';
 import {
@@ -49,32 +49,33 @@ import {
 } from './constants';
 
 import {
+    DEFAULT_CONFIG,
     EVENTS,
-} from '../lib/@uncharted/cards/src/constants';
+} from '../lib/@uncharted/cards/src/components/constants';
 
 export default class Cards implements IVisual {
 
     private element: JQuery;
     private dataView: DataView;
-    private colors: IColorInfo[];
     private thumbnails: any;
-    private thumbnailsConfig: any;
     private documentData: any;
     private hostServices: IVisualHostServices;
     private isSandboxed: Boolean;
     private updateData: Function;
     private loadedDocumentCount = 0;
     private isLoadingMore = false;
+    private isThumbnailsWrapLayout = !DEFAULT_CONFIG.inlineMode;
+    private thumbnailsWrapTimeout: any = null;
+    private suppressNextUpdate: boolean;
 
     /**
      * Default formatting settings
      */
     private static DEFAULT_SETTINGS = {
         presentation: {
-            properties: {
-                wrap: true,
-                summaryUrl: true,
-            },
+            wrap: true,
+            height: 250,
+            summaryUrl: true,
         },
         loadMoreData: {
             enabled: false,
@@ -90,118 +91,116 @@ export default class Cards implements IVisual {
         // this.isSandboxed = (this.hostServices.constructor.name === "SandboxVisualHostServices");
         // this.isSandboxed = (this.hostServices.constructor.name.toLowerCase().indexOf('sandbox') !== -1);
 
-        this.colors = options.host.colors;
         this.element = $(`
             <div class='visual-container'>
             </div>
         `).appendTo(options.element);
 
-        // this.thumbnailsConfig = {
-        //     outlineReader: {
-        //         onLoadUrl: this.onThumbnailReaderLoaded.bind(this),
-        //     },
-        // };
-
-        const defaultThumbnailsConfig = {
-            'inlineMode': false,
-            'thumbnail.expandedWidth': 520,
-        };
-        this.thumbnails = new Thumbnails(defaultThumbnailsConfig);
+        this.thumbnails = new Thumbnails($.extend({}, DEFAULT_CONFIG, this.settings));
         this.element.append(this.thumbnails.$element);
+
+        this.thumbnails.on('thumbnail:click', (thumbnail) => {
+            if (!thumbnail.isExpanded) {
+                this.thumbnails.updateReaderContent(thumbnail, {
+                    content: '<h1> Loading... </h1>',
+                });
+                this.thumbnails.openReader(thumbnail);
+                setTimeout(() => this.thumbnails.updateReaderContent(thumbnail, {
+                    content: thumbnail.data.content,
+                    metadata: thumbnail.data.metadata,
+                }), 1000);
+            }
+        });
+
+        this.thumbnails.on('verticalReader:navigateToThumbnail', (thumbnail) => {
+            this.thumbnails.updateReaderContent(thumbnail, thumbnail.data);
+        });
+
+        this.thumbnails.on('readerContent:clickCloseButton', () => {
+            this.thumbnails.closeReader();
+        });
 
         // flipping example
         this.thumbnails.$element.on('mouseenter', '.thumbnail', (event) => {
             const thumbnailId = $(event.currentTarget).data('id');
-            this.thumbnails.findThumbnailById(thumbnailId).isFlipped = true;
+            if (this.documentData && this.documentData.documents[thumbnailId].metadata) {
+                this.thumbnails.findThumbnailById(thumbnailId).isFlipped = true;
+            }
         });
         this.thumbnails.$element.on('mouseleave', '.thumbnail', (event) => {
             const thumbnailId = $(event.currentTarget).data('id');
             this.thumbnails.findThumbnailById(thumbnailId).isFlipped = false;
         });
 
+        this.wrapThumbnails(this.settings.presentation.wrap);
 
-
-        // this.thumbnails = new Thumbnails({
-        //     container: this.element.find('.thumbnails-panel'),
-        //     config: this.thumbnailsConfig,
-        // });
-        // this.thumbnails.inlineMode = true;
-
-        // this.thumbnails.off(EVENTS.THUMBNAIL_READER_CLOSE_EVENTS);
-        // this.thumbnails.off('thumbnail:click');
-        // this.thumbnails.on('thumbnail:click', this.onThumbnailClick.bind(this));
-
-        // this.updateData = () => {
-        //     // this.thumbnails.filter(undefined);
-        //     this.thumbnails.loadData(this.documentData.documentList);
-        //     console.log("loaded " + this.loadedDocumentCount + " documents");
-        // };
+        this.updateData = () => {
+            this.thumbnails.loadData(this.documentData.documentList);
+            console.log("loaded " + this.loadedDocumentCount + " documents");
+        };
     }
 
     public update(options: VisualUpdateOptions) {
-        const thumbnailsSampleData = [
-            {
-                id: 1,
-                imageUrl: 'http://mscorpnews.blob.core.windows.net/ncmedia/2015/11/000-all-future-011-1600x700.jpg',
-                source: 'microsoft.com',
-                sourceUrl: 'http://microsoft.com',
-                sourceImage: 'https://tse1.mm.bing.net/th?&id=OIP.M3171d61d279961c0af79591e17bd762bo0&w=289&h=289&c=0&pid=1.9&rs=0&p=0&r=0',
-                title: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-                author: 'Nam Maximus',
-                articleDate: '2015-12-04 00:00:00',
-                summary: 'Nam congue erat nulla, at lobortis velit efficitur eget. Pellentesque sit amet ante mattis, dignissim nisi et, efficitur nisi. Nunc vitae sapien eget arcu egestas viverra eu vitae metus. Cras et tincidunt nunc. Suspendisse vitae feugiat justo, sed malesuada est.',
-                url: 'http://www.cnn.com/2015/09/27/politics/obama-un-general-assembly/index.html',
-                metadata: {
-                    'key1': 'value1',
-                    'key2': 'value2',
-                },
-            },
-            {
-                id: 2,
-                imageUrl: 'https://i.guim.co.uk/img/media/08422893c433f9b93a836f011ec65e33f020f191/0_96_2962_1778/master/2962.jpg?w=620&q=85&auto=format&sharp=10&s=584c6a435065101143cbd6c3fdbe66c0',
-                source: 'google.com',
-                sourceUrl: 'http://www.google.com',
-                sourceImage: 'http://tse1.mm.bing.net/th?&id=OIP.Ma51a4d54e28e95bed67ec97f83c462d9o0&w=151&h=150&c=0&pid=1.9&rs=0&p=0&r=0',
-                title: 'Morbi enim leo, euismod porttitor risus nec, auctor pellentesque leo',
-                author: 'Quisque Donec',
-                articleDate: '2015-12-27 00:00:00',
-                summary: 'Mauris volutpat commodo nisi eu rutrum. Etiam molestie congue nibh id rhoncus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Maecenas ut dolor posuere, tempor dolor nec, mattis ex. Pellentesque lobortis leo ac eros sagittis, ac commodo velit feugiat.',
-                url: 'http://www.cnn.com/2015/09/27/politics/obama-un-general-assembly/index.html',
-                metadata: {
-                    'key1': 'value1',
-                    'key2': 'value2',
-                },
-            },
-        ];
-        this.thumbnails.loadData(thumbnailsSampleData);
+        if (this.suppressNextUpdate) {
+            this.suppressNextUpdate = false;
+            return;
+        }
+        if (options.type & powerbi.VisualUpdateType.Resize) {
+            // POST PROCESS (once all the thumbnails have been rendered)
+            this.clearWrapTimeout();
+            this.thumbnailsWrapTimeout = setTimeout(() => {
+                const desiredThumbnailHeight = this.settings.presentation.height;
+                const viewport: any = options.viewport;
+                let oldIsWrap = this.isThumbnailsWrapLayout;
+                const $thumbnail = this.thumbnails.$element.find('.thumbnail');
 
-        // const viewport: any = options.viewport;
-        // const scale = viewport && viewport.scale;
+                this.wrapThumbnails(viewport.height >= 1.5 * desiredThumbnailHeight);
+                
+                if (this.isThumbnailsWrapLayout) {
+                    $thumbnail.height(desiredThumbnailHeight);
+                }
+                else {
+                    $thumbnail.height('100%');
+                }
 
-        // if (!options.dataViews || !(options.dataViews.length > 0)) { return; }
-        // if (!utils.hasColumns(options.dataViews[0], REQUIRED_FIELDS)) { return; }
+                if (this.isThumbnailsWrapLayout !== oldIsWrap) {
+                    this.suppressNextUpdate = true;
+                    this.hostServices.persistProperties({
+                        merge: [
+                            {
+                                objectName: 'presentation',
+                                selector: undefined,
+                                properties: { wrap: this.isThumbnailsWrapLayout },
+                            },
+                        ],
+                    });
+                }
 
-        // // if (options['resizeMode'] && this.thumbnails) {
-        // // }
+                this.thumbnailsWrapTimeout = null;
+            }, 200);
+        }
 
-        // this.dataView = options.dataViews[0];
-        // const newObjects = this.dataView && this.dataView.metadata && this.dataView.metadata.objects;
-        // this.settings = $.extend(true, {}, Cards.DEFAULT_SETTINGS, newObjects);
-        // this.loadedDocumentCount = this.dataView ? countDocuments(this.dataView) : 0;
-        // this.isLoadingMore = (this.settings.loadMoreData.enabled &&
-        //     this.loadedDocumentCount < this.settings.loadMoreData.limit &&
-        //     !!this.dataView.metadata.segment);
-        // if (this.isLoadingMore) {
-        //     // need to load more data
-        //     this.isLoadingMore = true;
-        //     this.hostServices.loadMoreData();
-        //     return;
-        // }
+        if (!options.dataViews || !(options.dataViews.length > 0)) { return; }
+        if (!utils.hasColumns(options.dataViews[0], REQUIRED_FIELDS)) { return; }
 
-        // const anyOptions: any = options;
-        // this.documentData = convertToDocumentData(this.dataView, this.settings,
-        //     anyOptions.dataTransforms && anyOptions.dataTransforms.roles);
-        // this.updateData();
+        this.dataView = options.dataViews[0];
+        const newObjects = this.dataView && this.dataView.metadata && this.dataView.metadata.objects;
+        this.settings = $.extend(true, {}, Cards.DEFAULT_SETTINGS, newObjects);
+        this.loadedDocumentCount = this.dataView ? countDocuments(this.dataView) : 0;
+        this.isLoadingMore = (this.settings.loadMoreData.enabled &&
+            this.loadedDocumentCount < this.settings.loadMoreData.limit &&
+            !!this.dataView.metadata.segment);
+        if (this.isLoadingMore) {
+            // need to load more data
+            this.isLoadingMore = true;
+            this.hostServices.loadMoreData();
+            return;
+        }
+
+        const anyOptions: any = options;
+        this.documentData = convertToDocumentData(this.dataView,
+            anyOptions.dataTransforms && anyOptions.dataTransforms.roles);
+        this.updateData();
     }
 
     private sendSelectionToHost(identities: DataViewScopeIdentity[]) {
@@ -212,56 +211,19 @@ export default class Cards implements IVisual {
         this.hostServices.onSelect(selectArgs);
     }
 
-    private onThumbnailClick(thumbnailData) {
-        const thumbnail = this.thumbnails.findThumbnailById(thumbnailData.id);
-        if (thumbnail.isExpanded) { return; }
-
-        this.thumbnails.openReader(thumbnailData);
+    /**
+     * Set the wrapping state of the thumbnails component.
+     * @param {Boolean} wrapped - true if thumbnails should be rendered in multiple rows; false to keep them all in one row
+     */
+    private wrapThumbnails(wrapped: boolean) {
+        this.thumbnails.inlineMode = (!wrapped);
+        this.isThumbnailsWrapLayout = wrapped;
     }
 
-    private getReaderData(articleId: string) {
-        const toPartDiv = (part) => `<div class="document-part" data-docid=${part.docId} data-index=${part.index}>${part.content}</div>`;
-        const document = this.documentData && this.documentData.documentList &&
-            _.find(this.documentData.documentList, (document) => document.id === articleId);
-        const readerData = {
-            title: document && document.title,
-            content: document && document.content || document.parts.map(toPartDiv).join('\n'),
-            lastupdatedon: document && document.formattedDate,
-            source: document && document.source,
-            sourceUrl: document && document.sourceUrl,
-            figureImgUrl: '',
-            figureCaption: '',
-        };
-        return readerData;
-    }
-
-    private onThumbnailReaderLoaded(articleId: string) {
-        const readerData = this.getReaderData(articleId);
-        return Promise.resolve(readerData);
-    }
-
-    private autoScroll($targetPart) {
-        if ($targetPart && $targetPart[0]) {
-            $targetPart.parents('._rc')[0].scrollTop =
-                $targetPart[0].offsetTop - $targetPart[0].parentElement.offsetTop || 0;
-        }
-    }
-
-    private closeThumbnailReader() {
-        this.thumbnails.closeReader();
-    }
-
-    private openThumbnailReader(documentId) {
-        const thumbnail = this.thumbnails.findThumbnailById(documentId);
-        if (thumbnail) {
-            if (thumbnail.isExpanded) {
-                this.thumbnails.centerInlineThumbnail(thumbnail);
-                return true;
-            }
-            else {
-                this.thumbnails.openReader(thumbnail.data);
-                return false;
-            }
+    private clearWrapTimeout(): void {
+        if (this.thumbnailsWrapTimeout !== null) {
+            clearTimeout(this.thumbnailsWrapTimeout);
+            this.thumbnailsWrapTimeout = null;
         }
     }
 
@@ -280,5 +242,15 @@ export default class Cards implements IVisual {
         }];
         $.extend(true, instances[0].properties, this.settings[options.objectName]);
         return instances;
+    }
+    /**
+     * Destroy method called by PowerBI.
+     *
+     * @method destroy
+     */
+    public destroy(): void {
+        this.clearWrapTimeout();
+        this.thumbnails = null;
+        this.hostServices = null;
     }
 }

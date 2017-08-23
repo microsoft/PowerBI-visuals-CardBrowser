@@ -28,98 +28,29 @@ import * as utils from './utils';
 import * as moment from 'moment';
 import {  } from './constants';
 
-function convertToDocuments(rowObjs, settings) {
+function flattenMetaData(metaData) {
+    const metaDataArray = metaData.length ? metaData : [metaData];
+    const metaDataObject = {};
+    for (let i = 0; i < metaDataArray.length; i++) {
+        metaDataObject[metaDataArray[i].key] = metaDataArray[i].value;
+    }
+    return metaDataObject;
+}
+
+function convertToDocuments(rowObjs) {
     const documents = {};
     const documentList = [];
-    const docPartCluster = {};
-    let maxNumDocParts = 0;
     let obj;
     let docId;
-    let partId;
-    let clusterId;
     let i;
     const rowCount = rowObjs.length;
 
     for (i = 0; i < rowCount; i++) {
         obj = rowObjs[i];
-        docId = obj.document;
+        docId = obj.id;
         if (!documents[docId]) {
-            documents[docId] = {
-                id: docId,
-                readerUrl: docId,
-                imageUrl: obj.imageUrl || '',
-                source: obj.source || '',
-                sourceUrl: obj.sourceUrl || '',
-                sourceImage: obj.sourceImage || '',
-                title: obj.title || '',
-                author: obj.author || '',
-                articledate: obj.time || '',
-                summary: obj.summary || '',
-                content: obj.content || '',
-                entities: [],
-                url: '',
-                parts: []
-            };
+            documents[docId] = obj;
             documentList.push(documents[docId]);
-        }
-        if (obj.partIndex !== undefined) {
-            partId = '' + docId + ':' + obj.partIndex;
-            clusterId = obj.cluster;
-
-            documents[docId].parts.push({
-                clusterId: clusterId,
-                size: obj.size,
-                content: obj.partContent || '',
-                docId: docId,
-                id: partId,
-                index: obj.partIndex,
-                score: obj.score,
-                sort: obj.sort,
-            });
-
-            maxNumDocParts = Math.max(maxNumDocParts, documents[docId].parts.length);
-
-            if (clusterId !== undefined) {
-                !docPartCluster[clusterId] && (docPartCluster[clusterId] = []);
-                docPartCluster[clusterId].push(partId);
-            }
-        }
-    }
-
-    const toPartDiv = (part) => `<div class="summary-document-part" data-docid=${part.docId} data-index=${part.index}>${part.content}</div>`;
-    let concatenatedParts;
-    let doc;
-    let sortPart1;
-    let sortPart2;
-    const docCount = documentList.length;
-    for (i = 0; i < docCount; i++) {
-        doc = documentList[i];
-        doc.parts.sort((part1, part2) => {
-            if (part1.sort !== undefined) {
-                if (part1.sort.length) {
-                    sortPart1 = part1.sort;
-                    sortPart2 = part2.sort;
-                }
-                else {
-                    sortPart1 = [part1.sort];
-                    sortPart2 = [part2.sort];
-                }
-                sortPart1.push(part1.index);
-                sortPart2.push(part2.index);
-                const sortLength = sortPart1.length;
-                for (let j = 0; j < sortLength; j++) {
-                    const diff = sortPart1[j] - sortPart2[j];
-                    if (diff !== 0) {
-                        return diff;
-                    }
-                }
-            }
-            return part1.index - part2.index;
-        });
-
-        if (!(doc.content && doc.summary)) {
-            concatenatedParts = doc.parts.map(toPartDiv).join('\n');
-            doc.summary = doc.summary || concatenatedParts;
         }
     }
 
@@ -127,7 +58,7 @@ function convertToDocuments(rowObjs, settings) {
         return moment(doc1.articledate).diff(moment(doc2.articledate));
     });
 
-    return { documentList, maxNumDocParts, docPartCluster };
+    return { documents, documentList };
 }
 
 function assignRole(rowObj, role, columnValue, roles, idx) {
@@ -139,6 +70,13 @@ function assignRole(rowObj, role, columnValue, roles, idx) {
     else {
         rowObj[role].push(columnValue);
     }
+}
+
+function assignValue(role, columns, idx, columnValue) {
+    return role === "metadata" ? {
+        key: columns[idx].displayName,
+        value: columnValue,
+    } : columnValue;
 }
 
 function convertToRowObjs(dataView, roles = null) {
@@ -163,7 +101,7 @@ function convertToRowObjs(dataView, roles = null) {
             columnValue = colValue && (columns[idx].type.dateTime ? new Date(colValue) : colValue);
             colRoles.forEach(role => {
                 if (rowObj[role] === undefined) {
-                    rowObj[role] = columnValue;
+                    rowObj[role] = assignValue(role, columns, idx, columnValue);
                     return;
                 }
                 if (rowObj[role].length === undefined) {
@@ -171,17 +109,20 @@ function convertToRowObjs(dataView, roles = null) {
                     rowObj[role] = [];
                     assignRole(rowObj, role, firstRoleValue, roles, idx);
                 }
-                assignRole(rowObj, role, columnValue, roles, idx);
+                assignRole(rowObj, role, assignValue(role, columns, idx, columnValue), roles, idx);
             });
         });
+        if (rowObj.metadata) {
+            rowObj.metadata = flattenMetaData(rowObj.metadata);
+        }
         result.push(rowObj);
     }
     return result;
 }
 
-function convertToDocumentData(dataView, settings, roles) {
+function convertToDocumentData(dataView, roles) {
     const rowObjs = convertToRowObjs(dataView, roles);
-    return convertToDocuments(rowObjs, settings);
+    return convertToDocuments(rowObjs);
 }
 
 function countDocuments(dataView) {
