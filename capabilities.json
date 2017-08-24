@@ -65,6 +65,12 @@
       "displayName": "MetaData",
       "description": "Key-value pairs",
       "kind": 0
+    },
+    {
+      "name": "dummySortingField",
+      "displayName": "Sorting Field",
+      "description": "Field that can be used to sort the visual's data based on an arbitrary column",
+      "kind": 2
     }
   ],
   "dataViewMappings": [

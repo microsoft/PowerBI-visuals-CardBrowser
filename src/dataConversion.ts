@@ -54,10 +54,6 @@ function convertToDocuments(rowObjs) {
         }
     }
 
-    documentList.sort((doc1, doc2) => {
-        return moment(doc1.articledate).diff(moment(doc2.articledate));
-    });
-
     return { documents, documentList };
 }
 
@@ -76,6 +72,7 @@ function assignValue(role, columns, idx, columnValue) {
     return role === "metadata" ? {
         key: columns[idx].displayName,
         value: columnValue,
+        index: idx,
     } : columnValue;
 }
 
@@ -107,7 +104,8 @@ function convertToRowObjs(dataView, roles = null) {
                 if (rowObj[role].length === undefined) {
                     const firstRoleValue = rowObj[role];
                     rowObj[role] = [];
-                    assignRole(rowObj, role, firstRoleValue, roles, idx);
+                    assignRole(rowObj, role, firstRoleValue, roles,
+                        firstRoleValue.index || Math.max(0, idx - 1));
                 }
                 assignRole(rowObj, role, assignValue(role, columns, idx, columnValue), roles, idx);
             });
