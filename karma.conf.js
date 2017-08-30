@@ -30,8 +30,12 @@ module.exports = function (config) {
                 rules: [
                     {
                         test: /\.handlebars$/,
-                        loader: "handlebars-loader"
-                    },
+                        loader: 'handlebars-loader',
+                        query: {
+                            helperDirs: [
+                                path.resolve(__dirname, 'lib/@uncharted/cards/src/handlebarHelper'),
+                            ],
+                        },                    },
                     {
                         test: new RegExp(regex),
                         loader: path.join(__dirname, 'bin', 'pbiPluginLoader'),

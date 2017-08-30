@@ -34,6 +34,7 @@
     "babel-loader": "^7.1.1",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.0",
+    "babel-preset-latest": "^6.24.1",
     "chai": "^4.1.1",
     "chokidar": "^1.7.0",
     "clean-css": "^4.1.7",
