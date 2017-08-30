@@ -1,0 +1,37 @@
+<div class="uncharted-thumbnails-reader-content">
+    <div class="reader-content-header">
+        <a class="source-link" href="{{sourceUrl}}" target="_blank">{{source}}</a>
+        {{#if iconUrl}}
+            <div class="source-icon" style="background-image: url({{iconUrl}})"></div>
+        {{/if}}
+    </div>
+    <i class="fa fa-times close-button"></i>
+    <div class="content-container">
+        <h1 class="title">{{title}}</h1>
+        <ul class="meta-line">
+            <li class="author">{{author}}</li>
+            {{#if articleDate}}
+                <li>
+                    <time class="updated">{{articleDate}}</time>
+                </li>
+            {{/if}}
+        </ul>
+        <div class="columns-container">
+            <div class="meta-data">
+                {{#each metadata}}
+                <div><span class="key">{{@key}}:</span> {{this}}</div>
+                {{/each}}
+            </div>
+            {{#if imageUrl}}
+            <div class="images-container">
+                {{#cardImages imageUrl}}
+                <div class="image" data-url="{{url}}" style="background-image:url({{url}})"></div>
+                {{/cardImages}}
+            </div>
+            {{/if}}
+        </div>
+        <div class="content">
+            {{{content}}}
+        </div>
+    </div>
+</div>

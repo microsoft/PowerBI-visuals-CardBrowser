@@ -95,7 +95,7 @@ export default class Cards implements IVisual {
         // this.isSandboxed = (this.hostServices.constructor.name.toLowerCase().indexOf('sandbox') !== -1);
 
         this.element = $(`
-            <div class='visual-container'>
+            <div class='visual-container fix-blur-hack'>
             </div>
         `).appendTo(options.element);
 
@@ -136,11 +136,15 @@ export default class Cards implements IVisual {
         });
 
         // flipping example
-        this.thumbnails.on(EVENTS.THUMBNAIL_CLICK_FLIP_TAG, (event) => {
-            const thumbnailId = event.data.id;
+        this.thumbnails.on(EVENTS.THUMBNAIL_CLICK_FLIP_TAG, (thumbnail) => {
+            const thumbnailId = thumbnail.data.id;
             if (this.documentData && this.documentData.documents[thumbnailId].metadata) {
-                const thumbnail = this.thumbnails.findThumbnailById(thumbnailId);
-                thumbnail.isFlipped = !thumbnail.isFlipped;
+                // Adding and removing animating class is a Hack for crisp thumbnail for  pbi desktop
+                thumbnail.$element.addClass('animating');
+                setTimeout(() => {
+                    thumbnail.isFlipped = !thumbnail.isFlipped;
+                    setTimeout(() => thumbnail.$element.removeClass('animating'), 700);
+                }, 0);
             }
         });
 

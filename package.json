@@ -23,7 +23,7 @@
   "author": "Uncharted Software Inc.",
   "license": "MIT",
   "privateSubmodules": {
-    "@uncharted/cards": "0.1.1"
+    "@uncharted/cards": "0.1.2"
   },
   "devDependencies": {
     "@types/jquery": "^3.2.11",
@@ -76,6 +76,7 @@
   "dependencies": {
     "bluebird": "^3.5.0",
     "jquery": "^3.2.1",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
+    "moment": "^2.18.1"
   }
 }

@@ -1,0 +1,53 @@
+$reader-animation-duration: 0.3s;
+.uncharted-thumbnails-reader-holder {
+    width: 100%;
+    height: 0;
+    transition: height $reader-animation-duration ease-out;
+}
+
+.uncharted-thumbnails-vertical-reader {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    padding: 5px 50px;
+    background: #555;
+    outline: none;
+    .marker {
+        position: absolute;
+        top: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-bottom: 10px solid #555;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        height: 0;
+        width: 0;
+        transition: left $reader-animation-duration ease-out;
+    }
+
+    .reader-page-button {
+        position: absolute;
+        bottom: 50%;
+        transform: translateY(50%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #ccc;
+        font-size: 36px;
+        width: 50px;
+        height: 50px;
+    }
+
+    .reader-page-button:hover {
+        color: white;
+        cursor: pointer;
+    }
+
+    .reader-prev-button {
+        left: 0px;
+    }
+
+    .reader-next-button {
+        right: 0px;
+    }
+}

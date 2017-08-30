@@ -6,3 +6,51 @@
 }
 
 .reader-holder { overflow: auto; }
+
+
+.fix-blur-hack {
+    // make thumbnails clean crisp
+    .uncharted-thumbnails-thumbnail.flip-container {
+        .front,
+        .back {
+            backface-visibility: unset;
+            transform: none;
+        }
+        .flipper.flipped {
+            transition: none;
+            transform: none;
+            .front {
+                z-index: 0;
+            }
+            .back {
+                z-index: 2;
+            }
+        }
+    } 
+    // add properties that are need for flipping animation
+    .uncharted-thumbnails-thumbnail.flip-container.animating {
+        .front,
+        .back {
+            backface-visibility: hidden;
+        }
+        .front {
+            transform: rotateY(0deg);
+        }
+        .back {
+            transform: rotateY(180deg);
+        }
+        .flipper {
+            pointer-events: none;
+        }
+        .flipper.flipped {
+            transform: rotateY(180deg);
+            .front {
+                z-index: 2;
+            }
+            .back {
+                z-index: 0;
+            }
+        }
+    }
+
+}
