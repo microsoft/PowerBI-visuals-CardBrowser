@@ -39,6 +39,7 @@ import * as Promise from 'bluebird';
 import * as $ from 'jquery';
 import Thumbnails from '@uncharted/cards/src';
 import * as _ from 'lodash';
+import * as debounce from 'lodash/debounce';
 import * as utils from './utils';
 import {
     convertToDocumentData,
@@ -54,9 +55,9 @@ import {
     EVENTS,
 } from '../lib/@uncharted/cards/src/components/constants';
 
-export default class Cards implements IVisual {
+export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
 
-    private element: JQuery;
+    private $element: JQuery;
     private dataView: DataView;
     private thumbnails: any;
     private documentData: any;
@@ -66,7 +67,7 @@ export default class Cards implements IVisual {
     private loadedDocumentCount = 0;
     private isLoadingMore = false;
     private isThumbnailsWrapLayout = !DEFAULT_CONFIG.inlineMode;
-    private thumbnailsWrapTimeout: any = null;
+    private thumbnailsWrapper: any = null;
     private suppressNextUpdate: boolean;
     private hasMetaData = false;
 
@@ -85,7 +86,7 @@ export default class Cards implements IVisual {
             limit: 500
         },
     };
-    private settings = $.extend({}, Cards.DEFAULT_SETTINGS);
+    private settings = $.extend({}, Cards8D7CFFDA2E7E400C9474F41B9EDBBA58.DEFAULT_SETTINGS);
 
     /* init function for legacy api */
     constructor(options: VisualConstructorOptions) {
@@ -94,13 +95,19 @@ export default class Cards implements IVisual {
         // this.isSandboxed = (this.hostServices.constructor.name === "SandboxVisualHostServices");
         // this.isSandboxed = (this.hostServices.constructor.name.toLowerCase().indexOf('sandbox') !== -1);
 
-        this.element = $(`
+        this.$element = $(`
             <div class='visual-container'>
             </div>
         `).appendTo(options.element);
 
         this.thumbnails = new Thumbnails($.extend({}, DEFAULT_CONFIG, this.settings));
-        this.element.append(this.thumbnails.$element);
+        this.$element.append(this.thumbnails.$element);
+
+        const updateReaderContent = debounce(
+            (thumbnail) => this.thumbnails.updateReaderContent(thumbnail, {
+                content: thumbnail.data.content,
+                metadata: thumbnail.data.metadata,
+            }), 1000);
 
         this.thumbnails.on(EVENTS.THUMBNAIL_CLICK, (thumbnail) => {
             if (!thumbnail.isExpanded) {
@@ -108,10 +115,7 @@ export default class Cards implements IVisual {
                     content: '<h1> Loading... </h1>',
                 });
                 this.thumbnails.openReader(thumbnail);
-                setTimeout(() => this.thumbnails.updateReaderContent(thumbnail, {
-                    content: thumbnail.data.content,
-                    metadata: thumbnail.data.metadata,
-                }), 1000);
+                updateReaderContent(thumbnail);
             }
         });
 
@@ -150,6 +154,35 @@ export default class Cards implements IVisual {
             this.thumbnails.loadData(this.documentData.documentList);
             console.log("loaded " + this.loadedDocumentCount + " documents");
         };
+
+        this.thumbnailsWrapper = debounce((options) => {
+            const desiredThumbnailHeight = this.settings.presentation.height;
+            const viewport: any = options.viewport;
+            let oldIsWrap = this.isThumbnailsWrapLayout;
+            const $thumbnail = this.thumbnails.$element.find('.thumbnail');
+
+            this.wrapThumbnails(viewport.height >= 1.5 * desiredThumbnailHeight);
+
+            if (this.isThumbnailsWrapLayout) {
+                $thumbnail.height(desiredThumbnailHeight);
+            }
+            else {
+                $thumbnail.height('100%');
+            }
+
+            if (this.isThumbnailsWrapLayout !== oldIsWrap) {
+                this.suppressNextUpdate = true;
+                this.hostServices.persistProperties({
+                    merge: [
+                        {
+                            objectName: 'presentation',
+                            selector: undefined,
+                            properties: { wrap: this.isThumbnailsWrapLayout },
+                        },
+                    ],
+                });
+            }
+        }, 200);
     }
 
     public update(options: VisualUpdateOptions) {
@@ -159,37 +192,8 @@ export default class Cards implements IVisual {
         }
         if (options.type & powerbi.VisualUpdateType.Resize) {
             // POST PROCESS (once all the thumbnails have been rendered)
-            this.clearWrapTimeout();
-            this.thumbnailsWrapTimeout = setTimeout(() => {
-                const desiredThumbnailHeight = this.settings.presentation.height;
-                const viewport: any = options.viewport;
-                let oldIsWrap = this.isThumbnailsWrapLayout;
-                const $thumbnail = this.thumbnails.$element.find('.thumbnail');
-
-                this.wrapThumbnails(viewport.height >= 1.5 * desiredThumbnailHeight);
-
-                if (this.isThumbnailsWrapLayout) {
-                    $thumbnail.height(desiredThumbnailHeight);
-                }
-                else {
-                    $thumbnail.height('100%');
-                }
-
-                if (this.isThumbnailsWrapLayout !== oldIsWrap) {
-                    this.suppressNextUpdate = true;
-                    this.hostServices.persistProperties({
-                        merge: [
-                            {
-                                objectName: 'presentation',
-                                selector: undefined,
-                                properties: { wrap: this.isThumbnailsWrapLayout },
-                            },
-                        ],
-                    });
-                }
-
-                this.thumbnailsWrapTimeout = null;
-            }, 200);
+            this.thumbnailsWrapper(options);
+            return;
         }
 
         if (!options.dataViews || !(options.dataViews.length > 0)) { return; }
@@ -198,7 +202,7 @@ export default class Cards implements IVisual {
 
         this.dataView = options.dataViews[0];
         const newObjects = this.dataView && this.dataView.metadata && this.dataView.metadata.objects;
-        this.settings = $.extend(true, {}, Cards.DEFAULT_SETTINGS, newObjects);
+        this.settings = $.extend(true, {}, Cards8D7CFFDA2E7E400C9474F41B9EDBBA58.DEFAULT_SETTINGS, newObjects);
         this.loadedDocumentCount = this.dataView ? countDocuments(this.dataView) : 0;
         this.isLoadingMore = (this.settings.loadMoreData.enabled &&
             this.loadedDocumentCount < this.settings.loadMoreData.limit &&
@@ -214,7 +218,7 @@ export default class Cards implements IVisual {
         this.documentData = convertToDocumentData(this.dataView, this.settings,
             anyOptions.dataTransforms && anyOptions.dataTransforms.roles);
         this.updateData();
-        $('.flip-tag').hide();
+        this.$element.addClass('flip-tag-hidden');
     }
 
     private sendSelectionToHost(identities: DataViewScopeIdentity[]) {
@@ -232,13 +236,6 @@ export default class Cards implements IVisual {
     private wrapThumbnails(wrapped: boolean) {
         this.thumbnails.inlineMode = (!wrapped);
         this.isThumbnailsWrapLayout = wrapped;
-    }
-
-    private clearWrapTimeout(): void {
-        if (this.thumbnailsWrapTimeout !== null) {
-            clearTimeout(this.thumbnailsWrapTimeout);
-            this.thumbnailsWrapTimeout = null;
-        }
     }
 
     /**
@@ -264,7 +261,7 @@ export default class Cards implements IVisual {
      * @method destroy
      */
     public destroy(): void {
-        this.clearWrapTimeout();
+        this.thumbnailsWrapper.cancel();
         this.thumbnails = null;
         this.hostServices = null;
     }

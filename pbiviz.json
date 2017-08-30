@@ -3,7 +3,7 @@
     "name": "Cards",
     "displayName": "Cards",
     "guid": "Cards8D7CFFDA2E7E400C9474F41B9EDBBA58",
-    "visualClassName": "Cards",
+    "visualClassName": "Cards8D7CFFDA2E7E400C9474F41B9EDBBA58",
     "description": "ESSEX Cards",
     "supportUrl": "http://community.powerbi.com",
     "gitHubUrl": ""
@@ -14,9 +14,9 @@
   },
   "apiVersion": "",
   "assets": {
-    "icon": "assets/icon.png",
-    "thumbnail": "assets/icon.png",
-    "screenshot": "assets/icon.png"
+    "icon": "assets/icon.svg",
+    "thumbnail": "assets/thumbnail.png",
+    "screenshot": "assets/screenshot.png"
   },
   "style": "style/visual.scss",
   "capabilities": "capabilities.json",
