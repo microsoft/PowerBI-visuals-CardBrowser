@@ -29,13 +29,13 @@ import colors from './test_data/colors';
 
 const DEFAULT_SETTINGS = {
     presentation: {
-        properties: {
-            wrap: true,
-            summaryUrl: true,
-        },
+        wrap: true,
+        height: 250,
+        summaryUrl: true,
+        dateFormat: 'MMM D, YYYY',
     },
     loadMoreData: {
-        enabled: true,
+        enabled: false,
         limit: 500
     },
 };
@@ -54,7 +54,7 @@ describe('dataConversion', () => {
     });
 
     it('convertToDocumentData', () => {
-        documentData = dataConversion.convertToDocumentData(options.dataViews[0], {});
+        documentData = dataConversion.convertToDocumentData(options.dataViews[0], DEFAULT_SETTINGS, {});
         expect(documentData).to.be.ok;
         expect(documentData.documentList.length).to.equal(4);
         expect(documentData.maxNumDocParts).to.equal(6);

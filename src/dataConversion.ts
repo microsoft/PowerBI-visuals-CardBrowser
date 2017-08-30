@@ -26,7 +26,7 @@ import IColorInfo = powerbi.IColorInfo;
 import * as _ from 'lodash';
 import * as utils from './utils';
 import * as moment from 'moment';
-import {  } from './constants';
+import { } from './constants';
 
 function flattenMetaData(metaData) {
     const metaDataArray = metaData.length ? metaData : [metaData];
@@ -76,7 +76,7 @@ function assignValue(role, columns, idx, columnValue) {
     } : columnValue;
 }
 
-function convertToRowObjs(dataView, roles = null) {
+function convertToRowObjs(dataView, settings, roles = null) {
     const table = dataView.table;
     const rows = table.rows;
     const columns = dataView.metadata.columns;
@@ -95,13 +95,14 @@ function convertToRowObjs(dataView, roles = null) {
         rowObj = { index, identity };
         row.forEach((colValue, idx) => {
             colRoles = Object.keys(columns[idx].roles);
-            columnValue = colValue && (columns[idx].type.dateTime ? new Date(colValue) : colValue);
+            columnValue = colValue && (columns[idx].type.dateTime ?
+                moment(colValue).format(settings.presentation.dateFormat) : colValue);
             colRoles.forEach(role => {
                 if (rowObj[role] === undefined) {
                     rowObj[role] = assignValue(role, columns, idx, columnValue);
                     return;
                 }
-                if (rowObj[role].length === undefined) {
+                if (!Array.isArray(rowObj[role])) {
                     const firstRoleValue = rowObj[role];
                     rowObj[role] = [];
                     assignRole(rowObj, role, firstRoleValue, roles,
@@ -113,13 +114,22 @@ function convertToRowObjs(dataView, roles = null) {
         if (rowObj.metadata) {
             rowObj.metadata = flattenMetaData(rowObj.metadata);
         }
+        if (rowObj.imageUrl && Array.isArray(rowObj.imageUrl)) {
+            const cleanArray = [];
+            for (let i = 0; i < rowObj.imageUrl.length; i++) {
+                if (rowObj.imageUrl[i]) {
+                    cleanArray.push(rowObj.imageUrl[i]);
+                }
+            }
+            rowObj.imageUrl = cleanArray;
+        }
         result.push(rowObj);
     }
     return result;
 }
 
-function convertToDocumentData(dataView, roles) {
-    const rowObjs = convertToRowObjs(dataView, roles);
+function convertToDocumentData(dataView, settings, roles) {
+    const rowObjs = convertToRowObjs(dataView, settings, roles);
     return convertToDocuments(rowObjs);
 }
 

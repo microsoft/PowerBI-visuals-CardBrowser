@@ -27,7 +27,7 @@
     {
       "name": "imageUrl",
       "displayName": "Title Image (url)",
-      "description": "Main image for the document; displayed on thumbnails and in the reader",
+      "description": "Main image(s) for the document; displayed on thumbnails and in the reader",
       "kind": 0
     },
     {
@@ -90,7 +90,7 @@
             "max": 1
           },
           "imageUrl": {
-            "max": 1
+            "max": 4
           },
           "author": {
             "max": 1
@@ -203,6 +203,13 @@
           },
           "displayName": "Auto Summary URL",
           "description": "If true, populate Summary from Content's Readability URL, if applicable. Warning: this may quickly hit your request cap."
+        },
+        "dateFormat": {
+          "displayName": "Date Format",
+          "description": "Source date format using tokens; e.g. YYYY MM DD h:mm:ss",
+          "type": {
+            "text": "MMM D, YYYY"
+          }
         }
       },
       "displayName": "Configuration"

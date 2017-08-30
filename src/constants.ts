@@ -21,4 +21,5 @@
  * SOFTWARE.
  */
 
+export const METADATA_FIELDS = ['metadata'];
 export const REQUIRED_FIELDS = ['id'];

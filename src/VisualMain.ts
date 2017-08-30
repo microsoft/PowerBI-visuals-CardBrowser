@@ -45,6 +45,7 @@ import {
     countDocuments,
 } from './dataConversion';
 import {
+    METADATA_FIELDS,
     REQUIRED_FIELDS,
 } from './constants';
 
@@ -67,6 +68,7 @@ export default class Cards implements IVisual {
     private isThumbnailsWrapLayout = !DEFAULT_CONFIG.inlineMode;
     private thumbnailsWrapTimeout: any = null;
     private suppressNextUpdate: boolean;
+    private hasMetaData = false;
 
     /**
      * Default formatting settings
@@ -76,6 +78,7 @@ export default class Cards implements IVisual {
             wrap: true,
             height: 250,
             summaryUrl: true,
+            dateFormat: 'MMM D, YYYY',
         },
         loadMoreData: {
             enabled: false,
@@ -99,7 +102,7 @@ export default class Cards implements IVisual {
         this.thumbnails = new Thumbnails($.extend({}, DEFAULT_CONFIG, this.settings));
         this.element.append(this.thumbnails.$element);
 
-        this.thumbnails.on('thumbnail:click', (thumbnail) => {
+        this.thumbnails.on(EVENTS.THUMBNAIL_CLICK, (thumbnail) => {
             if (!thumbnail.isExpanded) {
                 this.thumbnails.updateReaderContent(thumbnail, {
                     content: '<h1> Loading... </h1>',
@@ -112,24 +115,33 @@ export default class Cards implements IVisual {
             }
         });
 
-        this.thumbnails.on('verticalReader:navigateToThumbnail', (thumbnail) => {
+        this.thumbnails.on(EVENTS.VERTICAL_READER_NAVIGATE_THUMBNAIL, (thumbnail) => {
             this.thumbnails.updateReaderContent(thumbnail, thumbnail.data);
         });
 
-        this.thumbnails.on('readerContent:clickCloseButton', () => {
+        this.thumbnails.on(EVENTS.READER_CONTENT_CLICK_CLOSE, () => {
             this.thumbnails.closeReader();
         });
 
-        // flipping example
+        // enable flipping on mouse over
         this.thumbnails.$element.on('mouseenter', '.thumbnail', (event) => {
-            const thumbnailId = $(event.currentTarget).data('id');
-            if (this.documentData && this.documentData.documents[thumbnailId].metadata) {
-                this.thumbnails.findThumbnailById(thumbnailId).isFlipped = true;
+            if (this.hasMetaData) {
+                $(event.currentTarget).find('.flip-tag').show();
             }
         });
         this.thumbnails.$element.on('mouseleave', '.thumbnail', (event) => {
-            const thumbnailId = $(event.currentTarget).data('id');
-            this.thumbnails.findThumbnailById(thumbnailId).isFlipped = false;
+            if (this.hasMetaData) {
+                $(event.currentTarget).find('.flip-tag').hide();
+            }
+        });
+
+        // flipping example
+        this.thumbnails.on(EVENTS.THUMBNAIL_CLICK_FLIP_TAG, (event) => {
+            const thumbnailId = event.data.id;
+            if (this.documentData && this.documentData.documents[thumbnailId].metadata) {
+                const thumbnail = this.thumbnails.findThumbnailById(thumbnailId);
+                thumbnail.isFlipped = !thumbnail.isFlipped;
+            }
         });
 
         this.wrapThumbnails(this.settings.presentation.wrap);
@@ -155,7 +167,7 @@ export default class Cards implements IVisual {
                 const $thumbnail = this.thumbnails.$element.find('.thumbnail');
 
                 this.wrapThumbnails(viewport.height >= 1.5 * desiredThumbnailHeight);
-                
+
                 if (this.isThumbnailsWrapLayout) {
                     $thumbnail.height(desiredThumbnailHeight);
                 }
@@ -182,6 +194,7 @@ export default class Cards implements IVisual {
 
         if (!options.dataViews || !(options.dataViews.length > 0)) { return; }
         if (!utils.hasColumns(options.dataViews[0], REQUIRED_FIELDS)) { return; }
+        this.hasMetaData = utils.hasColumns(options.dataViews[0], METADATA_FIELDS);
 
         this.dataView = options.dataViews[0];
         const newObjects = this.dataView && this.dataView.metadata && this.dataView.metadata.objects;
@@ -198,9 +211,10 @@ export default class Cards implements IVisual {
         }
 
         const anyOptions: any = options;
-        this.documentData = convertToDocumentData(this.dataView,
+        this.documentData = convertToDocumentData(this.dataView, this.settings,
             anyOptions.dataTransforms && anyOptions.dataTransforms.roles);
         this.updateData();
+        $('.flip-tag').hide();
     }
 
     private sendSelectionToHost(identities: DataViewScopeIdentity[]) {
@@ -243,6 +257,7 @@ export default class Cards implements IVisual {
         $.extend(true, instances[0].properties, this.settings[options.objectName]);
         return instances;
     }
+
     /**
      * Destroy method called by PowerBI.
      *
