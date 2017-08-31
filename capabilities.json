@@ -183,20 +183,6 @@
   "objects": {
     "presentation": {
       "properties": {
-        "wrap": {
-          "type": {
-            "bool": true
-          },
-          "displayName": "Wrap",
-          "description": "If true, thumbnail cards wraps on overflow."
-        },
-        "height": {
-          "type": {
-            "numeric": 250
-          },
-          "displayName": "Height",
-          "description": "Desired thumbnail card height"
-        },
         "summaryUrl": {
           "type": {
             "bool": true

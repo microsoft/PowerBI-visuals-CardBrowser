@@ -68,7 +68,7 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
     private loadedDocumentCount = 0;
     private isLoadingMore = false;
     private isThumbnailsWrapLayout = !DEFAULT_CONFIG.inlineMode;
-    private thumbnailsWrapper: any = null;
+    private changeWrapMode: Function;
     private suppressNextUpdate: boolean;
     private hasMetaData = false;
 
@@ -162,32 +162,13 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
             console.log("loaded " + this.loadedDocumentCount + " documents");
         };
 
-        this.thumbnailsWrapper = debounce((options) => {
-            const desiredThumbnailHeight = this.settings.presentation.height;
+        this.changeWrapMode = debounce((options) => {
+            const thumbnailHeight = this.thumbnails.thumbnailInstances[0] && this.thumbnails.thumbnailInstances[0].$element.height();
             const viewport: any = options.viewport;
-            let oldIsWrap = this.isThumbnailsWrapLayout;
-            const $thumbnail = this.thumbnails.$element.find('.thumbnail');
-
-            this.wrapThumbnails(viewport.height >= 1.5 * desiredThumbnailHeight);
-
-            if (this.isThumbnailsWrapLayout) {
-                $thumbnail.height(desiredThumbnailHeight);
-            }
-            else {
-                $thumbnail.height('100%');
-            }
-
-            if (this.isThumbnailsWrapLayout !== oldIsWrap) {
-                this.suppressNextUpdate = true;
-                this.hostServices.persistProperties({
-                    merge: [
-                        {
-                            objectName: 'presentation',
-                            selector: undefined,
-                            properties: { wrap: this.isThumbnailsWrapLayout },
-                        },
-                    ],
-                });
+            if (thumbnailHeight && viewport.height > thumbnailHeight * 1.5 ) {
+                this.wrapThumbnails(true);
+            } else if (thumbnailHeight) {
+                this.wrapThumbnails(false);
             }
         }, 200);
     }
@@ -197,11 +178,12 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
             this.suppressNextUpdate = false;
             return;
         }
-        if (options.type & powerbi.VisualUpdateType.Resize) {
-            // POST PROCESS (once all the thumbnails have been rendered)
-            this.thumbnailsWrapper(options);
+
+        if (options['resizeMode']) {
+            this.changeWrapMode(options);
             return;
         }
+
 
         if (!options.dataViews || !(options.dataViews.length > 0)) { return; }
         if (!utils.hasColumns(options.dataViews[0], REQUIRED_FIELDS)) { return; }
@@ -270,7 +252,7 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
      * @method destroy
      */
     public destroy(): void {
-        this.thumbnailsWrapper.cancel();
+        this.changeWrapMode['cancel']();
         this.thumbnails = null;
         this.hostServices = null;
     }
