@@ -23,6 +23,7 @@
 
 import DataView = powerbi.DataView;
 import * as $ from 'jquery';
+import * as _ from 'lodash';
 
 /**
  * Finds and returns the dataview column(s) that matches the given data role name.
@@ -52,44 +53,79 @@ export function hasColumns(dataView: DataView, dataRoleNames: string[]): boolean
     return dataRoleNames.reduce((prev, dataRoleName) => prev && findColumn(dataView, dataRoleName) !== undefined, true);
 }
 
-export function shadeColor(color, percent) {
-    const f = parseInt(color.slice(1), 16),
-        t = percent < 0 ? 0 : 255,
-        p = percent < 0 ? percent * -1 : percent,
-        R = f >> 16,
-        G = f >> 8 & 0x00FF,
-        B = f & 0x0000FF;
-    return '#' + (0x1000000 + (Math.round((t - R) * p) + R) * 0x10000 + (Math.round((t - G) * p) + G) * 0x100 + (Math.round((t - B) * p) + B)).toString(16).slice(1);
-}
+// https://stackoverflow.com/questions/35962586/javascript-remove-inline-event-handlers-attributes-of-a-node#35962814
+export function removeScriptAttributes(el) {
+    const attributes = [].slice.call(el.attributes);
 
-export function getWords(document) {
-    return document.split(/\s+/);
-}
+    for (let i = 0; i < attributes.length; i++) {
+        const att = attributes[i].name;
 
-/**
- * Remove all irrelevant characters.
- * Invalid characters are replaced with a whitespace
- * uses some code from https://stackoverflow.com/questions/7085454/extract-keyphrases-from-text-1-4-word-ngrams#7451243
- * @param {String} text 
- */
-export function cleanText(text) {
-    // RE pattern to select valid characters. Invalid characters are replaced with a whitespace
-    const REallowedChars = /[^a-zA-Z]+/g;
-    return text.replace(REallowedChars, " ").replace(/^\s+/, "").replace(/\s+$/, "").toLowerCase();
-}
-
-/**
- * Return a new array containing strings with all irrelevant characters removed.  
- * Invalid characters are replaced with a whitespace
- * uses some code from https://stackoverflow.com/questions/7085454/extract-keyphrases-from-text-1-4-word-ngrams#7451243
- * @param {Array<String>} textArray
- */
-export function cleanTextArray(textArray) {
-    const length = textArray.length;
-    const result = [];
-    for (let i = 0; i < length; i++) {
-        result.push(cleanText(textArray[i]));
+        if (att.indexOf('on') === 0) {
+            el.attributes.removeNamedItem(att);
+        }
     }
-    
-    return result;
+}
+
+/**
+ * Removes dangerous tags, such as scripts, from the given HTML content.
+ * @param {String} html - HTML content to clean
+ * @param {Array} whiteList - Array of HTML tag names to accept
+ * @returns {String} HTML content, devoid of any tags not in the whitelist
+ */
+export function sanitizeHTML(html: string, whiteList: string[]): string {
+    let cleanHTML = '';
+    if (html && whiteList && whiteList.length) {
+        // Stack Overflow is all like NEVER PARSE HTML WITH REGEX
+        // http://stackoverflow.com/questions/1732348/regex-match-open-tags-except-xhtml-self-contained-tags/1732454#1732454
+        // plus the C# whitelist regex I found didn't work in JS
+        // http://stackoverflow.com/questions/307013/how-do-i-filter-all-html-tags-except-a-certain-whitelist#315851
+        // So going with the innerHTML approach...
+        // http://stackoverflow.com/questions/6659351/removing-all-script-tags-from-html-with-js-regular-expression
+
+        let doomedNodeList = [];
+
+        if (!document.createTreeWalker) {
+            return ''; // in case someone's hax0ring us?
+        }
+
+        let div = $('<div/>');
+        div.html(html);
+
+        let filter: any = function (node) {
+            removeScriptAttributes(node);
+            if (whiteList.indexOf(node.nodeName.toUpperCase()) === -1) {
+                return NodeFilter.FILTER_ACCEPT;
+            }
+
+            return NodeFilter.FILTER_SKIP;
+        };
+
+        filter.acceptNode = filter;
+
+        // Create a tree walker (hierarchical iterator) that only exposes non-whitelisted nodes, which we'll delete.
+        let treeWalker = document.createTreeWalker(
+            div.get()[0],
+            NodeFilter.SHOW_ELEMENT,
+            filter,
+            false
+        );
+
+        while (treeWalker.nextNode()) {
+            doomedNodeList.push(treeWalker.currentNode);
+        }
+
+        let length = doomedNodeList.length;
+        for (let i = 0; i < length; i++) {
+            if (doomedNodeList[i].parentNode) {
+                try {
+                    doomedNodeList[i].parentNode.removeChild(doomedNodeList[i]);
+                } catch (ex) { }
+            }
+        }
+
+        // convert back to a string.
+        cleanHTML = div.html().trim();
+    }
+
+    return cleanHTML;
 }

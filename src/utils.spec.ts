@@ -26,6 +26,8 @@ import * as sinon from 'sinon';
 import { expect } from 'chai';
 import mockDataView from './test_data/mockdataview';
 import * as _ from 'lodash';
+import { HTML_WHITELIST_CONTENT } from './constants';
+import testHtmlStrings from './test_data/testHtmlStrings.js';
 
 describe('utils', () => {
     it('findColumn', () => {
@@ -62,23 +64,10 @@ describe('utils', () => {
         expect(utils.hasColumns(dataView, ['document'])).to.be.true;
     });
 
-    it('shadeColor', () => {
-        expect(utils.shadeColor('#ffffff', 0.5)).to.equal('#ffffff');
-        expect(utils.shadeColor('#964b5b', 0.5)).to.equal('#cba5ad');
-    });
-
-    const doc = 'Mike Hat lives with my mom';
-    it('getWords', () => {
-        expect(utils.getWords(doc)).to.deep.equal(['Mike', 'Hat', 'lives', 'with', 'my', 'mom']);
-    });
-
-    const dirtyText = '`~!@#$%^&*()_-=+/\\|{}[];"<>,.?\'A';
-    const cleanText = 'a';
-    it('cleanText', () => {
-        expect(utils.cleanText(dirtyText)).to.equal(cleanText);
-    });
-
-    it('cleanTextArray', () => {
-        expect(utils.cleanTextArray([dirtyText, dirtyText])).to.deep.equal([cleanText, cleanText]);
+    it('sanitizes HTML', function () {
+        const sanitized = utils.sanitizeHTML(testHtmlStrings.testArticle, HTML_WHITELIST_CONTENT);
+        expect(sanitized).to.be.ok;
+        expect(sanitized.indexOf('<script>')).to.equal(-1);
+        expect(sanitized.indexOf('<SCRIPT>')).to.equal(-1);
     });
 });

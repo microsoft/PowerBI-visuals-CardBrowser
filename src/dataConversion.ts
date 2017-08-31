@@ -26,7 +26,7 @@ import IColorInfo = powerbi.IColorInfo;
 import * as _ from 'lodash';
 import * as utils from './utils';
 import * as moment from 'moment';
-import { } from './constants';
+import { HTML_WHITELIST_SUMMARY, HTML_WHITELIST_CONTENT } from './constants';
 
 function flattenMetaData(metaData) {
     const metaDataArray = metaData.length ? metaData : [metaData];
@@ -69,11 +69,18 @@ function assignRole(rowObj, role, columnValue, roles, idx) {
 }
 
 function assignValue(role, columns, idx, columnValue) {
-    return role === "metadata" ? {
-        key: columns[idx].displayName,
-        value: columnValue,
-        index: idx,
-    } : columnValue;
+    switch (role) {
+        case 'metadata':
+            return {
+                key: columns[idx].displayName,
+                value: columnValue,
+                index: idx,
+            };
+        case 'summary':
+            return utils.sanitizeHTML(columnValue, HTML_WHITELIST_SUMMARY);
+        default:
+            return columnValue;
+    }
 }
 
 function convertToRowObjs(dataView, settings, roles = null) {
@@ -122,6 +129,12 @@ function convertToRowObjs(dataView, settings, roles = null) {
                 }
             }
             rowObj.imageUrl = cleanArray;
+        }
+        if (rowObj.content) {
+            if (settings.presentation.summaryUrl && !rowObj.summary) {
+                rowObj.summary = utils.sanitizeHTML(rowObj.content, HTML_WHITELIST_SUMMARY);
+            }
+            rowObj.content = utils.sanitizeHTML(rowObj.content, HTML_WHITELIST_CONTENT);
         }
         result.push(rowObj);
     }
