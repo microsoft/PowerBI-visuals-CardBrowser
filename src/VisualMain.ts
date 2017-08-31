@@ -111,19 +111,10 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         this.thumbnails = new Thumbnails($.extend({}, DEFAULT_CONFIG, this.settings));
         this.$element.append(this.thumbnails.$element);
 
-        const updateReaderContent = debounce(
-            (thumbnail) => this.thumbnails.updateReaderContent(thumbnail, {
-                content: thumbnail.data.content,
-                metadata: thumbnail.data.metadata,
-            }), 1000);
-
         this.thumbnails.on(EVENTS.THUMBNAIL_CLICK, (thumbnail) => {
             if (!thumbnail.isExpanded) {
-                this.thumbnails.updateReaderContent(thumbnail, {
-                    content: '<h1> Loading... </h1>',
-                });
+                this.thumbnails.updateReaderContent(thumbnail, thumbnail.data);
                 this.thumbnails.openReader(thumbnail);
-                updateReaderContent(thumbnail);
             }
         });
 
@@ -250,8 +241,10 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
      * @param {Boolean} wrapped - true if thumbnails should be rendered in multiple rows; false to keep them all in one row
      */
     private wrapThumbnails(wrapped: boolean) {
-        this.thumbnails.inlineMode = (!wrapped);
-        this.isThumbnailsWrapLayout = wrapped;
+        if (this.isThumbnailsWrapLayout !== wrapped) {
+            this.isThumbnailsWrapLayout = wrapped;
+            this.thumbnails.toggleInlineDisplayMode();
+        }
     }
 
     /**
