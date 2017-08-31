@@ -180,6 +180,7 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         }
 
         if (options['resizeMode']) {
+            this.thumbnails.verticalReader.reposition();
             this.changeWrapMode(options);
             return;
         }
