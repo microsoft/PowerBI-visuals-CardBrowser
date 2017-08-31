@@ -69,6 +69,7 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
     private isLoadingMore = false;
     private isThumbnailsWrapLayout = !DEFAULT_CONFIG.inlineMode;
     private changeWrapMode: Function;
+    private rePositionReader: Function;
     private suppressNextUpdate: boolean;
     private hasMetaData = false;
 
@@ -171,6 +172,7 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
                 this.wrapThumbnails(false);
             }
         }, 200);
+        this.rePositionReader = debounce(() => this.thumbnails.verticalReader.reposition(), 200);
     }
 
     public update(options: VisualUpdateOptions) {
@@ -180,7 +182,7 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         }
 
         if (options['resizeMode']) {
-            debounce(() => this.thumbnails.verticalReader.reposition(), 200);
+            this.rePositionReader();
             this.changeWrapMode(options);
             return;
         }
