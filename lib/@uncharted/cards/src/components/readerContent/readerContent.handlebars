@@ -17,11 +17,13 @@
             {{/if}}
         </ul>
         <div class="columns-container">
+            {{#if metadata}}
             <div class="meta-data">
                 {{#each metadata}}
                 <div><span class="key">{{@key}}:</span> {{this}}</div>
                 {{/each}}
             </div>
+            {{/if}}
             {{#if imageUrl}}
             <div class="images-container">
                 {{#cardImages imageUrl}}
