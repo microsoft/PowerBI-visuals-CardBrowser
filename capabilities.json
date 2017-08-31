@@ -183,13 +183,6 @@
   "objects": {
     "presentation": {
       "properties": {
-        "summaryUrl": {
-          "type": {
-            "bool": true
-          },
-          "displayName": "Auto Summary URL",
-          "description": "If true, populate Summary from Content's Readability URL, if applicable. Warning: this may quickly hit your request cap."
-        },
         "dateFormat": {
           "displayName": "Date Format",
           "description": "Source date format using tokens; e.g. YYYY MM DD h:mm:ss",

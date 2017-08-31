@@ -131,9 +131,6 @@ function convertToRowObjs(dataView, settings, roles = null) {
             rowObj.imageUrl = cleanArray;
         }
         if (rowObj.content) {
-            if (settings.presentation.summaryUrl && !rowObj.summary) {
-                rowObj.summary = utils.sanitizeHTML(rowObj.content, HTML_WHITELIST_SUMMARY);
-            }
             rowObj.content = utils.sanitizeHTML(rowObj.content, HTML_WHITELIST_CONTENT);
         }
         result.push(rowObj);
