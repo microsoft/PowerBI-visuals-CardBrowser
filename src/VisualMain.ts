@@ -63,6 +63,7 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
     private documentData: any;
     private hostServices: IVisualHostServices;
     private isSandboxed: Boolean;
+    private isDesktop: Boolean = true;
     private updateData: Function;
     private loadedDocumentCount = 0;
     private isLoadingMore = false;
@@ -91,14 +92,21 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
     /* init function for legacy api */
     constructor(options: VisualConstructorOptions) {
         this.hostServices = options.host.createSelectionManager()['hostServices'];
+
+        // Start hacks to detect sandboxing & desktop...
         this.isSandboxed = this.hostServices['messageProxy'];
         // this.isSandboxed = (this.hostServices.constructor.name === "SandboxVisualHostServices");
         // this.isSandboxed = (this.hostServices.constructor.name.toLowerCase().indexOf('sandbox') !== -1);
+        this.isDesktop = (powerbi.build === undefined);
+        // ... end hacks    
 
-        this.$element = $(`
+        this.$element = (this.isDesktop ? $(`
             <div class='visual-container fix-blur-hack'>
             </div>
-        `).appendTo(options.element);
+            `) : $(`
+            <div class='visual-container'>
+            </div>
+        `)).appendTo(options.element);
 
         this.thumbnails = new Thumbnails($.extend({}, DEFAULT_CONFIG, this.settings));
         this.$element.append(this.thumbnails.$element);
@@ -128,12 +136,12 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         });
 
         // enable flipping on mouse over
-        this.thumbnails.$element.on('mouseenter', '.thumbnail', (event) => {
+        this.thumbnails.$element.on('mouseenter', '.uncharted-thumbnails-thumbnail', (event) => {
             if (this.hasMetaData) {
                 $(event.currentTarget).find('.flip-tag').show();
             }
         });
-        this.thumbnails.$element.on('mouseleave', '.thumbnail', (event) => {
+        this.thumbnails.$element.on('mouseleave', '.uncharted-thumbnails-thumbnail', (event) => {
             if (this.hasMetaData) {
                 $(event.currentTarget).find('.flip-tag').hide();
             }
@@ -150,6 +158,10 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
                     setTimeout(() => thumbnail.$element.removeClass('animating'), 700);
                 }, 0);
             }
+        });
+
+        this.thumbnails.on(EVENTS.THUMBNAILS_CLICK_BACKGROUND, () => {
+            this.thumbnails.closeReader();
         });
 
         this.wrapThumbnails(this.settings.presentation.wrap);

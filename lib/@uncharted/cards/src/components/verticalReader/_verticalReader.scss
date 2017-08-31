@@ -25,6 +25,10 @@ $reader-animation-duration: 0.3s;
         transition: left $reader-animation-duration ease-out;
     }
 
+    .reader-content-container {
+        height: 100%;
+    }
+
     .reader-page-button {
         position: absolute;
         bottom: 50%;

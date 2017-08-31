@@ -203,9 +203,10 @@
         position: relative;
         animation: none;
         &.flipped {
-            // set to 180 when flipping keyframes are finished for furthur transition when this class is removed
+            // set to 180 instantly when flipping keyframes are finished for furthur transition when this class is removed
             transform: rotateY(180deg);
             transition-delay: $thumbnail-flipping-animation-duration;
+            transition-duration: 0s;
             animation-duration: $thumbnail-flipping-animation-duration;
             animation-name: flipping;
             animation-iteration-count: 1;

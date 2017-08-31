@@ -65,6 +65,8 @@
                     !thumbnail.isExpanded && (thumbnail.isFlipped = !thumbnail.isFlipped);
                 });
 
+                thumbnails.on('thumbnails:clickBackground', () => thumbnails.closeReader());
+
                 // reposition reader on resize
                 $(window).resize(() => {
                     thumbnails.verticalReader.reposition();
