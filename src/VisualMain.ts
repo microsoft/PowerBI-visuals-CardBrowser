@@ -112,6 +112,12 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         this.thumbnails = new Thumbnails($.extend({}, DEFAULT_CONFIG, this.settings));
         this.$element.append(this.thumbnails.$element);
 
+        const hideFlipTag = (target) => {
+            if (this.hasMetaData) {
+                $(target).find('.flip-tag').hide();
+            }
+        };
+
         this.thumbnails.on(EVENTS.THUMBNAIL_CLICK, (thumbnail) => {
             if (!thumbnail.isExpanded) {
                 this.thumbnails.updateReaderContent(thumbnail, thumbnail.data);
@@ -129,15 +135,13 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
 
         // enable flipping on mouse over
         this.thumbnails.$element.on('mouseenter', '.uncharted-thumbnails-thumbnail', (event) => {
-            if (this.hasMetaData) {
+            if (this.hasMetaData && !$(event.currentTarget).hasClass('expanded')) {
                 $(event.currentTarget).find('.flip-tag').show();
             }
         });
-        this.thumbnails.$element.on('mouseleave', '.uncharted-thumbnails-thumbnail', (event) => {
-            if (this.hasMetaData) {
-                $(event.currentTarget).find('.flip-tag').hide();
-            }
-        });
+        this.thumbnails.$element.on('mouseleave', '.uncharted-thumbnails-thumbnail',
+            (event) => hideFlipTag(event.currentTarget));
+        this.thumbnails.on(EVENTS.THUMBNAIL_EXPAND, (event) => hideFlipTag(event.$element));
 
         // flipping example
         this.thumbnails.on(EVENTS.THUMBNAIL_CLICK_FLIP_TAG, (thumbnail) => {
@@ -156,8 +160,6 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
             this.thumbnails.closeReader();
         });
 
-        this.wrapThumbnails(this.settings.presentation.wrap);
-
         this.updateData = () => {
             this.thumbnails.loadData(this.documentData.documentList);
             console.log("loaded " + this.loadedDocumentCount + " documents");
@@ -166,13 +168,20 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         this.changeWrapMode = debounce((options) => {
             const thumbnailHeight = this.thumbnails.thumbnailInstances[0] && this.thumbnails.thumbnailInstances[0].$element.height();
             const viewport: any = options.viewport;
-            if (thumbnailHeight && viewport.height > thumbnailHeight * 1.5 ) {
+            if (thumbnailHeight && viewport.height > thumbnailHeight * 1.5) {
                 this.wrapThumbnails(true);
             } else if (thumbnailHeight) {
                 this.wrapThumbnails(false);
             }
         }, 200);
         this.rePositionReader = debounce(() => this.thumbnails.verticalReader.reposition(), 200);
+
+        this.changeWrapMode({
+            viewport: {
+                width: options.element.offsetWidth,
+                height: options.element.offsetHeight
+            }
+        });
     }
 
     public update(options: VisualUpdateOptions) {
