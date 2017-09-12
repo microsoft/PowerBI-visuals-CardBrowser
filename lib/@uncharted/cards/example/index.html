@@ -7,9 +7,10 @@
         <script src="http://code.jquery.com/jquery-3.2.1.js"></script>
     </head>
     <body>
-        <div class="thumbnails-panel"></div>
         <button id="load-more">loadMore</button>
         <button id="toggle-inline-mode"> Toggle Inline Display Mode</button>
+        <button id="flip-cards">Flip Cards</button>
+        <div class="thumbnails-panel"></div>
 
         <script src="sampledata.js"></script>
         <script src="uncharted.cards.js"></script>
@@ -28,53 +29,56 @@
              */
             const thumbnailsConfig = {
                 inlineMode: true,
-            }
-            $(document).ready(() => {
-                thumbnails = new Thumbnails(thumbnailsConfig);
-                const $thumbnails = $('.thumbnails-panel').append(thumbnails.$element);
-                thumbnails.loadData(thumbnailsSampleData);
-                // thumbnails.thumbnailInstances.forEach(thumbnail => (thumbnail.isFlipped = true));
+            };
 
-                thumbnails.on('thumbnail:click', (thumbnail) => {
-                    if (!thumbnail.isExpanded) {
-                        // thumbnails.updateReaderContent(thumbnail, {
-                        //     content: '<h1> Loading... </h1>',
-                        // });
-                        // thumbnails.openReader(thumbnail);
-                        // setTimeout(() => thumbnails.updateReaderContent(thumbnail, {
-                        //     content: '<p>reader content </p>',
-                        //     metadata: thumbnail.data.metadata,
-                        // }), 1000);
-                        thumbnails.updateReaderContent(thumbnail, Object.assign({
-                             content: '<div class="zn-body__read-all"><p class="zn-body__paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam diam massa, consequat non dolor ac, dignissim elementum est. Quisque non nulla odio. Phasellus urna diam, condimentum blandit mi ac, euismod faucibus libero. Maecenas nec purus non mauris volutpat lacinia et id leo. Quisque quis maximus dolor. Morbi placerat sagittis tristique. Duis rhoncus sed urna sed dictum.    </p><p>    Curabitur rhoncus viverra ex, in mollis quam. Vivamus ultrices orci id mi pretium convallis. Nunc venenatis finibus mauris, eget gravida nunc porta ut. Praesent aliquet cursus orci quis auctor. Vivamus aliquet, metus pharetra egestas vulputate, sem libero molestie dui, non lobortis enim mi tincidunt lorem. Aenean nec enim ac libero vestibulum pellentesque vel ut elit. Aenean ac neque vel eros tincidunt sodales. Praesent lacinia ex urna, vel rutrum purus rhoncus et. Nulla finibus elit sit amet mi dictum interdum. Etiam quis neque felis. Etiam malesuada finibus blandit. Suspendisse condimentum, tortor ut egestas varius, sem lectus lacinia augue, at vulputate lacus elit ac elit. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam gravida eleifend erat, id ultricies lorem auctor in. Ut euismod risus at eros ullamcorper interdum.</p><p>Integer accumsan gravida congue. Etiam elementum ultricies consequat. Maecenas ac ipsum tincidunt, fringilla leo at, molestie ipsum. Mauris a ante eros. Morbi placerat nisi et nulla congue, at finibus nibh finibus. Nunc malesuada, metus eu condimentum sodales, sem ex dapibus arcu, ut consequat leo orci at ex. Donec posuere purus vulputate, vehicula purus sit amet, convallis est. Sed egestas tincidunt laoreet. Cras facilisis ultricies arcu id rhoncus. Fusce luctus leo tortor, eu faucibus elit posuere eget. Nam mattis rhoncus nulla, in mollis velit congue ut.</p><p>Aenean quis lobortis arcu. Suspendisse tincidunt tellus id felis interdum convallis. Sed placerat elit quis urna auctor, vel hendrerit nulla rhoncus. Mauris non gravida ex, ac tempor magna. Proin condimentum elementum risus ut fringilla. In tortor turpis, viverra vel eros a, ullamcorper semper nisl. Etiam pulvinar aliquam dolor viverra facilisis. Nulla facilisi. Proin sed euismod diam. Cras finibus, magna sed porta molestie, mauris libero vestibulum erat, ut aliquam risus purus sit amet mi. Curabitur vel nulla sem. Aenean in aliquet felis. Nulla nec justo ac odio elementum tristique at accumsan felis. Nullam tincidunt suscipit suscipit. Praesent et tempus velit, sit amet condimentum est. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p><p>Mauris euismod pretium hendrerit. Aliquam dapibus vehicula magna, a convallis orci luctus sed. Nullam tristique diam diam, quis sollicitudin dolor porta eget. Morbi lobortis neque vitae metus cursus, id tincidunt nulla semper. Pellentesque luctus fermentum turpis, eu ullamcorper diam ultrices et. Aliquam sollicitudin dui a dolor ultricies viverra. Aliquam leo metus, molestie et ultricies et, consectetur sit amet dui. Nunc pellentesque dictum ipsum, eleifend tempus turpis fringilla a. Nulla id aliquet mauris. Fusce tortor diam, imperdiet sed posuere sit amet, porta ac sapien. Maecenas varius euismod turpis eu vehicula. Proin aliquet mauris vitae ligula auctor aliquet nec et lorem. Mauris dignissim, augue nec fringilla dapibus, dolor magna euismod risus, at placerat mauris magna lobortis nibh. Ut porta tincidunt augue.</p></p><div class="el__leafmedia el__leafmedia--raw-html"><a href="https://twitter.com/CNNpolitics" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @CNNpolitics</a> </div></div>',
-                        }, thumbnail.data));
-                        thumbnails.openReader(thumbnail);
-                    }
+            const data = [...thumbnailsSampleData];
+
+            const getMoreData = () => {
+                const moreData = data.map((thumbnailData) => { 
+                    const id = '_' + Math.random().toString(36).substr(2, 9);
+                    return Object.assign({}, thumbnailData, { id });
                 });
+                return moreData;
+            };
 
-                thumbnails.on('verticalReader:navigateToThumbnail', (thumbnail) => {
-                    thumbnails.updateReaderContent(thumbnail, thumbnail.data);
-                });
+            thumbnails = new Thumbnails(thumbnailsConfig);
+            const $thumbnails = $('.thumbnails-panel').append(thumbnails.$element);
+            thumbnails.loadData(data);
 
-                thumbnails.on('readerContent:clickCloseButton', (readerContent) => {
-                    thumbnails.closeReader();
-                });
+            thumbnails.on('thumbnail:click', (thumbnail) => {
+                if (!thumbnail.isExpanded) {
+                    thumbnails.updateReaderContent(thumbnail, Object.assign({
+                            content: '<div class="zn-body__read-all"><p class="zn-body__paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam diam massa, consequat non dolor ac, dignissim elementum est. Quisque non nulla odio. Phasellus urna diam, condimentum blandit mi ac, euismod faucibus libero. Maecenas nec purus non mauris volutpat lacinia et id leo. Quisque quis maximus dolor. Morbi placerat sagittis tristique. Duis rhoncus sed urna sed dictum.    </p><p>    Curabitur rhoncus viverra ex, in mollis quam. Vivamus ultrices orci id mi pretium convallis. Nunc venenatis finibus mauris, eget gravida nunc porta ut. Praesent aliquet cursus orci quis auctor. Vivamus aliquet, metus pharetra egestas vulputate, sem libero molestie dui, non lobortis enim mi tincidunt lorem. Aenean nec enim ac libero vestibulum pellentesque vel ut elit. Aenean ac neque vel eros tincidunt sodales. Praesent lacinia ex urna, vel rutrum purus rhoncus et. Nulla finibus elit sit amet mi dictum interdum. Etiam quis neque felis. Etiam malesuada finibus blandit. Suspendisse condimentum, tortor ut egestas varius, sem lectus lacinia augue, at vulputate lacus elit ac elit. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam gravida eleifend erat, id ultricies lorem auctor in. Ut euismod risus at eros ullamcorper interdum.</p><p>Integer accumsan gravida congue. Etiam elementum ultricies consequat. Maecenas ac ipsum tincidunt, fringilla leo at, molestie ipsum. Mauris a ante eros. Morbi placerat nisi et nulla congue, at finibus nibh finibus. Nunc malesuada, metus eu condimentum sodales, sem ex dapibus arcu, ut consequat leo orci at ex. Donec posuere purus vulputate, vehicula purus sit amet, convallis est. Sed egestas tincidunt laoreet. Cras facilisis ultricies arcu id rhoncus. Fusce luctus leo tortor, eu faucibus elit posuere eget. Nam mattis rhoncus nulla, in mollis velit congue ut.</p><p>Aenean quis lobortis arcu. Suspendisse tincidunt tellus id felis interdum convallis. Sed placerat elit quis urna auctor, vel hendrerit nulla rhoncus. Mauris non gravida ex, ac tempor magna. Proin condimentum elementum risus ut fringilla. In tortor turpis, viverra vel eros a, ullamcorper semper nisl. Etiam pulvinar aliquam dolor viverra facilisis. Nulla facilisi. Proin sed euismod diam. Cras finibus, magna sed porta molestie, mauris libero vestibulum erat, ut aliquam risus purus sit amet mi. Curabitur vel nulla sem. Aenean in aliquet felis. Nulla nec justo ac odio elementum tristique at accumsan felis. Nullam tincidunt suscipit suscipit. Praesent et tempus velit, sit amet condimentum est. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p><p>Mauris euismod pretium hendrerit. Aliquam dapibus vehicula magna, a convallis orci luctus sed. Nullam tristique diam diam, quis sollicitudin dolor porta eget. Morbi lobortis neque vitae metus cursus, id tincidunt nulla semper. Pellentesque luctus fermentum turpis, eu ullamcorper diam ultrices et. Aliquam sollicitudin dui a dolor ultricies viverra. Aliquam leo metus, molestie et ultricies et, consectetur sit amet dui. Nunc pellentesque dictum ipsum, eleifend tempus turpis fringilla a. Nulla id aliquet mauris. Fusce tortor diam, imperdiet sed posuere sit amet, porta ac sapien. Maecenas varius euismod turpis eu vehicula. Proin aliquet mauris vitae ligula auctor aliquet nec et lorem. Mauris dignissim, augue nec fringilla dapibus, dolor magna euismod risus, at placerat mauris magna lobortis nibh. Ut porta tincidunt augue.</p></p><div class="el__leafmedia el__leafmedia--raw-html"><a href="https://twitter.com/CNNpolitics" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @CNNpolitics</a> </div></div>',
+                    }, thumbnail.data));
+                    thumbnails.openReader(thumbnail);
+                }
+            });
 
-                // flipping example
-                thumbnails.on('thumbnail:clickFlipTag', thumbnail => {
-                    !thumbnail.isExpanded && (thumbnail.isFlipped = !thumbnail.isFlipped);
-                });
+            thumbnails.on('verticalReader:navigateToThumbnail', (thumbnail) => {
+                thumbnails.updateReaderContent(thumbnail, thumbnail.data);
+            });
 
-                thumbnails.on('thumbnails:clickBackground', () => thumbnails.closeReader());
+            thumbnails.on('readerContent:clickCloseButton', (readerContent) => {
+                thumbnails.closeReader();
+            });
 
-                // reposition reader on resize
-                $(window).resize(() => {
-                    thumbnails.verticalReader.reposition();
-                });
+            thumbnails.on('thumbnails:clickBackground', () => thumbnails.closeReader());
 
-                $('#toggle-inline-mode').click(() => {
-                    thumbnails.toggleInlineDisplayMode();
-                });
+            // reposition reader on resize
+            $(window).resize(() => {
+                thumbnails.verticalReader.reposition();
+            });
+
+            $('#toggle-inline-mode').click(() => {
+                thumbnails.toggleInlineDisplayMode();
+            });
+
+            $('#flip-cards').click(() => {
+                thumbnails.thumbnailInstances.forEach(thumbnail => (thumbnail.isFlipped = !thumbnail.isFlipped));
+            });
+
+            $('#load-more').click(() => {
+                thumbnails.loadMoreData(getMoreData());
             });
         </script>
     </body>

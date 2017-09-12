@@ -20,11 +20,20 @@
             {{#if metadata}}
             <div class="meta-data">
                 {{#each metadata}}
-                <div><span class="key">{{@key}}:</span> {{this}}</div>
+                <div>
+                    <span class="key">{{@key}} </span>
+                    <span class="value">
+                    {{#isImageDataUrl this}}
+                        <img src="{{this}}" alt="">
+                    {{else}}
+                        {{#linkify this}}{{/linkify}}
+                    {{/isImageDataUrl}}
+                    </span>
+                </div>
                 {{/each}}
+
             </div>
-            {{/if}}
-            {{#if imageUrl}}
+            {{/if}} {{#if imageUrl}}
             <div class="images-container">
                 {{#cardImages imageUrl}}
                 <div class="image" data-url="{{url}}" style="background-image:url({{url}})"></div>

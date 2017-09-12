@@ -42,7 +42,7 @@
     .content-container {
         position: relative;
         height: calc(100% - #{$header-height});
-        padding: 8px 16px 8px 16px;
+        padding: 8px 32px;
         overflow: auto;
     }
 
@@ -65,17 +65,19 @@
     .meta-data {
         overflow-x: auto;
         overflow-wrap: break-word;
+        padding-right: 4px;
     }
 
     .images-container {
         min-width: 50%;
+        padding-left: 4px;
     }
 
     .images-container .image {
         position: relative;
         float: left;
-        width: 115px;
-        height: 115px;
+        width: 107px;
+        height: 107px;
         background-position: 50% 50%;
         background-repeat: no-repeat;
         background-size: cover;
@@ -83,7 +85,16 @@
     }
 
     .meta-data .key {
+        color: #ccc;
+    }
+
+    .meta-data .value {
         font-weight: bold;
+    }
+
+    .meta-data img {
+        max-height: 1em;
+        max-width: 100%;
     }
 
     .content {

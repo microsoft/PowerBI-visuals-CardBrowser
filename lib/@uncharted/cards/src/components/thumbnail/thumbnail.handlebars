@@ -1,22 +1,44 @@
-<div class="uncharted-thumbnails-thumbnail flip-container" data-id="{{id}}">
+<div class="uncharted-thumbnails-thumbnail {{#unless disableFlipping}} flip-container {{/unless}}" data-id="{{id}}">
     <div class="flipper">
-        <div class="front card">
-            <div class="flip-tag"></div>
-            {{#if iconUrl}}
-                <div class="card-icon" style="background-image: url({{iconUrl}})"></div>
-            {{/if}}
-            <div class="card-content-container">
-                <div class="card-content">
-                    {{#if imageUrl}}
-                        <div class="card-image">
-                            {{#cardImages imageUrl}}
-                                <div class="image" data-url="{{url}}"></div>
-                            {{/cardImages}}
-                        </div>
-                    {{/if}}
+        {{#unless removeFrontCard}}
+            <div class="front card">
+                {{#if iconUrl}}
+                    <div class="card-icon" style="background-image: url({{iconUrl}})"></div>
+                {{/if}}
+                <div class="card-content-container">
+                    <div class="card-content">
+                        {{#if imageUrl}}
+                            <div class="card-image">
+                                {{#cardImages imageUrl}}
+                                    <div class="image" data-url="{{url}}"></div>
+                                {{/cardImages}}
+                            </div>
+                        {{/if}}
 
+                        <div class="card-body">
+                            <h1 class="title">{{title}}</h1>
+                            <ul class="meta-line">
+                                <li class="author">{{author}}</li>
+                                {{#if articleDate}}
+                                    <li>
+                                        <time class="updated">{{articleDate}}</time>
+                                    </li>
+                                {{/if}}
+                            </ul>
+                            <div class="summary">{{{summary}}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {{/unless}}
+        {{#unless removeBackCard}}
+        <div class="back card">
+            <div class="card-content-container metadata-content-container">
+                <div class="meta-data-content">
                     <div class="card-body">
-                        <h1 class="title">{{title}}</h1>
+                        <div class="title-box">
+                            <h1 class="title value">{{title}}</h1>
+                        </div>
                         <ul class="meta-line">
                             <li class="author">{{author}}</li>
                             {{#if articleDate}}
@@ -25,32 +47,35 @@
                                 </li>
                             {{/if}}
                         </ul>
-                        <div class="summary">{{{summary}}}</div>
+                        <div class="meta-data-table">
+                            {{#each metadata}}
+                                <div class="row">
+                                    <div class="col">
+                                        <span class="value">{{@key}}</span> 
+                                    </div>
+                                    <div class="col">
+                                        <span class="value">
+                                            {{#isImageDataUrl this}}
+                                                <img src="{{this}}" alt="">
+                                            {{else}}
+                                                {{#linkify this}}{{/linkify}}
+                                            {{/isImageDataUrl}}
+                                        </span>
+                                    </div>
+                                </div>
+                            {{/each}}
+                        </div>
                     </div>
+                    {{#if imageUrl}}
+                    <div class="meta-data-images-container">
+                        {{#cardImages imageUrl}}
+                        <div class="image" data-url="{{url}}" style="background-image:url({{url}})"></div>
+                        {{/cardImages}}
+                    </div>
+                    {{/if}}
                 </div>
             </div>
         </div>
-        <div class="back card">
-            <div class="flip-tag"></div>
-            <div class="card-content-container">
-                <div class="metadata-content">
-                    <h1 class="title">{{title}}</h1>
-                    <div class="image"></div>
-                    <ul class="meta-line">
-                        <li class="author">{{author}}</li>
-                        {{#if articleDate}}
-                            <li>
-                                <time class="updated">{{articleDate}}</time>
-                            </li>
-                        {{/if}}
-                    </ul>
-                    <div class="meta-data">
-                        {{#each metadata}}
-                            <div><span class="key">{{@key}}:</span> {{this}}</div>
-                        {{/each}}
-                    </div>
-                </div>
-            </div>
-        </div>
+        {{/unless}}
     </div>
 </div>

@@ -118,47 +118,7 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
             }
         };
 
-        this.thumbnails.on(EVENTS.THUMBNAIL_CLICK, (thumbnail) => {
-            if (!thumbnail.isExpanded) {
-                this.thumbnails.updateReaderContent(thumbnail, thumbnail.data);
-                this.thumbnails.openReader(thumbnail);
-            }
-        });
-
-        this.thumbnails.on(EVENTS.VERTICAL_READER_NAVIGATE_THUMBNAIL, (thumbnail) => {
-            this.thumbnails.updateReaderContent(thumbnail, thumbnail.data);
-        });
-
-        this.thumbnails.on(EVENTS.READER_CONTENT_CLICK_CLOSE, () => {
-            this.thumbnails.closeReader();
-        });
-
-        // enable flipping on mouse over
-        this.thumbnails.$element.on('mouseenter', '.uncharted-thumbnails-thumbnail', (event) => {
-            if (this.hasMetaData && !$(event.currentTarget).hasClass('expanded')) {
-                $(event.currentTarget).find('.flip-tag').show();
-            }
-        });
-        this.thumbnails.$element.on('mouseleave', '.uncharted-thumbnails-thumbnail',
-            (event) => hideFlipTag(event.currentTarget));
-        this.thumbnails.on(EVENTS.THUMBNAIL_EXPAND, (event) => hideFlipTag(event.$element));
-
-        // flipping example
-        this.thumbnails.on(EVENTS.THUMBNAIL_CLICK_FLIP_TAG, (thumbnail) => {
-            const thumbnailId = thumbnail.data.id;
-            if (this.documentData && this.documentData.documents[thumbnailId].metadata) {
-                // Adding and removing animating class is a Hack for crisp thumbnail for  pbi desktop
-                thumbnail.$element.addClass('animating');
-                setTimeout(() => {
-                    thumbnail.isFlipped = !thumbnail.isFlipped;
-                    setTimeout(() => thumbnail.$element.removeClass('animating'), 700);
-                }, 0);
-            }
-        });
-
-        this.thumbnails.on(EVENTS.THUMBNAILS_CLICK_BACKGROUND, () => {
-            this.thumbnails.closeReader();
-        });
+        this.rePositionReader = debounce(() => this.thumbnails.verticalReader.reposition(), 200);
 
         this.updateData = () => {
             this.thumbnails.loadData(this.documentData.documentList);
@@ -174,7 +134,42 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
                 this.wrapThumbnails(false);
             }
         }, 200);
-        this.rePositionReader = debounce(() => this.thumbnails.verticalReader.reposition(), 200);
+
+        this.thumbnails.on(EVENTS.THUMBNAIL_CLICK, (thumbnail) => {
+            if (!thumbnail.isExpanded) {
+                this.thumbnails.updateReaderContent(thumbnail, thumbnail.data);
+                this.thumbnails.openReader(thumbnail);
+            }
+        });
+
+        this.thumbnails.on(EVENTS.VERTICAL_READER_NAVIGATE_THUMBNAIL, (thumbnail) => {
+            this.thumbnails.updateReaderContent(thumbnail, thumbnail.data);
+        });
+
+        this.thumbnails.on(EVENTS.READER_CONTENT_CLICK_CLOSE, () => {
+            this.thumbnails.closeReader();
+        });
+
+        this.thumbnails.$element.on('mouseleave', '.uncharted-thumbnails-thumbnail',
+            (event) => hideFlipTag(event.currentTarget));
+        this.thumbnails.on(EVENTS.THUMBNAIL_EXPAND, (event) => hideFlipTag(event.$element));
+
+        // flipping example
+        //this.thumbnails.on(EVENTS.THUMBNAIL_CLICK_FLIP_TAG, (thumbnail) => {
+        //    const thumbnailId = thumbnail.data.id;
+        //    if (this.documentData && this.documentData.documents[thumbnailId].metadata) {
+        //        // Adding and removing animating class is a Hack for crisp thumbnail for  pbi desktop
+        //        thumbnail.$element.addClass('animating');
+        //        setTimeout(() => {
+        //            thumbnail.isFlipped = !thumbnail.isFlipped;
+        //            setTimeout(() => thumbnail.$element.removeClass('animating'), 700);
+        //        }, 0);
+        //    }
+        //});
+
+        this.thumbnails.on(EVENTS.THUMBNAILS_CLICK_BACKGROUND, () => {
+            this.thumbnails.closeReader();
+        });
 
         this.changeWrapMode({
             viewport: {
