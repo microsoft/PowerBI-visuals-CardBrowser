@@ -1,7 +1,5 @@
 const webpack = require('webpack');
 const path = require('path');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const ENTRY = './src/VisualMain.ts';
 const regex = path.normalize(ENTRY).replace(/\\/g, '\\\\').replace(/\./g, '\\.');
@@ -40,14 +38,6 @@ module.exports = {
                 exclude: /node_modules/,
             },
             {
-                test: /\.scss$/,
-                use: isServing
-                    ? ['style-loader', 'css-loader', 'sass-loader']
-                    : ExtractTextPlugin.extract({
-                        use: ['css-loader', 'sass-loader'],
-                    }),
-            },
-            {
                 test: /\.handlebars$/,
                 loader: 'handlebars-loader',
                 query: {
@@ -71,7 +61,4 @@ module.exports = {
     plugins: [
         new webpack.optimize.ModuleConcatenationPlugin(),
     ],
-    devServer: {
-        disableHostCheck: true,
-    },
 };
