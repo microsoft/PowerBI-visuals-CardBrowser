@@ -6,6 +6,9 @@ $thumbnail-height: 300px;
 
 .visual-container {
     height: 100%;
+    .flip-cards {
+        visibility: hidden;
+    }
 }
 
 .fix-blur-hack {

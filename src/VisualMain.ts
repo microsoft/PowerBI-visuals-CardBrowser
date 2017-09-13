@@ -100,7 +100,8 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         // ... end hacks    
 
         this.$element = $(visualTemplate({
-            isDesktop: this.isDesktop
+            isDesktop: this.isDesktop,
+            disableFlipping: false, // TODO: hook this up to a Format switch?
         })).appendTo(options.element);
 
         this.thumbnails = new Thumbnails($.extend({}, DEFAULT_CONFIG, this.settings));
@@ -120,6 +121,10 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
 
         this.thumbnails.on(EVENTS.READER_CONTENT_CLICK_CLOSE, () => {
             this.thumbnails.closeReader();
+        });
+
+        $('.flip-cards').click(() => {
+            this.thumbnails.thumbnailInstances.forEach(thumbnail => (thumbnail.isFlipped = !thumbnail.isFlipped));
         });
 
         // flipping example
@@ -165,14 +170,17 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         if (!options.dataViews || !(options.dataViews.length > 0)) { return; }
         if (!utils.hasColumns(options.dataViews[0], REQUIRED_FIELDS)) { return; }
         this.hasMetaData = utils.hasColumns(options.dataViews[0], METADATA_FIELDS);
+        $('.flip-cards').css({
+            visibility: this.hasMetaData ? 'visible' : 'collapse'
+        });
 
         this.dataView = options.dataViews[0];
         const newObjects = this.dataView && this.dataView.metadata && this.dataView.metadata.objects;
         this.settings = $.extend(true, {}, Cards8D7CFFDA2E7E400C9474F41B9EDBBA58.DEFAULT_SETTINGS, newObjects);
         this.loadedDocumentCount = this.dataView ? countDocuments(this.dataView) : 0;
         this.isLoadingMore = (this.settings.loadMoreData.enabled &&
-            this.loadedDocumentCount < this.settings.loadMoreData.limit &&
-            !!this.dataView.metadata.segment);
+        this.loadedDocumentCount < this.settings.loadMoreData.limit &&
+        !!this.dataView.metadata.segment);
         if (this.isLoadingMore) {
             // need to load more data
             this.isLoadingMore = true;
