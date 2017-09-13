@@ -28,6 +28,7 @@
   "devDependencies": {
     "@types/jquery": "^3.2.11",
     "@types/mocha": "^2.2.41",
+    "@types/node": "^8.0.28",
     "@types/sinon": "^2.3.3",
     "@types/sinon-chai": "^2.7.28",
     "babel-core": "^6.26.0",

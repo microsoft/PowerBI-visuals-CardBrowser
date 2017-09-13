@@ -54,6 +54,7 @@ import {
     DEFAULT_CONFIG,
     EVENTS,
 } from '../lib/@uncharted/cards/src/components/constants';
+const visualTemplate = require('./visual.handlebars');
 
 export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
 
@@ -98,10 +99,9 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         this.isDesktop = (powerbi.build === undefined);
         // ... end hacks    
 
-        this.$element = $(`
-            <div class='visual-container ${ this.isDesktop ? 'fix-blur-hack' : '' }'>
-            </div>
-        `).appendTo(options.element);
+        this.$element = $(visualTemplate({
+            isDesktop: this.isDesktop
+        })).appendTo(options.element);
 
         this.thumbnails = new Thumbnails($.extend({}, DEFAULT_CONFIG, this.settings));
         this.$element.append(this.thumbnails.$element);

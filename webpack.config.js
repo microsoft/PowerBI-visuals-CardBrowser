@@ -9,7 +9,7 @@ module.exports = {
     entry: ENTRY,
     devtool: 'eval',
     resolve: {
-        extensions: ['.js', '.json', '.ts'],
+        extensions: ['.js', '.json', '.ts', '.handlebars'],
         alias: {
             handlebars: 'handlebars/dist/handlebars.min.js',
             '@uncharted': path.resolve(__dirname, 'lib/@uncharted')

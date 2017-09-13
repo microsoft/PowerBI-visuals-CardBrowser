@@ -62,8 +62,8 @@
     },
     {
       "name": "metadata",
-      "displayName": "MetaData",
-      "description": "Key-value pairs",
+      "displayName": "MetaData Fields",
+      "description": "Key-value pairs for the table on the back of the cards",
       "kind": 0
     },
     {

@@ -5,7 +5,9 @@
     "allowJs": true,
     "types": [
       "mocha",
-      "sinon-chai"
+      "sinon-chai",
+      // add node as an option
+      "node"
     ],
     "lib": [
       "dom",
