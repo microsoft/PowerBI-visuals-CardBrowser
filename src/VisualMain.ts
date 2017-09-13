@@ -64,12 +64,9 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
     private hostServices: IVisualHostServices;
     private isSandboxed: Boolean;
     private isDesktop: Boolean = true;
-    private updateData: Function;
     private loadedDocumentCount = 0;
     private isLoadingMore = false;
     private isThumbnailsWrapLayout = !DEFAULT_CONFIG.inlineMode;
-    private changeWrapMode: Function;
-    private rePositionReader: Function;
     private suppressNextUpdate: boolean;
     private hasMetaData = false;
 
@@ -101,39 +98,14 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         this.isDesktop = (powerbi.build === undefined);
         // ... end hacks    
 
-        this.$element = (this.isDesktop ? $(`
-            <div class='visual-container fix-blur-hack'>
+        this.$element = $(`
+            <div class='visual-container ${ this.isDesktop ? 'fix-blur-hack' : '' }'>
             </div>
-            `) : $(`
-            <div class='visual-container'>
-            </div>
-        `)).appendTo(options.element);
+        `).appendTo(options.element);
 
         this.thumbnails = new Thumbnails($.extend({}, DEFAULT_CONFIG, this.settings));
         this.$element.append(this.thumbnails.$element);
 
-        const hideFlipTag = (target) => {
-            if (this.hasMetaData) {
-                $(target).find('.flip-tag').hide();
-            }
-        };
-
-        this.rePositionReader = debounce(() => this.thumbnails.verticalReader.reposition(), 200);
-
-        this.updateData = () => {
-            this.thumbnails.loadData(this.documentData.documentList);
-            console.log("loaded " + this.loadedDocumentCount + " documents");
-        };
-
-        this.changeWrapMode = debounce((options) => {
-            const thumbnailHeight = this.thumbnails.thumbnailInstances[0] && this.thumbnails.thumbnailInstances[0].$element.height();
-            const viewport: any = options.viewport;
-            if (thumbnailHeight && viewport.height > thumbnailHeight * 1.5) {
-                this.wrapThumbnails(true);
-            } else if (thumbnailHeight) {
-                this.wrapThumbnails(false);
-            }
-        }, 200);
 
         this.thumbnails.on(EVENTS.THUMBNAIL_CLICK, (thumbnail) => {
             if (!thumbnail.isExpanded) {
@@ -149,10 +121,6 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         this.thumbnails.on(EVENTS.READER_CONTENT_CLICK_CLOSE, () => {
             this.thumbnails.closeReader();
         });
-
-        this.thumbnails.$element.on('mouseleave', '.uncharted-thumbnails-thumbnail',
-            (event) => hideFlipTag(event.currentTarget));
-        this.thumbnails.on(EVENTS.THUMBNAIL_EXPAND, (event) => hideFlipTag(event.$element));
 
         // flipping example
         //this.thumbnails.on(EVENTS.THUMBNAIL_CLICK_FLIP_TAG, (thumbnail) => {
@@ -186,8 +154,10 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         }
 
         if (options['resizeMode']) {
-            this.rePositionReader();
-            this.changeWrapMode(options);
+            debounce(() => {
+                this.thumbnails.verticalReader.reposition();
+                this.changeWrapMode(options);
+            }, 200)();
             return;
         }
 
@@ -217,12 +187,9 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         this.$element.addClass('flip-tag-hidden');
     }
 
-    private sendSelectionToHost(identities: DataViewScopeIdentity[]) {
-        const selectArgs = {
-            data: identities.map((identity: DataViewScopeIdentity) => ({ data: [identity] })),
-            visualObjects: [],
-        };
-        this.hostServices.onSelect(selectArgs);
+    private updateData() {
+        this.thumbnails.loadData(this.documentData.documentList);
+        console.log("loaded " + this.loadedDocumentCount + " documents");
     }
 
     /**
@@ -234,6 +201,24 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
             this.isThumbnailsWrapLayout = wrapped;
             this.thumbnails.toggleInlineDisplayMode();
         }
+    }
+
+    private changeWrapMode(options) {
+        const thumbnailHeight = this.thumbnails.thumbnailInstances[0] && this.thumbnails.thumbnailInstances[0].$element.height();
+        const viewport: any = options.viewport;
+        if (thumbnailHeight && viewport.height > thumbnailHeight * 1.5) {
+            this.wrapThumbnails(true);
+        } else if (thumbnailHeight) {
+            this.wrapThumbnails(false);
+        }
+    }
+
+    private sendSelectionToHost(identities: DataViewScopeIdentity[]) {
+        const selectArgs = {
+            data: identities.map((identity: DataViewScopeIdentity) => ({ data: [identity] })),
+            visualObjects: [],
+        };
+        this.hostServices.onSelect(selectArgs);
     }
 
     /**
