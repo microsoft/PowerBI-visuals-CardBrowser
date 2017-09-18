@@ -12,8 +12,7 @@ module.exports = {
         extensions: ['.js', '.json', '.ts', '.handlebars'],
         alias: {
             handlebars: 'handlebars/dist/handlebars.min.js',
-            '@uncharted': path.resolve(__dirname, 'lib/@uncharted')
-        }
+        },
     },
     module: {
         rules: [

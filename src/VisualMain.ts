@@ -37,7 +37,7 @@ import VisualObjectInstance = powerbi.VisualObjectInstance;
 
 import * as Promise from 'bluebird';
 import * as $ from 'jquery';
-import Thumbnails from '@uncharted/cards/src';
+import Thumbnails from '../lib/@uncharted/cards/src';
 import * as _ from 'lodash';
 import * as debounce from 'lodash/debounce';
 import * as utils from './utils';
@@ -48,10 +48,10 @@ import {
 import {
     METADATA_FIELDS,
     REQUIRED_FIELDS,
+    DEFAULT_VISUAL_SETTINGS,
 } from './constants';
 
 import {
-    DEFAULT_CONFIG,
     EVENTS,
 } from '../lib/@uncharted/cards/src/components/constants';
 const visualTemplate = require('./visual.handlebars');
@@ -67,26 +67,9 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
     private isDesktop: Boolean = true;
     private loadedDocumentCount = 0;
     private isLoadingMore = false;
-    private isThumbnailsWrapLayout = !DEFAULT_CONFIG.inlineMode;
-    private suppressNextUpdate: boolean;
     private hasMetaData = false;
 
-    /**
-     * Default formatting settings
-     */
-    private static DEFAULT_SETTINGS = {
-        presentation: {
-            wrap: true,
-            height: 250,
-            summaryUrl: true,
-            dateFormat: 'MMM D, YYYY',
-        },
-        loadMoreData: {
-            enabled: false,
-            limit: 500
-        },
-    };
-    private settings = $.extend({}, Cards8D7CFFDA2E7E400C9474F41B9EDBBA58.DEFAULT_SETTINGS);
+    private settings = $.extend({}, DEFAULT_VISUAL_SETTINGS);
 
     /* init function for legacy api */
     constructor(options: VisualConstructorOptions) {
@@ -97,16 +80,15 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         // this.isSandboxed = (this.hostServices.constructor.name === "SandboxVisualHostServices");
         // this.isSandboxed = (this.hostServices.constructor.name.toLowerCase().indexOf('sandbox') !== -1);
         this.isDesktop = (powerbi.build === undefined);
-        // ... end hacks    
-
+        // ... end hacks
+        console.log('build ', powerbi);
+        setTimeout(() => console.log('build t', powerbi), 10);
         this.$element = $(visualTemplate({
             isDesktop: this.isDesktop,
-            disableFlipping: false, // TODO: hook this up to a Format switch?
         })).appendTo(options.element);
 
-        this.thumbnails = new Thumbnails($.extend({}, DEFAULT_CONFIG, this.settings));
+        this.thumbnails = new Thumbnails();
         this.$element.append(this.thumbnails.$element);
-
 
         this.thumbnails.on(EVENTS.THUMBNAIL_CLICK, (thumbnail) => {
             if (!thumbnail.isExpanded) {
@@ -119,29 +101,16 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
             this.thumbnails.updateReaderContent(thumbnail, thumbnail.data);
         });
 
-        this.thumbnails.on(EVENTS.READER_CONTENT_CLICK_CLOSE, () => {
+        this.thumbnails.on(`${EVENTS.READER_CONTENT_CLICK_CLOSE} ${EVENTS.THUMBNAILS_CLICK_BACKGROUND}`, () => {
             this.thumbnails.closeReader();
         });
 
         $('.flip-cards').click(() => {
-            this.thumbnails.thumbnailInstances.forEach(thumbnail => (thumbnail.isFlipped = !thumbnail.isFlipped));
-        });
-
-        // flipping example
-        //this.thumbnails.on(EVENTS.THUMBNAIL_CLICK_FLIP_TAG, (thumbnail) => {
-        //    const thumbnailId = thumbnail.data.id;
-        //    if (this.documentData && this.documentData.documents[thumbnailId].metadata) {
-        //        // Adding and removing animating class is a Hack for crisp thumbnail for  pbi desktop
-        //        thumbnail.$element.addClass('animating');
-        //        setTimeout(() => {
-        //            thumbnail.isFlipped = !thumbnail.isFlipped;
-        //            setTimeout(() => thumbnail.$element.removeClass('animating'), 700);
-        //        }, 0);
-        //    }
-        //});
-
-        this.thumbnails.on(EVENTS.THUMBNAILS_CLICK_BACKGROUND, () => {
-            this.thumbnails.closeReader();
+            this.$element.addClass('animating');
+            setTimeout(() => {
+                this.thumbnails.thumbnailInstances.forEach(thumbnail => (thumbnail.isFlipped = !thumbnail.isFlipped));
+                setTimeout(() => this.$element.removeClass('animating'), 600);
+            }, 1000);
         });
 
         this.changeWrapMode({
@@ -153,11 +122,6 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
     }
 
     public update(options: VisualUpdateOptions) {
-        if (this.suppressNextUpdate) {
-            this.suppressNextUpdate = false;
-            return;
-        }
-
         if (options['resizeMode']) {
             debounce(() => {
                 this.thumbnails.verticalReader.reposition();
@@ -166,17 +130,14 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
             return;
         }
 
-
         if (!options.dataViews || !(options.dataViews.length > 0)) { return; }
         if (!utils.hasColumns(options.dataViews[0], REQUIRED_FIELDS)) { return; }
         this.hasMetaData = utils.hasColumns(options.dataViews[0], METADATA_FIELDS);
-        $('.flip-cards').css({
-            visibility: this.hasMetaData ? 'visible' : 'collapse'
-        });
 
         this.dataView = options.dataViews[0];
         const newObjects = this.dataView && this.dataView.metadata && this.dataView.metadata.objects;
-        this.settings = $.extend(true, {}, Cards8D7CFFDA2E7E400C9474F41B9EDBBA58.DEFAULT_SETTINGS, newObjects);
+        this.settings = $.extend(true, {}, DEFAULT_VISUAL_SETTINGS, newObjects);
+
         this.loadedDocumentCount = this.dataView ? countDocuments(this.dataView) : 0;
         this.isLoadingMore = (this.settings.loadMoreData.enabled &&
         this.loadedDocumentCount < this.settings.loadMoreData.limit &&
@@ -191,34 +152,24 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         const anyOptions: any = options;
         this.documentData = convertToDocumentData(this.dataView, this.settings,
             anyOptions.dataTransforms && anyOptions.dataTransforms.roles);
-        this.updateData();
-        this.$element.addClass('flip-tag-hidden');
+        this.updateThumbnails();
     }
 
-    private updateData() {
+    private updateThumbnails() {
+        this.thumbnails.reset({
+            'inlineMode': this.thumbnails.inlineMode,
+            'thumbnail.disableFlipping': !this.settings.flipState.enableFlipping,
+            'thumbnail.displayBackCardByDefault': this.settings.flipState.backFaceDefault,
+        });
         this.thumbnails.loadData(this.documentData.documentList);
         console.log("loaded " + this.loadedDocumentCount + " documents");
-    }
-
-    /**
-     * Set the wrapping state of the thumbnails component.
-     * @param {Boolean} wrapped - true if thumbnails should be rendered in multiple rows; false to keep them all in one row
-     */
-    private wrapThumbnails(wrapped: boolean) {
-        if (this.isThumbnailsWrapLayout !== wrapped) {
-            this.isThumbnailsWrapLayout = wrapped;
-            this.thumbnails.toggleInlineDisplayMode();
-        }
     }
 
     private changeWrapMode(options) {
         const thumbnailHeight = this.thumbnails.thumbnailInstances[0] && this.thumbnails.thumbnailInstances[0].$element.height();
         const viewport: any = options.viewport;
-        if (thumbnailHeight && viewport.height > thumbnailHeight * 1.5) {
-            this.wrapThumbnails(true);
-        } else if (thumbnailHeight) {
-            this.wrapThumbnails(false);
-        }
+        const isViewPortHeightSmallEnoughForInlineThumbnails = thumbnailHeight && viewport.height <= thumbnailHeight * 1.5;
+        this.thumbnails.toggleInlineDisplayMode(isViewPortHeightSmallEnoughForInlineThumbnails);
     }
 
     private sendSelectionToHost(identities: DataViewScopeIdentity[]) {

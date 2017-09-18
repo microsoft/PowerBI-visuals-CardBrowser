@@ -193,6 +193,26 @@
       },
       "displayName": "Configuration"
     },
+    "flipState": {
+      "properties": {
+        "enableFlipping": {
+          "description": "Whether to enable card flipping",
+          "displayName": "Enable Card Flipping",
+          "type": {
+            "bool": "true"
+          }
+        },
+        "backFaceDefault": {
+          "description": "Whether to show back face of the card by default",
+          "displayName": "Backface By Default",
+          "type": {
+            "bool": "false"
+          }
+        }
+      },
+      "description": "Cards flipping configuration",
+      "displayName": "Flip State"
+    },
     "loadMoreData": {
       "properties": {
         "enabled": {

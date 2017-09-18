@@ -61,3 +61,20 @@ export const HTML_WHITELIST_MEDIA = [
 
 export const HTML_WHITELIST_SUMMARY = HTML_WHITELIST_STANDARD;
 export const HTML_WHITELIST_CONTENT = HTML_WHITELIST_STANDARD.concat(HTML_WHITELIST_MEDIA);
+
+/**
+ * Default visual settings
+ */
+export const DEFAULT_VISUAL_SETTINGS = {
+    presentation: {
+        dateFormat: 'MMM D, YYYY',
+    },
+    flipState: {
+        enableFlipping: true,
+        backFaceDefault: false,
+    },
+    loadMoreData: {
+        enabled: false,
+        limit: 500
+    },
+};

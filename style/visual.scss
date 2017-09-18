@@ -4,11 +4,23 @@ $thumbnail-height: 300px;
 
 @import "../lib/@uncharted/cards/src/main.scss";
 
+.visual .uncharted-thumbnails-style {
+    a {
+        text-decoration: none;
+        color: #2C83C0;
+    }
+}
+
 .visual-container {
     height: 100%;
     .flip-cards {
-        visibility: hidden;
+        position: absolute;
+        z-index: 1;
     }
+}
+
+.uncharted-thumbnails.inline-mode {
+    padding-bottom: 10px;
 }
 
 .fix-blur-hack {
@@ -30,8 +42,14 @@ $thumbnail-height: 300px;
             }
         }
     } 
-    // add properties that are need for flipping animation
-    .uncharted-thumbnails-thumbnail.flip-container.animating {
+
+    &.animating {
+        .flip-cards {
+            pointer-events: none;
+        }
+    }
+
+    &.animating .uncharted-thumbnails-thumbnail.flip-container {
         .front,
         .back {
             backface-visibility: hidden;
@@ -43,6 +61,7 @@ $thumbnail-height: 300px;
             transform: rotateY(180deg);
         }
         .flipper {
+            transition: 0.6s;
             pointer-events: none;
         }
         .flipper.flipped {
@@ -55,5 +74,4 @@ $thumbnail-height: 300px;
             }
         }
     }
-
 }
