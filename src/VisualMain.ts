@@ -137,6 +137,7 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         this.dataView = options.dataViews[0];
         const newObjects = this.dataView && this.dataView.metadata && this.dataView.metadata.objects;
         this.settings = $.extend(true, {}, DEFAULT_VISUAL_SETTINGS, newObjects);
+        this.$element.toggleClass('enable-flipping', this.settings.flipState.enableFlipping);
 
         this.loadedDocumentCount = this.dataView ? countDocuments(this.dataView) : 0;
         this.isLoadingMore = (this.settings.loadMoreData.enabled &&
