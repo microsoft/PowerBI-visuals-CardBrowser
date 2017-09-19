@@ -81,8 +81,7 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         // this.isSandboxed = (this.hostServices.constructor.name.toLowerCase().indexOf('sandbox') !== -1);
         this.isDesktop = (powerbi.build === undefined);
         // ... end hacks
-        console.log('build ', powerbi);
-        setTimeout(() => console.log('build t', powerbi), 10);
+
         this.$element = $(visualTemplate({
             isDesktop: this.isDesktop,
         })).appendTo(options.element);
@@ -105,12 +104,14 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
             this.thumbnails.closeReader();
         });
 
-        $('.flip-cards').click(() => {
+        // Flipping cards involves Hack for fixing blurry cards in desktop version.
+        $('.flip-cards').click((event) => {
+            this.$element.toggleClass('cards-flipped', this.thumbnails.thumbnailInstances[0].$element.find('.flipper').hasClass('flipped'));
             this.$element.addClass('animating');
             setTimeout(() => {
                 this.thumbnails.thumbnailInstances.forEach(thumbnail => (thumbnail.isFlipped = !thumbnail.isFlipped));
-                setTimeout(() => this.$element.removeClass('animating'), 600);
-            }, 1000);
+                setTimeout(() => this.$element.removeClass('animating cards-flipped'), 600);
+            }, 0);
         });
 
         this.changeWrapMode({
@@ -204,7 +205,6 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
      * @method destroy
      */
     public destroy(): void {
-        this.changeWrapMode['cancel']();
         this.thumbnails = null;
         this.hostServices = null;
     }

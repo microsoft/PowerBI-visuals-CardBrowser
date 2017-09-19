@@ -13,21 +13,25 @@ $thumbnail-height: 300px;
 
 .visual-container {
     height: 100%;
+
     .flip-cards {
         position: absolute;
         z-index: 1;
         display: none;
     }
+
     &.enable-flipping {
         .flip-cards {
             display: block;
         }
+        .uncharted-thumbnails.inline-mode {
+            margin-left: 17px;
+        }
     }
-}
 
-
-.uncharted-thumbnails.inline-mode {
-    padding-bottom: 10px;
+    .uncharted-thumbnails.inline-mode {
+        padding-bottom: 10px;
+    }
 }
 
 .fix-blur-hack {
@@ -69,7 +73,6 @@ $thumbnail-height: 300px;
         }
         .flipper {
             transition: 0.6s;
-            pointer-events: none;
         }
         .flipper.flipped {
             transform: rotateY(180deg);
@@ -79,6 +82,12 @@ $thumbnail-height: 300px;
             .back {
                 z-index: 0;
             }
+        }
+    }
+
+    &.animating.cards-flipped .uncharted-thumbnails-thumbnail.flip-container {
+        .flipper.flipped {
+            transition: 0s;
         }
     }
 }
