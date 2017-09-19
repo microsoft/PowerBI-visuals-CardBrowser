@@ -22,8 +22,7 @@
  */
 
 import DataView = powerbi.DataView;
-import * as $ from 'jquery';
-import * as _ from 'lodash';
+import DataViewMetadataColumn = powerbi.DataViewMetadataColumn;
 
 /**
  * Finds and returns the dataview column(s) that matches the given data role name.
@@ -51,6 +50,13 @@ export function findColumn(dataView: DataView, dataRoleName: string, multi?: boo
  */
 export function hasColumns(dataView: DataView, dataRoleNames: string[]): boolean {
     return dataRoleNames.reduce((prev, dataRoleName) => prev && findColumn(dataView, dataRoleName) !== undefined, true);
+}
+
+/**
+ * Check if given column has a given role.
+ */
+export function hasRole(column: DataViewMetadataColumn, roleName: string) {
+    return Boolean(column  && column.roles[roleName]);
 }
 
 // https://stackoverflow.com/questions/35962586/javascript-remove-inline-event-handlers-attributes-of-a-node#35962814

@@ -13,6 +13,7 @@
 }
 
 .uncharted-thumbnails-thumbnail {
+    $thumbnail-card-outer: $thumbnail-card-margin + $thumbnail-card-border-width;
     width: $thumbnail-width;
     height: $thumbnail-height;
     padding: $thumbnail-card-margin;
@@ -41,7 +42,6 @@
     }
 
     .card-content-container {
-        $thumbnail-card-outer: $thumbnail-card-margin + $thumbnail-card-border-width;
         position: absolute;
         height: 100%;
         width: $thumbnail-width;
@@ -66,12 +66,12 @@
         content: "";
         position: absolute;
         background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #fff 85%);
-        width: 100%;
+        width: calc(100% - #{$thumbnail-card-outer * 2});
         height: 50px;
         bottom: 0;
     }
 
-   .metadata-content-container:after {
+   .metadata-content-container.has-image:after {
        bottom: 50px;
     }
 

@@ -50,11 +50,11 @@ module.exports = {
                 exclude: [/node_modules/, /\.spec.ts?$/],
                 loader: 'ts-loader',
             },
-        ]
+        ],
     },
     externals: [
         {
-            jquery: 'jQuery'
+            jquery: 'jQuery',
         },
     ],
     plugins: [

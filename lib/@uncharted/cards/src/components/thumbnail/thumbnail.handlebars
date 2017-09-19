@@ -18,7 +18,9 @@
                         <div class="card-body">
                             <h1 class="title">{{title}}</h1>
                             <ul class="meta-line">
-                                <li class="author">{{author}}</li>
+                                {{#if author}}
+                                    <li class="author">{{author}}</li>
+                                {{/if}}
                                 {{#if articleDate}}
                                     <li>
                                         <time class="updated">{{articleDate}}</time>
@@ -33,16 +35,18 @@
         {{/unless}}
         {{#unless removeBackCard}}
         <div class="back card">
-            <div class="card-content-container metadata-content-container">
+            <div class="card-content-container metadata-content-container {{#if imageUrl}}has-image{{/if}}">
                 <div class="meta-data-content">
                     <div class="card-body">
                         <div class="title-box">
                             <h1 class="title value">{{title}}</h1>
                         </div>
                         <ul class="meta-line">
-                            <li class="author">{{author}}</li>
+                            {{#if author}}
+                                <li class="author">{{author}}</li>
+                            {{/if}}
                             {{#if articleDate}}
-                                <li>
+                                <li class="time">
                                     <time class="updated">{{articleDate}}</time>
                                 </li>
                             {{/if}}

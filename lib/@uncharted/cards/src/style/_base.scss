@@ -51,9 +51,9 @@
         text-decoration: none;
         color: #2C83C0;
     }
+
     .meta-line {
         list-style: none;
-        margin: 0 0 10px 0;
         padding: 0;
         overflow: hidden;
         font-size: 11px;
@@ -63,6 +63,7 @@
     .meta-line li {
         display: inline;
     }
+
     .meta-line li + li:before {
         content: "\2022";
         padding-right: 1px;

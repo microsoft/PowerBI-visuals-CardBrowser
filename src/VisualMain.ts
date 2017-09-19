@@ -26,6 +26,8 @@
 import IVisual = powerbi.extensibility.v110.IVisual;
 import VisualConstructorOptions = powerbi.extensibility.v110.VisualConstructorOptions;
 import VisualUpdateOptions = powerbi.VisualUpdateOptions;
+import IViewport = powerbi.IViewport;
+import DataViewMetadataColumn = powerbi.DataViewMetadataColumn;
 import ISelectionManager = powerbi.extensibility.ISelectionManager;
 import IVisualHost = powerbi.extensibility.v110.IVisualHost;
 import DataViewScopeIdentity = powerbi.DataViewScopeIdentity;
@@ -67,7 +69,6 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
     private isDesktop: Boolean = true;
     private loadedDocumentCount = 0;
     private isLoadingMore = false;
-    private hasMetaData = false;
 
     private settings = $.extend({}, DEFAULT_VISUAL_SETTINGS);
 
@@ -79,7 +80,7 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         this.isSandboxed = this.hostServices['messageProxy'];
         // this.isSandboxed = (this.hostServices.constructor.name === "SandboxVisualHostServices");
         // this.isSandboxed = (this.hostServices.constructor.name.toLowerCase().indexOf('sandbox') !== -1);
-        this.isDesktop = (powerbi.build === undefined);
+        this.isDesktop = (powerbi.build === undefined); // this check isn't working in sand-box mode
         // ... end hacks
 
         this.$element = $(visualTemplate({
@@ -105,7 +106,7 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         });
 
         // Flipping cards involves Hack for fixing blurry cards in desktop version.
-        $('.flip-cards').click((event) => {
+        this.$element.click('.flip-cards', (event) => {
             this.$element.toggleClass('cards-flipped', this.thumbnails.thumbnailInstances[0].$element.find('.flipper').hasClass('flipped'));
             this.$element.addClass('animating');
             setTimeout(() => {
@@ -115,10 +116,8 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         });
 
         this.changeWrapMode({
-            viewport: {
-                width: options.element.offsetWidth,
-                height: options.element.offsetHeight
-            }
+            width: options.element.offsetWidth,
+            height: options.element.offsetHeight
         });
     }
 
@@ -126,24 +125,22 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         if (options['resizeMode']) {
             debounce(() => {
                 this.thumbnails.verticalReader.reposition();
-                this.changeWrapMode(options);
+                this.changeWrapMode(options.viewport);
             }, 200)();
             return;
         }
 
         if (!options.dataViews || !(options.dataViews.length > 0)) { return; }
         if (!utils.hasColumns(options.dataViews[0], REQUIRED_FIELDS)) { return; }
-        this.hasMetaData = utils.hasColumns(options.dataViews[0], METADATA_FIELDS);
 
         this.dataView = options.dataViews[0];
         const newObjects = this.dataView && this.dataView.metadata && this.dataView.metadata.objects;
         this.settings = $.extend(true, {}, DEFAULT_VISUAL_SETTINGS, newObjects);
-        this.$element.toggleClass('enable-flipping', this.settings.flipState.enableFlipping);
 
         this.loadedDocumentCount = this.dataView ? countDocuments(this.dataView) : 0;
-        this.isLoadingMore = (this.settings.loadMoreData.enabled &&
-        this.loadedDocumentCount < this.settings.loadMoreData.limit &&
-        !!this.dataView.metadata.segment);
+        this.isLoadingMore = (this.settings.loadMoreData.enabled
+            && this.loadedDocumentCount < this.settings.loadMoreData.limit
+            && !!this.dataView.metadata.segment);
         if (this.isLoadingMore) {
             // need to load more data
             this.isLoadingMore = true;
@@ -151,10 +148,24 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
             return;
         }
 
-        const anyOptions: any = options;
-        this.documentData = convertToDocumentData(this.dataView, this.settings,
-            anyOptions.dataTransforms && anyOptions.dataTransforms.roles);
+        this.documentData = convertToDocumentData(this.dataView, this.settings, options['dataTransforms'] && options['dataTransforms'].roles);
+        this.updateVisaulStyleConfigs();
         this.updateThumbnails();
+    }
+
+    private updateVisaulStyleConfigs() {
+        this.$element.toggleClass('enable-flipping', this.settings.flipState.enableFlipping);
+        this.hideRedundantInfo();
+    }
+
+    private hideRedundantInfo() {
+        const metadataRoleName = 'metadata';
+        const titleColumn = utils.findColumn(this.dataView, 'title');
+        const authorColumn = utils.findColumn(this.dataView, 'author');
+        const dateColumn = utils.findColumn(this.dataView, 'articleDate');
+        this.$element.toggleClass('disable-back-card-title', utils.hasRole(titleColumn, metadataRoleName));
+        this.$element.toggleClass('disable-back-card-author', utils.hasRole(authorColumn, metadataRoleName));
+        this.$element.toggleClass('disable-back-card-date', utils.hasRole(dateColumn, metadataRoleName));
     }
 
     private updateThumbnails() {
@@ -164,12 +175,11 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
             'thumbnail.displayBackCardByDefault': this.settings.flipState.backFaceDefault,
         });
         this.thumbnails.loadData(this.documentData.documentList);
-        console.log("loaded " + this.loadedDocumentCount + " documents");
+        console.log('loaded ' + this.loadedDocumentCount + ' documents');
     }
 
-    private changeWrapMode(options) {
+    private changeWrapMode(viewport: IViewport) {
         const thumbnailHeight = this.thumbnails.thumbnailInstances[0] && this.thumbnails.thumbnailInstances[0].$element.height();
-        const viewport: any = options.viewport;
         const isViewPortHeightSmallEnoughForInlineThumbnails = thumbnailHeight && viewport.height <= thumbnailHeight * 1.5;
         this.thumbnails.toggleInlineDisplayMode(isViewPortHeightSmallEnoughForInlineThumbnails);
     }
