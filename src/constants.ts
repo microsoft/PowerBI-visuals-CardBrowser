@@ -61,13 +61,16 @@ export const HTML_WHITELIST_MEDIA = [
 
 export const HTML_WHITELIST_SUMMARY = HTML_WHITELIST_STANDARD;
 export const HTML_WHITELIST_CONTENT = HTML_WHITELIST_STANDARD.concat(HTML_WHITELIST_MEDIA);
+export const WRAP_HEIGHT_FACTOR = 1.25;
 
 /**
  * Default visual settings
  */
 export const DEFAULT_VISUAL_SETTINGS = {
     presentation: {
+        boxShadow: false,
         dateFormat: 'MMM D, YYYY',
+        separator: '•',
     },
     flipState: {
         enableFlipping: true,

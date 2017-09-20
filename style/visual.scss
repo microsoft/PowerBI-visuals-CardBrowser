@@ -1,119 +1,146 @@
 @import url("https://opensource.keycdn.com/fontawesome/4.7.0/font-awesome.min.css");
 
 $thumbnail-height: 300px;
+$thumbnail-card-shadow: -1px 0 0 #e5e5e5, 0 0 2px rgba(0, 0, 0, 0.12), 2px 0 4px rgba(0, 0, 0, 0.24);
 
 @import "../lib/@uncharted/cards/src/main.scss";
 
 .visual .uncharted-thumbnails-style {
-    a {
-        text-decoration: none;
-        color: #2C83C0;
-    }
+  a {
+    text-decoration: none;
+    color: #2C83C0;
+  }
 }
 
 .visual-container {
-    height: 100%;
+  height: 100%;
+
+  .uncharted-thumbnails.inline-mode {
+    padding-bottom: 10px;
+  }
+
+  .flip-cards {
+    background-color: #fff;
+    border: $thumbnail-card-border;
+    box-shadow: none;
+    cursor: pointer;
+    display: none;
+    font-size: 16px;
+    height: 16px;
+    left: 0px;
+    margin-left: 4px;
+    padding: 4px;
+    position: absolute;
+    top: 0px;
+    width: 16px;
+    z-index: 1;
+
+    &:hover {
+      border: 1px solid #ccc;
+    }
+  }
+
+  .card {
+    border: $thumbnail-card-border;
+    box-shadow: none;
+
+    &.shadow-style {
+      border: none;
+      box-shadow: $thumbnail-card-shadow;
+    }
+  }
+
+  &.enable-flipping {
+    .flip-cards {
+      display: block;
+    }
 
     .uncharted-thumbnails.inline-mode {
-        padding-bottom: 10px;
+      margin-left: 17px;
     }
+  }
 
-    .flip-cards {
-        position: absolute;
-        z-index: 1;
+  &.disable-back-card-title {
+    .uncharted-thumbnails-thumbnail .meta-data-content .title-box {
+      display: none;
+    }
+  }
+
+  &.disable-back-card-author {
+    .uncharted-thumbnails-thumbnail .meta-data-content .meta-line li {
+      &:before,
+      &.author
+      {
         display: none;
+      }
     }
+  }
 
-    &.enable-flipping {
-        .flip-cards {
-            display: block;
-        }
-        .uncharted-thumbnails.inline-mode {
-            margin-left: 17px;
-        }
+  &.disable-back-card-date {
+    .uncharted-thumbnails-thumbnail .meta-data-content .meta-line li {
+      &:before,
+      &.time
+      {
+        display: none;
+      }
     }
-
-    &.disable-back-card-title {
-        .uncharted-thumbnails-thumbnail .meta-data-content .title-box {
-            display: none;
-        }
-    }
-
-    &.disable-back-card-author {
-        .uncharted-thumbnails-thumbnail .meta-data-content .meta-line li {
-            &:before,
-            &.author 
-            {
-                display: none;
-            }
-        }
-    }
-
-    &.disable-back-card-date {
-        .uncharted-thumbnails-thumbnail .meta-data-content .meta-line li {
-            &:before,
-            &.time
-            {
-                display: none;
-            }
-        }
-    }
+  }
 }
 
 .fix-blur-hack {
-    // make thumbnails clean crisp
-    .uncharted-thumbnails-thumbnail.flip-container {
-        .front,
-        .back {
-            backface-visibility: unset;
-            transform: none;
-        }
-        .flipper.flipped {
-            transition: none;
-            transform: none;
-            .front {
-                z-index: 0;
-            }
-            .back {
-                z-index: 2;
-            }
-        }
-    } 
-
-    &.animating {
-        .flip-cards {
-            pointer-events: none;
-        }
+  // make thumbnails clean crisp
+  .uncharted-thumbnails-thumbnail.flip-container {
+    .front,
+    .back {
+      backface-visibility: unset;
+      transform: none;
     }
-
-    &.animating .uncharted-thumbnails-thumbnail.flip-container {
-        .front,
-        .back {
-            backface-visibility: hidden;
-        }
-        .front {
-            transform: rotateY(0deg);
-        }
-        .back {
-            transform: rotateY(180deg);
-        }
-        .flipper {
-            transition: 0.6s;
-        }
-        .flipper.flipped {
-            transform: rotateY(180deg);
-            .front {
-                z-index: 2;
-            }
-            .back {
-                z-index: 0;
-            }
-        }
+    .flipper.flipped {
+      transition: none;
+      transform: none;
+      .front {
+        z-index: 0;
+      }
+      .back {
+        z-index: 2;
+      }
     }
+  }
 
-    &.animating.cards-flipped .uncharted-thumbnails-thumbnail.flip-container {
-        .flipper.flipped {
-            transition: 0s;
-        }
+  &.animating {
+    .flip-cards {
+      pointer-events: none;
     }
+  }
+
+  &.animating .uncharted-thumbnails-thumbnail.flip-container {
+    .front,
+    .back {
+      backface-visibility: hidden;
+    }
+    .front {
+      transform: rotateY(0deg);
+    }
+    .back {
+      transform: rotateY(180deg);
+    }
+    .flipper {
+      transition: 0.6s;
+    }
+    .flipper.flipped {
+      transform: rotateY(180deg);
+      .front {
+        z-index: 2;
+      }
+      .back {
+        z-index: 0;
+      }
+    }
+  }
+
+  &.animating.cards-flipped .uncharted-thumbnails-thumbnail.flip-container {
+    .flipper.flipped {
+      transition: 0s;
+    }
+  }
 }

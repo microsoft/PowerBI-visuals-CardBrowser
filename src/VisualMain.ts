@@ -51,6 +51,7 @@ import {
     METADATA_FIELDS,
     REQUIRED_FIELDS,
     DEFAULT_VISUAL_SETTINGS,
+    WRAP_HEIGHT_FACTOR,
 } from './constants';
 
 import {
@@ -80,7 +81,8 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         this.isSandboxed = this.hostServices['messageProxy'];
         // this.isSandboxed = (this.hostServices.constructor.name === "SandboxVisualHostServices");
         // this.isSandboxed = (this.hostServices.constructor.name.toLowerCase().indexOf('sandbox') !== -1);
-        this.isDesktop = (powerbi.build === undefined); // this check isn't working in sand-box mode
+        const anyData : any = powerbi.data;
+        this.isDesktop = (anyData.dsr.wireContracts !== undefined); // this check isn't working in sand-box mode
         // ... end hacks
 
         this.$element = $(visualTemplate({
@@ -106,13 +108,15 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         });
 
         // Flipping cards involves Hack for fixing blurry cards in desktop version.
-        this.$element.click('.flip-cards', (event) => {
-            this.$element.toggleClass('cards-flipped', this.thumbnails.thumbnailInstances[0].$element.find('.flipper').hasClass('flipped'));
-            this.$element.addClass('animating');
-            setTimeout(() => {
-                this.thumbnails.thumbnailInstances.forEach(thumbnail => (thumbnail.isFlipped = !thumbnail.isFlipped));
-                setTimeout(() => this.$element.removeClass('animating cards-flipped'), 600);
-            }, 0);
+        this.$element.on('click', '.flip-cards', (event) => {
+            if (this.thumbnails.thumbnailInstances && this.thumbnails.thumbnailInstances.length) {
+                this.$element.toggleClass('cards-flipped', this.thumbnails.thumbnailInstances[0].$element.find('.flipper').hasClass('flipped'));
+                this.$element.addClass('animating');
+                setTimeout(() => {
+                    this.thumbnails.thumbnailInstances.forEach(thumbnail => (thumbnail.isFlipped = !thumbnail.isFlipped));
+                    setTimeout(() => this.$element.removeClass('animating cards-flipped'), 600);
+                }, 0);
+            }
         });
 
         this.changeWrapMode({
@@ -139,8 +143,8 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
 
         this.loadedDocumentCount = this.dataView ? countDocuments(this.dataView) : 0;
         this.isLoadingMore = (this.settings.loadMoreData.enabled
-            && this.loadedDocumentCount < this.settings.loadMoreData.limit
-            && !!this.dataView.metadata.segment);
+        && this.loadedDocumentCount < this.settings.loadMoreData.limit
+        && !!this.dataView.metadata.segment);
         if (this.isLoadingMore) {
             // need to load more data
             this.isLoadingMore = true;
@@ -175,12 +179,13 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
             'thumbnail.displayBackCardByDefault': this.settings.flipState.backFaceDefault,
         });
         this.thumbnails.loadData(this.documentData.documentList);
+        this.$element.find('.card').toggleClass('shadow-style', this.settings.presentation.boxShadow);
         console.log('loaded ' + this.loadedDocumentCount + ' documents');
     }
 
     private changeWrapMode(viewport: IViewport) {
         const thumbnailHeight = this.thumbnails.thumbnailInstances[0] && this.thumbnails.thumbnailInstances[0].$element.height();
-        const isViewPortHeightSmallEnoughForInlineThumbnails = thumbnailHeight && viewport.height <= thumbnailHeight * 1.5;
+        const isViewPortHeightSmallEnoughForInlineThumbnails = thumbnailHeight && viewport.height <= thumbnailHeight * WRAP_HEIGHT_FACTOR;
         this.thumbnails.toggleInlineDisplayMode(isViewPortHeightSmallEnoughForInlineThumbnails);
     }
 

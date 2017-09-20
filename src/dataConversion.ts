@@ -121,6 +121,17 @@ function convertToRowObjs(dataView, settings, roles = null) {
         if (rowObj.metadata) {
             rowObj.metadata = flattenMetaData(rowObj.metadata);
         }
+        if (rowObj.subtitle) {
+            if (rowObj.subtitle.length) {
+                rowObj.author = rowObj.subtitle[0];
+                if (rowObj.subtitle.length > 1) {
+                    rowObj.articleDate = rowObj.subtitle[1];
+                }
+            }
+            else {
+                rowObj.author = rowObj.subtitle;
+            }
+        }
         if (rowObj.imageUrl && Array.isArray(rowObj.imageUrl)) {
             const cleanArray = [];
             for (let i = 0; i < rowObj.imageUrl.length; i++) {

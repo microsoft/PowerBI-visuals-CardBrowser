@@ -31,9 +31,9 @@
       "kind": 0
     },
     {
-      "name": "author",
-      "displayName": "Author",
-      "description": "Author for the byline displayed on thumbnails and in the reader",
+      "name": "subtitle",
+      "displayName": "Subtitle Fields",
+      "description": "Text items to display as a subtitle",
       "kind": 0
     },
     {
@@ -52,12 +52,6 @@
       "name": "sourceImage",
       "displayName": "Source Image (url)",
       "description": "URL for an image to display in the top-right corner of the thumbnail",
-      "kind": 0
-    },
-    {
-      "name": "articleDate",
-      "displayName": "Source Date",
-      "description": "Date for the byline displayed on thumbnails and in the reader",
       "kind": 0
     },
     {
@@ -92,16 +86,13 @@
           "imageUrl": {
             "max": 4
           },
-          "author": {
-            "max": 1
+          "subtitle": {
+            "max": 4
           },
           "source": {
             "max": 1
           },
           "sourceUrl": {
-            "max": 1
-          },
-          "articleDate": {
             "max": 1
           },
           "sourceImage": {
@@ -142,7 +133,7 @@
             },
             {
               "bind": {
-                "to": "author"
+                "to": "subtitle"
               }
             },
             {
@@ -158,11 +149,6 @@
             {
               "bind": {
                 "to": "sourceImage"
-              }
-            },
-            {
-              "bind": {
-                "to": "articleDate"
               }
             },
             {
@@ -183,11 +169,25 @@
   "objects": {
     "presentation": {
       "properties": {
+        "boxShadow": {
+          "displayName": "Box Shadow",
+          "description": "If true, use a box shadow style for the cards and reader.",
+          "type": {
+            "bool": "false"
+          }
+        },
         "dateFormat": {
           "displayName": "Date Format",
-          "description": "Source date format using tokens; e.g. YYYY MM DD h:mm:ss",
+          "description": "Subtitle date format using tokens; e.g. YYYY MM DD h:mm:ss",
           "type": {
             "text": "MMM D, YYYY"
+          }
+        },
+        "separator": {
+          "displayName": "Separator",
+          "description": "Character to place between subtitle fields",
+          "type": {
+            "text": "•"
           }
         }
       },
