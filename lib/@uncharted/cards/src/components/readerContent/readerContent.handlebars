@@ -8,14 +8,11 @@
     <i class="fa fa-times close-button"></i>
     <div class="content-container">
         <h1 class="title">{{title}}</h1>
-        <ul class="meta-line">
-            <li class="author">{{author}}</li>
-            {{#if articleDate}}
-                <li>
-                    <time class="updated">{{articleDate}}</time>
-                </li>
-            {{/if}}
-        </ul>
+        {{#if subtitle}}
+            <div class="subtitle meta-line">
+                {{#each subtitle}}{{#unless @first}}<span class="delimiter">{{../subtitleDelimiter}}</span>{{/unless}}<span class="value">{{this}}</span>{{/each}}
+            </div>
+        {{/if}}
         <div class="columns-container">
             {{#if metadata}}
             <div class="meta-data">

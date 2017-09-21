@@ -29,7 +29,7 @@ import * as moment from 'moment';
 import { HTML_WHITELIST_SUMMARY, HTML_WHITELIST_CONTENT } from './constants';
 
 function flattenMetaData(metaData) {
-    const metaDataArray = metaData.length ? metaData : [metaData];
+    const metaDataArray = Array.isArray(metaData) ? metaData : [metaData];
     const metaDataObject = {};
     for (let i = 0; i < metaDataArray.length; i++) {
         metaDataObject[metaDataArray[i].key] = metaDataArray[i].value;
@@ -118,20 +118,17 @@ function convertToRowObjs(dataView, settings, roles = null) {
                 assignRole(rowObj, role, assignValue(role, columns, idx, columnValue), roles, idx);
             });
         });
+
         if (rowObj.metadata) {
             rowObj.metadata = flattenMetaData(rowObj.metadata);
         }
+
         if (rowObj.subtitle) {
-            if (rowObj.subtitle.length) {
-                rowObj.author = rowObj.subtitle[0];
-                if (rowObj.subtitle.length > 1) {
-                    rowObj.articleDate = rowObj.subtitle[1];
-                }
-            }
-            else {
-                rowObj.author = rowObj.subtitle;
+            if (!Array.isArray(rowObj.subtitle)) {
+                rowObj.subtitle = [rowObj.subtitle];
             }
         }
+
         if (rowObj.imageUrl && Array.isArray(rowObj.imageUrl)) {
             const cleanArray = [];
             for (let i = 0; i < rowObj.imageUrl.length; i++) {
@@ -141,6 +138,7 @@ function convertToRowObjs(dataView, settings, roles = null) {
             }
             rowObj.imageUrl = cleanArray;
         }
+
         if (rowObj.content) {
             rowObj.content = utils.sanitizeHTML(rowObj.content, HTML_WHITELIST_CONTENT);
         }

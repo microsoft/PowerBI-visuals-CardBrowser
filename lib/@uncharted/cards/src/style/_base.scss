@@ -58,14 +58,6 @@
         overflow: hidden;
         font-size: 11px;
         color: #777;
-    }
-
-    .meta-line li {
-        display: inline;
-    }
-
-    .meta-line li + li:before {
-        content: "\2022";
-        padding-right: 1px;
+        margin-bottom: 10px;
     }
 }
