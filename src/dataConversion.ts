@@ -104,7 +104,7 @@ function convertToRowObjs(dataView, settings, roles = null) {
             colRoles = Object.keys(columns[idx].roles);
             columnValue = colValue && (columns[idx].type.dateTime ?
                 moment(colValue).format(settings.presentation.dateFormat) : colValue);
-            colRoles.forEach(role => {
+            colRoles.forEach((role, roleIndex) => {
                 if (rowObj[role] === undefined) {
                     rowObj[role] = assignValue(role, columns, idx, columnValue);
                     return;
