@@ -16,17 +16,14 @@
                         {{/if}}
 
                         <div class="card-body">
-                            <h1 class="title">{{title}}</h1>
-                            <ul class="meta-line">
-                                {{#if author}}
-                                    <li class="author">{{author}}</li>
-                                {{/if}}
-                                {{#if articleDate}}
-                                    <li>
-                                        <time class="updated">{{articleDate}}</time>
-                                    </li>
-                                {{/if}}
-                            </ul>
+                            {{#if title}}
+                                <h1 class="title">{{title}}</h1>
+                            {{/if}}
+                            {{#if subtitle}}
+                                <div class="subtitle meta-line">
+                                    {{#each subtitle}}{{#unless @first}}<span class="delimiter">{{../subtitleDelimiter}}</span>{{/unless}}<span class="value">{{this}}</span>{{/each}}
+                                </div>
+                            {{/if}}
                             <div class="summary">{{{summary}}}</div>
                         </div>
                     </div>
@@ -41,16 +38,11 @@
                         <div class="title-box">
                             <h1 class="title value">{{title}}</h1>
                         </div>
-                        <ul class="meta-line">
-                            {{#if author}}
-                                <li class="author">{{author}}</li>
-                            {{/if}}
-                            {{#if articleDate}}
-                                <li class="time">
-                                    <time class="updated">{{articleDate}}</time>
-                                </li>
-                            {{/if}}
-                        </ul>
+                        {{#if subtitle}}
+                            <div class="subtitle meta-line">
+                                {{#each subtitle}}{{#unless @first}}<span class="delimiter">{{../subtitleDelimiter}}</span>{{/unless}}<span class="value">{{this}}</span>{{/each}}
+                            </div>
+                        {{/if}}
                         <div class="meta-data-table">
                             {{#each metadata}}
                                 <div class="row">

@@ -159,7 +159,7 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
 
         this.documentData = convertToDocumentData(this.dataView, this.settings, options['dataTransforms'] && options['dataTransforms'].roles);
         this.updateVisualStyleConfigs();
-        this.updateThumbnails();
+        this.updateThumbnails(options.viewport);
     }
 
     private updateVisualStyleConfigs() {
@@ -177,14 +177,15 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         this.$element.toggleClass('disable-back-card-date', utils.hasRole(dateColumn, metadataRoleName));
     }
 
-    private updateThumbnails() {
+    private updateThumbnails(viewport) {
         this.thumbnails.reset({
-            'inlineMode': this.thumbnails.inlineMode,
+            'subtitleDelimiter': this.settings.presentation.separator,
             'thumbnail.disableFlipping': !this.settings.flipState.enableFlipping,
             'thumbnail.displayBackCardByDefault': this.settings.flipState.backFaceDefault,
         });
         this.thumbnails.loadData(this.documentData.documentList);
-        this.$element.find('.card').toggleClass('shadow-style', this.settings.presentation.boxShadow);
+        this.changeWrapMode(viewport);
+        this.$element.find('.File Encocard').toggleClass('shadow-style', this.settings.presentation.boxShadow);
         console.log('loaded ' + this.loadedDocumentCount + ' documents');
     }
 

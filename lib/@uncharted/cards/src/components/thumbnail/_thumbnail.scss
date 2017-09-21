@@ -255,3 +255,9 @@
         transform: rotateY(180deg);
     }
 }
+
+.uncharted-thumbnails-thumbnail.flip-container.expanded {
+    .flipper {
+        transition: none;
+    }
+}

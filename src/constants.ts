@@ -70,7 +70,7 @@ export const DEFAULT_VISUAL_SETTINGS = {
     presentation: {
         boxShadow: false,
         dateFormat: 'MMM D, YYYY',
-        separator: '•',
+        separator: ' \u2022 ',
     },
     flipState: {
         enableFlipping: true,
