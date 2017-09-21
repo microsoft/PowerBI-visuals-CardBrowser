@@ -108,11 +108,13 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         });
 
         // Flipping cards involves Hack for fixing blurry cards in desktop version.
-        this.$element.on('click', '.flip-cards', (event) => {
+        this.$element.on('change', '.switch', (event) => {
             if (this.thumbnails.thumbnailInstances && this.thumbnails.thumbnailInstances.length) {
-                this.$element.toggleClass('cards-flipped', this.thumbnails.thumbnailInstances[0].$element.find('.flipper').hasClass('flipped'));
-                this.$element.addClass('animating');
                 setTimeout(() => {
+                    const target: any = event.target;
+                    const isFlipped = target.checked;
+                    this.$element.toggleClass('cards-flipped', isFlipped === true);
+                    this.$element.addClass('animating');
                     this.thumbnails.thumbnailInstances.forEach(thumbnail => (thumbnail.isFlipped = !thumbnail.isFlipped));
                     setTimeout(() => this.$element.removeClass('animating cards-flipped'), 600);
                 }, 0);
@@ -141,6 +143,9 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         const newObjects = this.dataView && this.dataView.metadata && this.dataView.metadata.objects;
         this.settings = $.extend(true, {}, DEFAULT_VISUAL_SETTINGS, newObjects);
 
+        const switchElement: any = $('.switchInput')[0];
+        switchElement.checked = this.settings.flipState.backFaceDefault;
+
         this.loadedDocumentCount = this.dataView ? countDocuments(this.dataView) : 0;
         this.isLoadingMore = (this.settings.loadMoreData.enabled
         && this.loadedDocumentCount < this.settings.loadMoreData.limit
@@ -153,11 +158,11 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         }
 
         this.documentData = convertToDocumentData(this.dataView, this.settings, options['dataTransforms'] && options['dataTransforms'].roles);
-        this.updateVisaulStyleConfigs();
+        this.updateVisualStyleConfigs();
         this.updateThumbnails();
     }
 
-    private updateVisaulStyleConfigs() {
+    private updateVisualStyleConfigs() {
         this.$element.toggleClass('enable-flipping', this.settings.flipState.enableFlipping);
         this.hideRedundantInfo();
     }
