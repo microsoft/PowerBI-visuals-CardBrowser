@@ -61,7 +61,13 @@ function assignRole(rowObj, role, columnValue, roles, idx) {
     if (roles && roles.ordering) {
         const roleOrdering = roles.ordering[role];
         const index = roleOrdering.indexOf(idx);
-        rowObj[role][index] = columnValue;
+        if (index < 0 || rowObj[role][index] !== undefined) {
+            // TODO: fix the bug that causes this to happen
+            rowObj[role].push(columnValue);
+        }
+        else {
+            rowObj[role][index] = columnValue;
+        }
     }
     else {
         rowObj[role].push(columnValue);
