@@ -68,7 +68,7 @@ export const WRAP_HEIGHT_FACTOR = 1.25;
  */
 export const DEFAULT_VISUAL_SETTINGS = {
     presentation: {
-        boxShadow: false,
+        borderStyle: 'border',
         dateFormat: 'MMM D, YYYY',
         separator: ' \u2022 ',
     },

@@ -15,6 +15,52 @@ $thumbnail-card-shadow: -1px 0 0 #e5e5e5, 0 0 2px rgba(0, 0, 0, 0.12), 2px 0 4px
 .visual-container {
   height: 100%;
 
+  .card {
+    border: none;
+    box-shadow: none;
+
+    &.shadow-style {
+      border: none;
+      box-shadow: $thumbnail-card-shadow;
+    }
+  }
+
+  .reader-content-header {
+    border-bottom: none;
+  }
+
+  .uncharted-thumbnails-thumbnail .card-content-container {
+    padding-left: 10px;
+    left: -10px;
+  }
+
+  &.border-style {
+    .uncharted-thumbnails-thumbnail .card-content-container {
+      padding-left: 12px;
+      left: -12px;
+    }
+
+    .card {
+      border: $thumbnail-card-border;
+      box-shadow: none;
+    }
+
+    .reader-content-header {
+      border-bottom: solid 1px #e9e9e9;
+    }
+  }
+
+  &.shadow-style {
+    .card {
+      border: none;
+      box-shadow: $thumbnail-card-shadow;
+    }
+
+    .reader-content-header {
+      border-bottom: solid 1px #e9e9e9;
+    }
+  }
+
   .uncharted-thumbnails.inline-mode {
     padding-bottom: 10px;
   }
@@ -27,26 +73,16 @@ $thumbnail-card-shadow: -1px 0 0 #e5e5e5, 0 0 2px rgba(0, 0, 0, 0.12), 2px 0 4px
     display: none;
     font-size: 16px;
     height: 16px;
-    left: 0px;
+    left: 0;
     margin-left: 4px;
     padding: 4px;
     position: absolute;
-    top: 0px;
+    top: 4px;
     width: 16px;
     z-index: 1;
 
     &:hover {
       border: 1px solid #ccc;
-    }
-  }
-
-  .card {
-    border: $thumbnail-card-border;
-    box-shadow: none;
-
-    &.shadow-style {
-      border: none;
-      box-shadow: $thumbnail-card-shadow;
     }
   }
 

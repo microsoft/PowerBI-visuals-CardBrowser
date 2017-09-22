@@ -180,7 +180,8 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         });
         this.thumbnails.loadData(this.documentData.documentList);
         this.changeWrapMode(viewport);
-        this.$element.find('.File Encocard').toggleClass('shadow-style', this.settings.presentation.boxShadow);
+        this.$element.toggleClass('shadow-style', this.settings.presentation.borderStyle === 'boxShadow');
+        this.$element.toggleClass('border-style', this.settings.presentation.borderStyle === 'border');
         console.log('loaded ' + this.loadedDocumentCount + ' documents');
     }
 
