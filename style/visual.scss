@@ -12,70 +12,65 @@ $thumbnail-card-shadow: -1px 0 0 #e5e5e5, 0 0 2px rgba(0, 0, 0, 0.12), 2px 0 4px
   }
 }
 
-/* The switch - the box around the slider */
-.switch {
-  border: $thumbnail-card-border;
-  position: relative;
-  display: none;
-  width: 80px;
-  height: 12px;
-  margin: 0 auto 4px auto;
-  &:hover {
-    border: 1px solid #ccc;
-  }
-}
-
-/* Hide default HTML checkbox */
-.switchInput {display:none;}
-
-/* The slider */
-.slider {
-  position: absolute;
-  cursor: pointer;
-  font-size: 8px;
-  top: 0;
-  left: 4px;
-  right: 0;
-  bottom: 0;
-  background-color: transparent;
-  -webkit-transition: .4s;
-  transition: .4s;
-  i {
-    padding: 0;
-    margin: auto 0 auto 0;
-  }
-}
-
-.switchInput:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
-}
-
-.switchInput:checked + .slider {
-  -webkit-transform: translateX(50px);
-  -ms-transform: translateX(50px);
-  transform: translateX(50px);
-}
-
-/* Rounded sliders */
-.slider.round {
-  border-radius: 34px;
-}
-
-.slider.round:before {
-  border-radius: 50%;
-}
-
 .visual-container {
   height: 100%;
+
+  /* The switch - the box around the slider */
+  .switch {
+    border: $thumbnail-card-border;
+    position: relative;
+    display: none;
+    width: 80px;
+    height: 12px;
+    margin: 0 auto 4px auto;
+    &:hover {
+      border: 1px solid #ccc;
+    }
+  }
+
+  /* Hide default HTML checkbox */
+  .switchInput {display:none;}
+
+  /* The slider */
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    font-size: 8px;
+    top: 0;
+    left: 4px;
+    right: 0;
+    bottom: 0;
+    background-color: transparent;
+    -webkit-transition: .4s;
+    transition: .4s;
+    i {
+      padding: 0;
+      margin: auto 0 auto 0;
+    }
+  }
+
+  .switchInput:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+  }
+
+  .switchInput:checked + .slider {
+    -webkit-transform: translateX(50px);
+    -ms-transform: translateX(50px);
+    transform: translateX(50px);
+  }
+
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 34px;
+  }
+
+  .slider.round:before {
+    border-radius: 50%;
+  }
 
   .card {
     border: none;
     box-shadow: none;
-
-    &.shadow-style {
-      border: none;
-      box-shadow: $thumbnail-card-shadow;
-    }
   }
 
   .reader-content-header {
@@ -116,16 +111,6 @@ $thumbnail-card-shadow: -1px 0 0 #e5e5e5, 0 0 2px rgba(0, 0, 0, 0.12), 2px 0 4px
 
   .uncharted-thumbnails.inline-mode {
     padding-bottom: 10px;
-  }
-
-  .card {
-    border: $thumbnail-card-border;
-    box-shadow: none;
-
-    &.shadow-style {
-      border: none;
-      box-shadow: $thumbnail-card-shadow;
-    }
   }
 
   &.enable-flipping {
