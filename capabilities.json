@@ -169,11 +169,15 @@
   "objects": {
     "presentation": {
       "properties": {
-        "boxShadow": {
-          "displayName": "Box Shadow",
-          "description": "If true, use a box shadow style for the cards and reader.",
+        "borderStyle": {
+          "displayName": "Border Style",
+          "description": "Control the style of border around thumbnails and the reader header.",
           "type": {
-            "bool": "false"
+            "enumeration": [
+              {"value": "border", "displayName": "Border"},
+              {"value": "flat", "displayName": "Flat"},
+              {"value": "boxShadow", "displayName": "Box Shadow"}
+            ]
           }
         },
         "dateFormat": {
