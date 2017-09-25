@@ -2,6 +2,7 @@
 
 $thumbnail-height: 300px;
 $thumbnail-card-shadow: -1px 0 0 #e5e5e5, 0 0 2px rgba(0, 0, 0, 0.12), 2px 0 4px rgba(0, 0, 0, 0.24);
+$thumbnail-flipping-animation-duration: 0.3s;
 
 @import "../lib/@uncharted/cards/src/main.scss";
 
@@ -17,15 +18,13 @@ $thumbnail-card-shadow: -1px 0 0 #e5e5e5, 0 0 2px rgba(0, 0, 0, 0.12), 2px 0 4px
 
   /* The switch - the box around the slider */
   .switch {
-    border: $thumbnail-card-border;
+    border: none;
+    cursor: pointer;
     position: relative;
     display: none;
     width: 80px;
     height: 12px;
     margin: 0 auto 4px auto;
-    &:hover {
-      border: 1px solid #ccc;
-    }
   }
 
   /* Hide default HTML checkbox */
@@ -33,7 +32,8 @@ $thumbnail-card-shadow: -1px 0 0 #e5e5e5, 0 0 2px rgba(0, 0, 0, 0.12), 2px 0 4px
 
   /* The slider */
   .slider {
-    position: absolute;
+    display: inline;
+    position: relative;
     cursor: pointer;
     font-size: 8px;
     top: 0;
@@ -43,29 +43,76 @@ $thumbnail-card-shadow: -1px 0 0 #e5e5e5, 0 0 2px rgba(0, 0, 0, 0.12), 2px 0 4px
     background-color: transparent;
     -webkit-transition: .4s;
     transition: .4s;
-    i {
+
+    .box {
+      display: inline-block;
+      border: 1px solid #555;
       padding: 0;
-      margin: auto 0 auto 0;
+      margin: auto 0 auto 1px;
+      width: 8px;
+      height: 8px;
+    }
+
+    .flip-left-side {
+      border-right: 1px dotted #555;
+      display: inline-block;
+      padding-right: 6px;
+      margin-right: 3px;
+      .box {
+        background-color: #555;
+      }
+    }
+
+    .flip-right-side {
+      display: inline-block;
+      .box {
+        background-color: transparent;
+      }
+    }
+
+    &:hover {
+      .flip-left-side {
+        .box {
+          background-color: transparent;
+        }
+      }
+      .flip-right-side {
+        .box {
+          background-color: #ccc;
+        }
+      }
     }
   }
 
-  .switchInput:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
-  }
-
   .switchInput:checked + .slider {
-    -webkit-transform: translateX(50px);
-    -ms-transform: translateX(50px);
-    transform: translateX(50px);
+    .flip-left-side {
+      .box {
+        background-color: transparent;
+      }
+    }
+
+    .flip-right-side {
+      .box {
+        background-color: #555;
+      }
+    }
+
+    &:hover {
+      .flip-left-side {
+        .box {
+          background-color: #ccc;
+        }
+      }
+      .flip-right-side {
+        .box {
+          background-color: transparent;
+        }
+      }
+    }
   }
 
-  /* Rounded sliders */
-  .slider.round {
-    border-radius: 34px;
-  }
-
-  .slider.round:before {
-    border-radius: 50%;
+  .switchInput:hover + .slider {
+    color: #ccc;
   }
 
   .card {

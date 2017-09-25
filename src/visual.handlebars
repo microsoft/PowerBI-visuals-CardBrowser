@@ -1,10 +1,15 @@
 <div class="visual-container {{#if isDesktop}} fix-blur-hack {{/if}}">
     <label class="switch">
         <input type="checkbox" class="switchInput">
-        <span class="slider">
-            <i class="fa fa-square-o" aria-hidden="true" title="Show card meta data"></i>
-            <i class="fa fa-square-o" aria-hidden="true" title="Show card meta data"></i>
-            <i class="fa fa-square-o" aria-hidden="true" title="Show card meta data"></i>
-        </span>
+        <div class="slider">
+            <div class="flip-left-side">
+                <div class="box" aria-hidden="true"></div>
+                <div class="box" aria-hidden="true"></div>
+            </div>
+            <div class="flip-right-side">
+                <div class="box" aria-hidden="true"></div>
+                <div class="box" aria-hidden="true"></div>
+            </div>
+        </div>
     </label>
 </div>
