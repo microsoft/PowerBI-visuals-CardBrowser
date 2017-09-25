@@ -101,6 +101,7 @@ function convertToRowObjs(dataView, settings, roles = null) {
     let rowObj: any;
     let colRoles;
     let columnValue;
+    let firstRoleIndexMap = [];
 
     for (let index = 0; index < rowCount; index++) {
         row = rows[index];
@@ -110,16 +111,16 @@ function convertToRowObjs(dataView, settings, roles = null) {
             colRoles = Object.keys(columns[idx].roles);
             columnValue = colValue && (columns[idx].type.dateTime ?
                 moment(colValue).format(settings.presentation.dateFormat) : colValue);
-            colRoles.forEach((role, roleIndex) => {
+            colRoles.forEach((role) => {
                 if (rowObj[role] === undefined) {
                     rowObj[role] = assignValue(role, columns, idx, columnValue);
+                    firstRoleIndexMap[role] = idx;
                     return;
                 }
                 if (!Array.isArray(rowObj[role])) {
                     const firstRoleValue = rowObj[role];
                     rowObj[role] = [];
-                    assignRole(rowObj, role, firstRoleValue, roles,
-                        firstRoleValue.index || Math.max(0, idx - 1));
+                    assignRole(rowObj, role, firstRoleValue, roles, firstRoleIndexMap[role]);
                 }
                 assignRole(rowObj, role, assignValue(role, columns, idx, columnValue), roles, idx);
             });

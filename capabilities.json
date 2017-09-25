@@ -176,7 +176,7 @@
             "enumeration": [
               {"value": "border", "displayName": "Border"},
               {"value": "flat", "displayName": "Flat"},
-              {"value": "boxShadow", "displayName": "Box Shadow"}
+              {"value": "boxShadow", "displayName": "Shadow"}
             ]
           }
         },
