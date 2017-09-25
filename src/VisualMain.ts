@@ -81,8 +81,8 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         this.isSandboxed = this.hostServices['messageProxy'];
         // this.isSandboxed = (this.hostServices.constructor.name === "SandboxVisualHostServices");
         // this.isSandboxed = (this.hostServices.constructor.name.toLowerCase().indexOf('sandbox') !== -1);
-        const anyData : any = powerbi.data;
-        this.isDesktop = (anyData.dsr.wireContracts !== undefined); // this check isn't working in sand-box mode
+        //const anyData : any = powerbi.data;
+        //this.isDesktop = (anyData.dsr.wireContracts !== undefined); // this check isn't working in sand-box mode
         // ... end hacks
 
         this.$element = $(visualTemplate({
@@ -110,11 +110,11 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         // Flipping cards involves Hack for fixing blurry cards in desktop version.
         this.$element.on('change', '.switch', (event) => {
             if (this.thumbnails.thumbnailInstances && this.thumbnails.thumbnailInstances.length) {
+                const target: any = event.target;
+                const isFlipped = target.checked;
+                this.$element.toggleClass('cards-flipped', isFlipped);
+                this.$element.addClass('animating');
                 setTimeout(() => {
-                    const target: any = event.target;
-                    const isFlipped = target.checked;
-                    this.$element.toggleClass('cards-flipped', isFlipped === true);
-                    this.$element.addClass('animating');
                     this.thumbnails.thumbnailInstances.forEach(thumbnail => (thumbnail.isFlipped = !thumbnail.isFlipped));
                     setTimeout(() => this.$element.removeClass('animating cards-flipped'), 600);
                 }, 0);
