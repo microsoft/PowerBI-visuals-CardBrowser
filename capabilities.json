@@ -193,6 +193,13 @@
           "type": {
             "text": " \u2022 "
           }
+        },
+        "showImageOnBack": {
+          "description": "Whether to show Title Images on the card's MetaData face",
+          "displayName": "Title Image on MetaData",
+          "type": {
+            "bool": "true"
+          }
         }
       },
       "displayName": "Configuration"

@@ -77,6 +77,7 @@ export const DEFAULT_VISUAL_SETTINGS = {
         borderStyle: 'border',
         dateFormat: 'MMM D, YYYY',
         separator: ' \u2022 ',
+        showImageOnBack: true,
     },
     flipState: {
         enableFlipping: true,

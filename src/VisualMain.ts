@@ -136,7 +136,7 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         const newObjects = this.dataView && this.dataView.metadata && this.dataView.metadata.objects;
         this.settings = $.extend(true, {}, constants.DEFAULT_VISUAL_SETTINGS, newObjects);
 
-        const switchElement: any = $('.switchInput')[0];
+        const switchElement: any = this.$element.find('.switchInput')[0];
         switchElement.checked = this.settings.flipState.cardFaceDefault === constants.CARD_FACE_METADATA;
 
         this.loadedDocumentCount = this.dataView ? countDocuments(this.dataView) : 0;
@@ -187,6 +187,7 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         this.changeWrapMode(viewport);
         this.$element.toggleClass('shadow-style', this.settings.presentation.borderStyle === 'boxShadow');
         this.$element.toggleClass('border-style', this.settings.presentation.borderStyle === 'border');
+        this.$element.find('.meta-data-images-container').toggle(this.settings.presentation.showImageOnBack);
         console.log('loaded ' + this.loadedDocumentCount + ' documents');
     }
 
