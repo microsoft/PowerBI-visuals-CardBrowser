@@ -163,40 +163,59 @@
 
     .meta-data-table {
         font-size: 12px;
-        .row {
+        display: flex;
+
+        .keys-container,
+        .values-container {
             display: flex;
-            position: relative;
+            flex-direction: column;
         }
-        .col {
-            width: 50%;
-            margin: auto;
-            white-space: nowrap;
+
+        .value-box {
+            position: relative;
             overflow: hidden;
-            position: relative;
-            &:first-child {
-                padding-right: 2px;
-                text-align: right;
-                color: #ccc;
-            }
-            &:nth-child(2) {
-                padding-left: 2px;
-                text-align: left;
-                font-weight: bold;
-            }
         }
-        .col.overflow:after {
+
+        .value-box.overflow:after {
             content: "";
             position: absolute;
             background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, #fff 85%);
             right: 0px;
+            top: 0px;
             height: 100%;
             width: 15px;
         }
-        .col img {
-            max-height: 1em;
-            max-width: 100%;
+
+        .value {
+            white-space: nowrap;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .keys-container {
+            max-width: 38.2%;
+            .value {
+                padding-right: 2px;
+                text-align: right;
+                color: #ccc;
+            }
+        }
+
+        .values-container {
+            overflow: hidden;
+            .value {
+                padding-left: 2px;
+                text-align: left;
+                font-weight: bold;
+            }
+
+            .value img {
+                max-height: 1em;
+                max-width: 100%;
+            }
         }
     }
+
     .meta-data-images-container {
         position: absolute;
         width: 100%;

@@ -23,6 +23,11 @@
 
 export const METADATA_FIELDS = ['metadata'];
 export const REQUIRED_FIELDS = ['id'];
+export const SUMMARY_FIELD = 'summary';
+export const CONTENT_FIELD = 'content';
+export const CARD_FACE_METADATA = 'metadata';
+export const CARD_FACE_PREVIEW = 'preview';
+
 /**
  * White list of HTML tags allowed in either the content or summary
  * @type {string[]}
@@ -62,6 +67,7 @@ export const HTML_WHITELIST_MEDIA = [
 export const HTML_WHITELIST_SUMMARY = HTML_WHITELIST_STANDARD;
 export const HTML_WHITELIST_CONTENT = HTML_WHITELIST_STANDARD.concat(HTML_WHITELIST_MEDIA);
 export const WRAP_HEIGHT_FACTOR = 1.25;
+export const FLIP_ANIMATION_DURATION = 317; // 300 ms from CSS plus one frame
 
 /**
  * Default visual settings
@@ -74,7 +80,7 @@ export const DEFAULT_VISUAL_SETTINGS = {
     },
     flipState: {
         enableFlipping: true,
-        backFaceDefault: false,
+        cardFaceDefault: CARD_FACE_PREVIEW,
     },
     loadMoreData: {
         enabled: false,

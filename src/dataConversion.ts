@@ -148,6 +148,9 @@ function convertToRowObjs(dataView, settings, roles = null) {
 
         if (rowObj.content) {
             rowObj.content = utils.sanitizeHTML(rowObj.content, HTML_WHITELIST_CONTENT);
+            if (!rowObj.summary) {
+                rowObj.summary = utils.sanitizeHTML(rowObj.content, HTML_WHITELIST_SUMMARY);
+            }
         }
         result.push(rowObj);
     }

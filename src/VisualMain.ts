@@ -47,12 +47,7 @@ import {
     convertToDocumentData,
     countDocuments,
 } from './dataConversion';
-import {
-    METADATA_FIELDS,
-    REQUIRED_FIELDS,
-    DEFAULT_VISUAL_SETTINGS,
-    WRAP_HEIGHT_FACTOR,
-} from './constants';
+import * as constants from './constants';
 
 import {
     EVENTS,
@@ -71,7 +66,7 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
     private loadedDocumentCount = 0;
     private isLoadingMore = false;
 
-    private settings = $.extend({}, DEFAULT_VISUAL_SETTINGS);
+    private settings = $.extend({}, constants.DEFAULT_VISUAL_SETTINGS);
 
     /* init function for legacy api */
     constructor(options: VisualConstructorOptions) {
@@ -110,14 +105,12 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         // Flipping cards involves Hack for fixing blurry cards in desktop version.
         this.$element.on('change', '.switch', (event) => {
             if (this.thumbnails.thumbnailInstances && this.thumbnails.thumbnailInstances.length) {
-                const target: any = event.target;
-                const isFlipped = target.checked;
-                this.$element.toggleClass('cards-flipped', isFlipped);
+                this.$element.toggleClass('cards-flipped', this.thumbnails.thumbnailInstances[0].$element.find('.flipper').hasClass('flipped'));
                 this.$element.addClass('animating');
-                setTimeout(() => {
+                window.requestAnimationFrame(() => {
                     this.thumbnails.thumbnailInstances.forEach(thumbnail => (thumbnail.isFlipped = !thumbnail.isFlipped));
-                    setTimeout(() => this.$element.removeClass('animating cards-flipped'), 600);
-                }, 0);
+                    setTimeout(() => this.$element.removeClass('animating cards-flipped'), constants.FLIP_ANIMATION_DURATION);
+                });
             }
         });
 
@@ -137,14 +130,14 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         }
 
         if (!options.dataViews || !(options.dataViews.length > 0)) { return; }
-        if (!utils.hasColumns(options.dataViews[0], REQUIRED_FIELDS)) { return; }
+        if (!utils.hasColumns(options.dataViews[0], constants.REQUIRED_FIELDS)) { return; }
 
         this.dataView = options.dataViews[0];
         const newObjects = this.dataView && this.dataView.metadata && this.dataView.metadata.objects;
-        this.settings = $.extend(true, {}, DEFAULT_VISUAL_SETTINGS, newObjects);
+        this.settings = $.extend(true, {}, constants.DEFAULT_VISUAL_SETTINGS, newObjects);
 
         const switchElement: any = $('.switchInput')[0];
-        switchElement.checked = this.settings.flipState.backFaceDefault;
+        switchElement.checked = this.settings.flipState.cardFaceDefault === constants.CARD_FACE_METADATA;
 
         this.loadedDocumentCount = this.dataView ? countDocuments(this.dataView) : 0;
         this.isLoadingMore = (this.settings.loadMoreData.enabled
@@ -163,25 +156,32 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
     }
 
     private updateVisualStyleConfigs() {
-        this.$element.toggleClass('enable-flipping', this.settings.flipState.enableFlipping);
+        this.$element.toggleClass('enable-flipping', this.settings.flipState.enableFlipping &&
+            this.dataView !== undefined &&
+                // looking at back with front defined
+            (this.settings.flipState.cardFaceDefault === constants.CARD_FACE_METADATA &&
+            (utils.findColumn(this.dataView, constants.SUMMARY_FIELD) !== undefined ||
+            utils.findColumn(this.dataView, constants.CONTENT_FIELD) !== undefined)) ||
+                // looking at front with back defined
+            (this.settings.flipState.cardFaceDefault === constants.CARD_FACE_PREVIEW &&
+            utils.hasColumns(this.dataView, constants.METADATA_FIELDS)));
+
         this.hideRedundantInfo();
     }
 
     private hideRedundantInfo() {
         const metadataRoleName = 'metadata';
         const titleColumn = utils.findColumn(this.dataView, 'title');
-        const authorColumn = utils.findColumn(this.dataView, 'author');
-        const dateColumn = utils.findColumn(this.dataView, 'articleDate');
+        const subtitleColumn = utils.findColumn(this.dataView, 'subtitle');
         this.$element.toggleClass('disable-back-card-title', utils.hasRole(titleColumn, metadataRoleName));
-        this.$element.toggleClass('disable-back-card-author', utils.hasRole(authorColumn, metadataRoleName));
-        this.$element.toggleClass('disable-back-card-date', utils.hasRole(dateColumn, metadataRoleName));
+        this.$element.toggleClass('disable-back-card-subtitle', utils.hasRole(subtitleColumn, metadataRoleName));
     }
 
     private updateThumbnails(viewport) {
         this.thumbnails.reset({
             'subtitleDelimiter': this.settings.presentation.separator,
             'thumbnail.disableFlipping': !this.settings.flipState.enableFlipping,
-            'thumbnail.displayBackCardByDefault': this.settings.flipState.backFaceDefault,
+            'thumbnail.displayBackCardByDefault': this.settings.flipState.cardFaceDefault === constants.CARD_FACE_METADATA,
         });
         this.thumbnails.loadData(this.documentData.documentList);
         this.changeWrapMode(viewport);
@@ -192,7 +192,8 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
 
     private changeWrapMode(viewport: IViewport) {
         const thumbnailHeight = this.thumbnails.thumbnailInstances[0] && this.thumbnails.thumbnailInstances[0].$element.height();
-        const isViewPortHeightSmallEnoughForInlineThumbnails = thumbnailHeight && viewport.height <= thumbnailHeight * WRAP_HEIGHT_FACTOR;
+        const isViewPortHeightSmallEnoughForInlineThumbnails = thumbnailHeight &&
+            viewport.height <= thumbnailHeight * constants.WRAP_HEIGHT_FACTOR;
         this.thumbnails.toggleInlineDisplayMode(isViewPortHeightSmallEnoughForInlineThumbnails);
     }
 

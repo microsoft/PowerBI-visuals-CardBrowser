@@ -44,12 +44,16 @@
                             </div>
                         {{/if}}
                         <div class="meta-data-table">
-                            {{#each metadata}}
-                                <div class="row">
-                                    <div class="col">
+                            <div class="keys-container">
+                                {{#each metadata}}
+                                    <div class="value-box">
                                         <span class="value">{{@key}}</span> 
                                     </div>
-                                    <div class="col">
+                                {{/each}}
+                            </div>
+                            <div class="values-container">
+                                {{#each metadata}}
+                                    <div class="value-box">
                                         <span class="value">
                                             {{#isImageDataUrl this}}
                                                 <img src="{{this}}" alt="">
@@ -58,8 +62,8 @@
                                             {{/isImageDataUrl}}
                                         </span>
                                     </div>
-                                </div>
-                            {{/each}}
+                                {{/each}}
+                            </div>
                         </div>
                     </div>
                     {{#if imageUrl}}

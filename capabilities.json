@@ -14,14 +14,14 @@
     },
     {
       "name": "summary",
-      "displayName": "Summary",
-      "description": "Summary of the content; only displayed on thumbnails",
+      "displayName": "Preview",
+      "description": "Preview text; only displayed on thumbnails",
       "kind": 0
     },
     {
       "name": "content",
       "displayName": "Content",
-      "description": "Full content; only displayed in the reader",
+      "description": "Full content to display in the reader",
       "kind": 0
     },
     {
@@ -201,16 +201,19 @@
       "properties": {
         "enableFlipping": {
           "description": "Whether to enable card flipping",
-          "displayName": "Enable Card Flipping",
+          "displayName": "Enable Flip",
           "type": {
             "bool": "true"
           }
         },
-        "backFaceDefault": {
-          "description": "Whether to show back face of the card by default",
-          "displayName": "Backface By Default",
+        "cardFaceDefault": {
+          "description": "Which face of the card to show by default",
+          "displayName": "Card Face",
           "type": {
-            "bool": "false"
+            "enumeration": [
+              {"value": "preview", "displayName": "Preview"},
+              {"value": "metadata", "displayName": "MetaData"}
+            ]
           }
         }
       },
