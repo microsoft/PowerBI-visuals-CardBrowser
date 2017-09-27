@@ -16,6 +16,10 @@ $thumbnail-flipping-animation-duration: 0.3s;
   padding-right: 0;
 }
 
+.uncharted-thumbnails-thumbnail .card {
+  position: relative;
+ }
+
 .visual-container {
   height: 100%;
 
@@ -92,7 +96,7 @@ $thumbnail-flipping-animation-duration: 0.3s;
       }
       .flip-right-side {
         .box {
-          background-color: #ccc;
+          background-color: rgba(85, 85, 85, 0.5);
         }
       }
     }
@@ -114,7 +118,7 @@ $thumbnail-flipping-animation-duration: 0.3s;
     &:hover {
       .flip-left-side {
         .box {
-          background-color: #ccc;
+          background-color: rgba(85, 85, 85, 0.5);
         }
       }
       .flip-right-side {
@@ -167,6 +171,8 @@ $thumbnail-flipping-animation-duration: 0.3s;
   }
 
   .uncharted-thumbnails.inline-mode {
+    margin-left: 0;
+    margin-right: 0;
   }
 
   &.enable-flipping {
@@ -174,13 +180,8 @@ $thumbnail-flipping-animation-duration: 0.3s;
       padding-top: 22px;
     }
 
-    .switch{
+    .switch {
       display: block;
-    }
-
-    .uncharted-thumbnails.inline-mode {
-      margin-left: 0;
-      margin-right: 0;
     }
   }
 

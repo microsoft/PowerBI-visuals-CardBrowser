@@ -141,8 +141,8 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
 
         this.loadedDocumentCount = this.dataView ? countDocuments(this.dataView) : 0;
         this.isLoadingMore = (this.settings.loadMoreData.enabled
-        && this.loadedDocumentCount < this.settings.loadMoreData.limit
-        && !!this.dataView.metadata.segment);
+            && this.loadedDocumentCount < this.settings.loadMoreData.limit
+            && !!this.dataView.metadata.segment);
         if (this.isLoadingMore) {
             // need to load more data
             this.isLoadingMore = true;
@@ -157,14 +157,14 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
 
     private updateVisualStyleConfigs() {
         this.$element.toggleClass('enable-flipping', this.settings.flipState.enableFlipping &&
-            this.dataView !== undefined &&
+            (this.dataView !== undefined &&
                 // looking at back with front defined
-            (this.settings.flipState.cardFaceDefault === constants.CARD_FACE_METADATA &&
-            (utils.findColumn(this.dataView, constants.SUMMARY_FIELD) !== undefined ||
-            utils.findColumn(this.dataView, constants.CONTENT_FIELD) !== undefined)) ||
+                (this.settings.flipState.cardFaceDefault === constants.CARD_FACE_METADATA &&
+                    (utils.findColumn(this.dataView, constants.SUMMARY_FIELD) !== undefined ||
+                        utils.findColumn(this.dataView, constants.CONTENT_FIELD) !== undefined)) ||
                 // looking at front with back defined
-            (this.settings.flipState.cardFaceDefault === constants.CARD_FACE_PREVIEW &&
-            utils.hasColumns(this.dataView, constants.METADATA_FIELDS)));
+                (this.settings.flipState.cardFaceDefault === constants.CARD_FACE_PREVIEW &&
+                    utils.hasColumns(this.dataView, constants.METADATA_FIELDS))));
 
         this.hideRedundantInfo();
     }
@@ -172,9 +172,13 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
     private hideRedundantInfo() {
         const metadataRoleName = 'metadata';
         const titleColumn = utils.findColumn(this.dataView, 'title');
-        const subtitleColumn = utils.findColumn(this.dataView, 'subtitle');
         this.$element.toggleClass('disable-back-card-title', utils.hasRole(titleColumn, metadataRoleName));
-        this.$element.toggleClass('disable-back-card-subtitle', utils.hasRole(subtitleColumn, metadataRoleName));
+
+        let subtitleColumns = utils.findColumn(this.dataView, 'subtitle', true);
+        if (subtitleColumns) {
+            this.$element.toggleClass('disable-back-card-subtitle', subtitleColumns.findIndex((
+                subtitleColumn) => utils.hasRole(subtitleColumn, metadataRoleName)) > -1);
+        }
     }
 
     private updateThumbnails(viewport) {
