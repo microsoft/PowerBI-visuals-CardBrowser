@@ -105,8 +105,10 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         });
 
         // close the reader when clicked above
-        this.$element.on('click', (event) => {
-            if (event.target === this.$element[0]) {
+        this.$element.find('.flip-panel').on('click', (event) => {
+            if ($(event.target).hasClass('flip-panel')) {
+                // When the outside portion of the flip panel (that centers the switch) is clicked, 
+                // close the reader
                 this.thumbnails.closeReader();
             }
         });

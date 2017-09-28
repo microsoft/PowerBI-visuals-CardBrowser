@@ -30,7 +30,7 @@ $thumbnail-flipping-animation-duration: 0.3s;
     bottom: 0;
   }
 
-  .flip-button {
+  .flip-panel {
     position: absolute;
     height: 22px;
     top: 0;
@@ -43,7 +43,7 @@ $thumbnail-flipping-animation-duration: 0.3s;
     cursor: pointer;
     display: none;
     margin: 0 auto 0 auto;
-    width: 104px;
+    width: 64px;
     z-index: 1;
   }
 
@@ -51,7 +51,7 @@ $thumbnail-flipping-animation-duration: 0.3s;
   .switchInput {display:none;}
 
   /* The slider */
-  .slider {
+  .flip-button {
     display: inline;
     position: relative;
     cursor: pointer;
@@ -106,7 +106,7 @@ $thumbnail-flipping-animation-duration: 0.3s;
     }
   }
 
-  .switchInput:checked + .slider {
+  .switchInput:checked + .flip-button {
     .flip-left-side {
       .box {
         background-color: transparent;
