@@ -22,14 +22,19 @@ $thumbnail-flipping-animation-duration: 0.3s;
 
 .visual-container {
   height: 100%;
+  width: 100%;
 
-  .viewport {
+  .container {
     position: absolute;
     top: 0;
+    bottom: 0;
+  }
 
-    .thumbnails-container {
-      overflow: visible;
-    }
+  .flip-button {
+    position: absolute;
+    height: 22px;
+    top: 0;
+    width: 100%;
   }
 
   /* The switch - the box around the slider */
@@ -38,7 +43,6 @@ $thumbnail-flipping-animation-duration: 0.3s;
     cursor: pointer;
     display: none;
     margin: 0 auto 0 auto;
-    position: relative;
     width: 104px;
     z-index: 1;
   }
@@ -143,60 +147,64 @@ $thumbnail-flipping-animation-duration: 0.3s;
     left: -10px;
   }
 
-  &.border-style {
-    .uncharted-thumbnails-thumbnail .card-content-container {
-      padding-left: 12px;
-      left: -12px;
+  .container {
+    width: 100%;
+    
+    &.border-style {
+      .uncharted-thumbnails-thumbnail .card-content-container {
+        padding-left: 12px;
+        left: -12px;
+      }
+  
+      .card {
+        border: $thumbnail-card-border;
+        box-shadow: none;
+      }
+  
+      .reader-content-header {
+        border-bottom: solid 1px #e9e9e9;
+      }
     }
-
-    .card {
-      border: $thumbnail-card-border;
-      box-shadow: none;
+  
+    &.shadow-style {
+      .card {
+        border: none;
+        box-shadow: $thumbnail-card-shadow;
+      }
+  
+      .reader-content-header {
+        border-bottom: solid 1px #e9e9e9;
+      }
     }
-
-    .reader-content-header {
-      border-bottom: solid 1px #e9e9e9;
+  
+    .uncharted-thumbnails.inline-mode {
+      margin-left: 0;
+      margin-right: 0;
     }
-  }
-
-  &.shadow-style {
-    .card {
-      border: none;
-      box-shadow: $thumbnail-card-shadow;
+  
+    &.disable-back-card-title {
+      .uncharted-thumbnails-thumbnail .meta-data-content .title-box {
+        display: none;
+      }
     }
-
-    .reader-content-header {
-      border-bottom: solid 1px #e9e9e9;
+  
+    &.disable-back-card-subtitle {
+      .uncharted-thumbnails-thumbnail .meta-data-content .meta-line {
+        &.subtitle
+        {
+          display: none;
+        }
+      }
     }
-  }
-
-  .uncharted-thumbnails.inline-mode {
-    margin-left: 0;
-    margin-right: 0;
   }
 
   &.enable-flipping {
-    .viewport {
-      padding-top: 22px;
+    .container {
+      top: 22px;
     }
 
     .switch {
       display: block;
-    }
-  }
-
-  &.disable-back-card-title {
-    .uncharted-thumbnails-thumbnail .meta-data-content .title-box {
-      display: none;
-    }
-  }
-
-  &.disable-back-card-subtitle {
-    .uncharted-thumbnails-thumbnail .meta-data-content .meta-line {
-      &.subtitle
-      {
-        display: none;
-      }
     }
   }
 }

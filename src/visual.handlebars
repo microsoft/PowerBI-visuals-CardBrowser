@@ -1,15 +1,18 @@
-<div class="visual-container {{#if isDesktop}} fix-blur-hack {{/if}}">
-    <label class="switch">
-        <input type="checkbox" class="switchInput">
-        <div class="slider">
-            <div class="flip-left-side">
-                <div class="box" aria-hidden="true"></div>
-                <div class="box" aria-hidden="true"></div>
+<div class='visual-container'>
+    <div class="flip-button">
+        <label class="switch">
+            <input type="checkbox" class="switchInput">
+            <div class="slider">
+                <div class="flip-left-side">
+                    <div class="box" aria-hidden="true"></div>
+                    <div class="box" aria-hidden="true"></div>
+                </div>
+                <div class="flip-right-side">
+                    <div class="box" aria-hidden="true"></div>
+                    <div class="box" aria-hidden="true"></div>
+                </div>
             </div>
-            <div class="flip-right-side">
-                <div class="box" aria-hidden="true"></div>
-                <div class="box" aria-hidden="true"></div>
-            </div>
-        </div>
-    </label>
+        </label>
+    </div>
+    <div class="container {{#if isDesktop}} fix-blur-hack {{/if}}"></div>
 </div>

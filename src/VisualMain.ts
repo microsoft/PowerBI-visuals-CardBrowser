@@ -57,6 +57,7 @@ const visualTemplate = require('./visual.handlebars');
 export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
 
     private $element: JQuery;
+    private $container: JQuery;
     private dataView: DataView;
     private thumbnails: any;
     private documentData: any;
@@ -85,7 +86,8 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         })).appendTo(options.element);
 
         this.thumbnails = new Thumbnails();
-        this.$element.append(this.thumbnails.$element);
+        this.$container = this.$element.find('.container');
+        this.$container.append(this.thumbnails.$element);
 
         this.thumbnails.on(EVENTS.THUMBNAIL_CLICK, (thumbnail) => {
             if (!thumbnail.isExpanded) {
@@ -102,15 +104,24 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
             this.thumbnails.closeReader();
         });
 
+        // close the reader when clicked above
+        this.$element.on('click', (event) => {
+            if (event.target === this.$element[0]) {
+                this.thumbnails.closeReader();
+            }
+        });
+
         // Flipping cards involves Hack for fixing blurry cards in desktop version.
         this.$element.on('change', '.switch', (event) => {
             if (this.thumbnails.thumbnailInstances && this.thumbnails.thumbnailInstances.length) {
-                this.$element.toggleClass('cards-flipped', this.thumbnails.thumbnailInstances[0].$element.find('.flipper').hasClass('flipped'));
-                this.$element.addClass('animating');
+                this.$container.toggleClass('cards-flipped', this.thumbnails.thumbnailInstances[0].$element.find('.flipper').hasClass('flipped'));
+                this.$container.addClass('animating');
                 window.requestAnimationFrame(() => {
                     this.thumbnails.thumbnailInstances.forEach(thumbnail => (thumbnail.isFlipped = !thumbnail.isFlipped));
-                    setTimeout(() => this.$element.removeClass('animating cards-flipped'), constants.FLIP_ANIMATION_DURATION);
+                    setTimeout(() => this.$container.removeClass('animating cards-flipped'), constants.FLIP_ANIMATION_DURATION);
                 });
+
+                return false;
             }
         });
 
@@ -172,11 +183,11 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
     private hideRedundantInfo() {
         const metadataRoleName = 'metadata';
         const titleColumn = utils.findColumn(this.dataView, 'title');
-        this.$element.toggleClass('disable-back-card-title', utils.hasRole(titleColumn, metadataRoleName));
+        this.$container.toggleClass('disable-back-card-title', utils.hasRole(titleColumn, metadataRoleName));
 
         let subtitleColumns = utils.findColumn(this.dataView, 'subtitle', true);
         if (subtitleColumns) {
-            this.$element.toggleClass('disable-back-card-subtitle', subtitleColumns.findIndex((
+            this.$container.toggleClass('disable-back-card-subtitle', subtitleColumns.findIndex((
                 subtitleColumn) => utils.hasRole(subtitleColumn, metadataRoleName)) > -1);
         }
     }
@@ -189,9 +200,9 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         });
         this.thumbnails.loadData(this.documentData.documentList);
         this.changeWrapMode(viewport);
-        this.$element.toggleClass('shadow-style', this.settings.presentation.borderStyle === 'boxShadow');
-        this.$element.toggleClass('border-style', this.settings.presentation.borderStyle === 'border');
-        this.$element.find('.meta-data-images-container').toggle(this.settings.presentation.showImageOnBack);
+        this.$container.toggleClass('shadow-style', this.settings.presentation.borderStyle === 'boxShadow');
+        this.$container.toggleClass('border-style', this.settings.presentation.borderStyle === 'border');
+        this.$container.find('.meta-data-images-container').toggle(this.settings.presentation.showImageOnBack);
         console.log('loaded ' + this.loadedDocumentCount + ' documents');
     }
 
