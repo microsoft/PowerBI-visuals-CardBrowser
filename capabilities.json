@@ -75,7 +75,7 @@
             "max": 1
           },
           "title": {
-            "max": 1
+            "max": 10
           },
           "summary": {
             "max": 1
@@ -171,7 +171,7 @@
       "properties": {
         "borderStyle": {
           "displayName": "Border Style",
-          "description": "Control the style of border around thumbnails and the reader header.",
+          "description": "Control the style of border around thumbnails.",
           "type": {
             "enumeration": [
               {"value": "border", "displayName": "Border"},
@@ -202,7 +202,48 @@
           }
         }
       },
-      "displayName": "Configuration"
+      "displayName": "Thumbnail Cards"
+    },
+    "reader": {
+      "properties": {
+        "headerBackgroundColor": {
+          "description": "Background color for the reader header",
+          "displayName": "Header Color",
+          "type": {
+            "fill": {
+              "solid": {
+                "color": "#000"
+              }
+            }
+          }
+        },
+        "headerTextColor": {
+          "description": "Text color for the reader header (Source)",
+          "displayName": "Header Text Color",
+          "type": {
+            "fill": {
+              "solid": {
+                "color": "#fff"
+              }
+            }
+          }
+        },
+        "width": {
+          "description": "Expanded width of the inline reader",
+          "displayName": "Expanded Width",
+          "type": {
+            "numeric": 520
+          }
+        },
+        "height": {
+          "description": "Height of the vertical (wrapped) reader",
+          "displayName": "Height",
+          "type": {
+            "numeric": 500
+          }
+        }
+      },
+      "displayName": "Reader"
     },
     "flipState": {
       "properties": {

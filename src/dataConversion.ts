@@ -131,7 +131,10 @@ function convertToRowObjs(dataView, settings, roles = null) {
         }
 
         if (rowObj.subtitle) {
-            if (!Array.isArray(rowObj.subtitle)) {
+            if (Array.isArray(rowObj.subtitle)) {
+                rowObj.subtitle = rowObj.subtitle.filter(item => item);
+            }
+            else {
                 rowObj.subtitle = [rowObj.subtitle];
             }
         }
@@ -152,6 +155,11 @@ function convertToRowObjs(dataView, settings, roles = null) {
                 rowObj.summary = utils.sanitizeHTML(rowObj.content, HTML_WHITELIST_SUMMARY);
             }
         }
+
+        if (rowObj.title && Array.isArray(rowObj.title)) {
+            rowObj.title = rowObj.title.join(' ');
+        }
+
         result.push(rowObj);
     }
     return result;

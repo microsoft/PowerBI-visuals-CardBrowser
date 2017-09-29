@@ -2,11 +2,14 @@
     <div class="reader-content-header">
             {{#if source}}
                 <div class="header-source-link-box">
-                    <a class="source-link" href="{{sourceUrl}}" target="_blank" title="{{sourceUrl}}">{{source}}</a>
+                    <div class="header-source-link-background" style="background: {{headerBackgroundColor}};"></div>
+                    <a class="source-link" style="color: {{headerSourceLinkColor}};" href="{{sourceUrl}}" target="_blank" title="{{sourceUrl}}">{{source}}</a>
                 </div>
             {{/if}}
             <div class="close-button">
-                <i class="fa fa-compress"></i>
+                <div class="icon-box">
+                    <i class="fa fa-compress"></i>
+                </div>
             </div>
             {{#if iconUrl}}
                 <div class="source-icon" style="background-image: url({{iconUrl}})"></div>
@@ -14,7 +17,6 @@
     </div>
     <div class="reader-content-viewport">
         <div class="reader-content-header-image">
-            <div class="header-background" style="background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, {{headerBackgroundColor}} 95%);"></div>
         </div>
         <div class="reader-content-body">
             <h1 class="title">{{title}}</h1>

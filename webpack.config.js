@@ -7,7 +7,7 @@ const isServing = (process.env.WEBPACK_ENV === 'serve'); // eslint-disable-line
 
 module.exports = {
     entry: ENTRY,
-    devtool: 'eval',
+    devtool: 'inline-source-map',
     resolve: {
         extensions: ['.js', '.json', '.ts', '.handlebars'],
         alias: {

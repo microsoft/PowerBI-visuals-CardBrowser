@@ -79,6 +79,20 @@ export const DEFAULT_VISUAL_SETTINGS = {
         separator: ' \u2022 ',
         showImageOnBack: true,
     },
+    reader: {
+        headerBackgroundColor: {
+            solid: {
+                color: '#000',
+            }
+        },
+        headerTextColor: {
+            solid: {
+                color: '#fff',
+            }
+        },
+        width: 520,
+        height: 500,
+    },
     flipState: {
         enableFlipping: true,
         cardFaceDefault: CARD_FACE_PREVIEW,

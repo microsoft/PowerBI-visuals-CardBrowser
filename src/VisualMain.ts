@@ -100,7 +100,7 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
             this.thumbnails.updateReaderContent(thumbnail, thumbnail.data);
         });
 
-        this.thumbnails.on(`${EVENTS.READER_CONTENT_CLICK_CLOSE} ${EVENTS.THUMBNAILS_CLICK_BACKGROUND}`, () => {
+        this.thumbnails.on(`${EVENTS.READER_CONTENT_CLICK_CLOSE} ${EVENTS.THUMBNAILS_CLICK_BACKGROUND} ${EVENTS.VERTICAL_READER_CLICK_BACKGROUND}`, () => {
             this.thumbnails.closeReader();
         });
 
@@ -208,6 +208,10 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
             'subtitleDelimiter': this.settings.presentation.separator,
             'thumbnail.disableFlipping': !this.settings.flipState.enableFlipping,
             'thumbnail.displayBackCardByDefault': this.settings.flipState.cardFaceDefault === constants.CARD_FACE_METADATA,
+            'thumbnail.expandedWidth': this.settings.reader.width,
+            'readerContent.headerBackgroundColor': this.settings.reader.headerBackgroundColor.solid.color,
+            'readerContent.headerSourceLinkColor': this.settings.reader.headerTextColor.solid.color,
+            'verticalReader.height': this.settings.reader.height,
         });
         this.thumbnails.loadData(this.documentData.documentList);
         this.changeWrapMode(viewport);
