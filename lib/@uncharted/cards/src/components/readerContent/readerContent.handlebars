@@ -1,45 +1,52 @@
 <div class="uncharted-thumbnails-reader-content">
     <div class="reader-content-header">
-        <a class="source-link" href="{{sourceUrl}}" target="_blank">{{source}}</a>
-        {{#if iconUrl}}
-            <div class="source-icon" style="background-image: url({{iconUrl}})"></div>
-        {{/if}}
-    </div>
-    <i class="fa fa-times close-button"></i>
-    <div class="content-container">
-        <h1 class="title">{{title}}</h1>
-        {{#if subtitle}}
-            <div class="subtitle meta-line">
-                {{#each subtitle}}{{#unless @first}}<span class="delimiter">{{../subtitleDelimiter}}</span>{{/unless}}<span class="value">{{this}}</span>{{/each}}
-            </div>
-        {{/if}}
-        <div class="columns-container">
-            {{#if metadata}}
-            <div class="meta-data">
-                {{#each metadata}}
-                <div>
-                    <span class="key">{{@key}} </span>
-                    <span class="value">
-                    {{#isImageDataUrl this}}
-                        <img src="{{this}}" alt="">
-                    {{else}}
-                        {{#linkify this}}{{/linkify}}
-                    {{/isImageDataUrl}}
-                    </span>
+            {{#if source}}
+                <div class="header-source-link-box">
+                    <a class="source-link" href="{{sourceUrl}}" target="_blank" title="{{sourceUrl}}">{{source}}</a>
                 </div>
-                {{/each}}
-
-            </div>
-            {{/if}} {{#if imageUrl}}
-            <div class="images-container">
-                {{#cardImages imageUrl}}
-                <div class="image" data-url="{{url}}" style="background-image:url({{url}})"></div>
-                {{/cardImages}}
-            </div>
             {{/if}}
+            <div class="close-button">
+                <i class="fa fa-compress"></i>
+            </div>
+            {{#if iconUrl}}
+                <div class="source-icon" style="background-image: url({{iconUrl}})"></div>
+            {{/if}}
+    </div>
+    <div class="reader-content-viewport">
+        <div class="reader-content-header-image">
+            <div class="header-background" style="background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, {{headerBackgroundColor}} 95%);"></div>
         </div>
-        <div class="content">
-            {{{content}}}
+        <div class="reader-content-body">
+            <h1 class="title">{{title}}</h1>
+            {{#if subtitle}}
+                <div class="subtitle meta-line">
+                    {{#each subtitle}}{{#unless @first}}<span class="delimiter">{{../subtitleDelimiter}}</span>{{/unless}}<span class="value">{{this}}</span>{{/each}}
+                </div>
+            {{/if}}
+
+            <div class="content">
+                {{{content}}}
+            </div>
+
+            {{#if metadata}}
+                <hr>
+                <div class="meta-data-grid">
+                    {{#each metadataRows}}
+                        <div class="value-box key-column" style="grid-row: {{this.rowNum}}; -ms-grid-row: {{this.rowNum}};">
+                            <span class="value" title="{{this.key}}">{{this.key}}</span> 
+                        </div>
+                        <div class="value-box value-column" style="grid-row: {{this.rowNum}}; -ms-grid-row: {{this.rowNum}};">
+                            <span class="value">
+                                {{#isImageDataUrl this.value}}
+                                    <img src="{{this.value}}" alt="">
+                                {{else}}
+                                    {{#linkify this.value}}{{/linkify}}
+                                {{/isImageDataUrl}}
+                            </span>
+                        </div>
+                    {{/each}}
+                </div>
+            {{/if}}
         </div>
     </div>
 </div>

@@ -113,9 +113,17 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
             }
         });
 
-        // Flipping cards involves Hack for fixing blurry cards in desktop version.
-        this.$element.on('change', '.switch', (event) => {
+        // Flipping cards involves two hacks:
+        // ... 1. IE11 doesn't behave well, so we skip the transition altogether there
+        const isIE11 = !!navigator.userAgent.match(/Trident\/7\./);
+        const onChange = isIE11 ? ((event) => {
             if (this.thumbnails.thumbnailInstances && this.thumbnails.thumbnailInstances.length) {
+                this.thumbnails.thumbnailInstances.forEach(thumbnail => (thumbnail.isFlipped = !thumbnail.isFlipped));
+                return false;
+            }
+        }) : ((event) => {
+            if (this.thumbnails.thumbnailInstances && this.thumbnails.thumbnailInstances.length) {
+                // ... 2. Text is blurry if certain animation-oriented CSS fx are permanently set, so only turn them on during the transition
                 this.$container.toggleClass('cards-flipped', this.thumbnails.thumbnailInstances[0].$element.find('.flipper').hasClass('flipped'));
                 this.$container.addClass('animating');
                 window.requestAnimationFrame(() => {
@@ -126,6 +134,7 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
                 return false;
             }
         });
+        this.$element.on('change', '.switch', onChange);
 
         this.changeWrapMode({
             width: options.element.offsetWidth,

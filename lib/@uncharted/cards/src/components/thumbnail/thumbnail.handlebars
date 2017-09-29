@@ -7,19 +7,12 @@
                 {{/if}}
                 <div class="card-content-container">
                     <div class="card-content">
-                        {{#if imageUrl}}
-                            <div class="card-image">
-                                {{#cardImages imageUrl}}
-                                    <div class="image" data-url="{{url}}"></div>
-                                {{/cardImages}}
-                            </div>
-                        {{/if}}
-
+                        <div class="card-image"></div>
                         <div class="card-body">
                             {{#if title}}
                                 <h1 class="title">{{title}}</h1>
                             {{/if}}
-                            {{#if subtitle}}
+                            {{#if subtitle.length }}
                                 <div class="subtitle meta-line">
                                     {{#each subtitle}}{{#unless @first}}<span class="delimiter">{{../subtitleDelimiter}}</span>{{/unless}}<span class="value">{{this}}</span>{{/each}}
                                 </div>
@@ -35,26 +28,30 @@
             <div class="card-content-container metadata-content-container {{#if imageUrl}}has-image{{/if}}">
                 <div class="meta-data-content">
                     <div class="card-body">
-                        <div class="title-box">
-                            <h1 class="title value">{{title}}</h1>
-                        </div>
-                        {{#if subtitle}}
-                            <div class="subtitle meta-line">
-                                {{#each subtitle}}{{#unless @first}}<span class="delimiter">{{../subtitleDelimiter}}</span>{{/unless}}<span class="value">{{this}}</span>{{/each}}
+                        <div class="meta-data-content-header">
+                            <div class="title-box overflow-box">
+                                <h1 class="title overflow-value">{{title}}</h1>
                             </div>
-                        {{/if}}
+                            {{#if subtitle.length }}
+                                <div class="subtitle-box overflow-box">
+                                    <div class="subtitle meta-line overflow-value">
+                                        {{#each subtitle}}{{#unless @first}}<span class="delimiter">{{../subtitleDelimiter}}</span>{{/unless}}<span class="value">{{this}}</span>{{/each}}
+                                    </div>
+                                </div>
+                            {{/if}}
+                        </div>
                         <div class="meta-data-table">
                             <div class="keys-container">
                                 {{#each metadata}}
-                                    <div class="value-box">
-                                        <span class="value">{{@key}}</span> 
+                                    <div class="value-box overflow-box">
+                                        <span class="value overflow-value">{{@key}}</span> 
                                     </div>
                                 {{/each}}
                             </div>
                             <div class="values-container">
                                 {{#each metadata}}
-                                    <div class="value-box">
-                                        <span class="value">
+                                    <div class="value-box overflow-box">
+                                        <span class="value overflow-value">
                                             {{#isImageDataUrl this}}
                                                 <img src="{{this}}" alt="">
                                             {{else}}
