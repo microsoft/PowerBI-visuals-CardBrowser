@@ -20,7 +20,7 @@ module.exports = function (config) {
         ],
         preprocessors: {
             'src/**/*.spec.js': ['webpack', 'sourcemap'],
-            'src/**/*.spec.ts': ['webpack', 'typescript']
+            'src/**/*.spec.ts': ['webpack', 'typescript'],
         },
         webpackMiddleware: {
             stats: 'errors-only',
@@ -46,20 +46,15 @@ module.exports = function (config) {
                         loader: 'babel-loader',
                         options: {
                             presets: [
-                                ['latest', { es2015: { modules: false } }]
+                                ['latest', { es2015: { modules: false } }],
                             ],
                         },
-                        exclude: /node_modules/
+                        exclude: /node_modules/,
                     },
                     {
                         test: /\.ts?$/,
                         loader: 'ts-loader',
-                        options: {
-                            presets: [
-                                ['latest', { es2015: { modules: false } }]
-                            ],
-                        },
-                        exclude: /node_modules/
+                        exclude: /node_modules/,
                     },
                 ],
             },
@@ -67,15 +62,15 @@ module.exports = function (config) {
             externals: [
                 {
                     sinon: "sinon",
-                    chai: "chai"
+                    chai: "chai",
                 },
             ],
             plugins: [
                 new webpack.SourceMapDevToolPlugin({
                     filename: null, // if no value is provided the sourcemap is inlined
-                    test: /\.(js)($|\?)/i // process .js files only
+                    test: /\.(js)($|\?)/i, // process .js files only
                 }),
-            ]
+            ],
         },
         reporters: ['mocha'],
         port: 9876,
@@ -84,6 +79,6 @@ module.exports = function (config) {
         autoWatch: true,
         browsers: isTddMode ? ['Chrome'] : ['PhantomJS'],
         singleRun: !isTddMode,
-        concurrency: Infinity
+        concurrency: Infinity,
     });
 };
