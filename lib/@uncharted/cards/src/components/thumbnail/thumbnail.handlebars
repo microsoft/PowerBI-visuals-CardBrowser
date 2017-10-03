@@ -52,11 +52,13 @@
                                 {{#each metadata}}
                                     <div class="value-box overflow-box">
                                         <span class="value overflow-value">
-                                            {{#isImageDataUrl this}}
-                                                <img src="{{this}}" alt="">
-                                            {{else}}
-                                                {{#linkify this}}{{/linkify}}
-                                            {{/isImageDataUrl}}
+                                            {{#if this}}
+                                                {{#isImageDataUrl this}}
+                                                    <img src="{{this}}" alt="">
+                                                {{else}}
+                                                    {{#linkify this}}{{/linkify}}
+                                                {{/isImageDataUrl}}
+                                            {{/if}}
                                         </span>
                                     </div>
                                 {{/each}}

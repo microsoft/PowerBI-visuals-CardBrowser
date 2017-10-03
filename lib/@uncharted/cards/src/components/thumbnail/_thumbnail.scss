@@ -137,7 +137,7 @@
     .meta-data-content {
         position: relative;
         height: 100%;
-        $title-line-height: 1.1em;
+        $title-line-height: 1.15em;
 
         .overflow-box {
             position: relative;
@@ -159,8 +159,13 @@
             font-size: 13px;
             max-height: #{$title-line-height * 2};
             white-space: normal;
+
+            h1 {
+                font-size: inherit;
+            }
+
             &.overflow:after {
-                top: 1.1em;
+                top: $title-line-height;
                 height: $title-line-height;
             }
         }

@@ -76,8 +76,24 @@ describe('News Threads Visual', () => {
         expect(visual).to.be.ok;
     });
 
-    it('smoke test', () => {
+    it('update', () => {
         const options = populateData([]);
         visual.update(options);
+    });
+
+    it('enumerateObjectInstances', () => {
+        const options = {
+            objectName: 'presentation',
+        };
+        const instances = visual.enumerateObjectInstances(options);
+        expect(instances).to.be.ok;
+        expect(instances.length).to.equal(1);
+        expect(instances[0].properties.borderStyle).to.equal('border');
+        expect(instances[0].properties.dateFormat).to.equal('MMM D, YYYY');
+        expect(instances[0].properties.showImageOnBack).to.be.true;
+    });
+    
+    it('destroy', () => {
+        visual.destroy();
     });
 });

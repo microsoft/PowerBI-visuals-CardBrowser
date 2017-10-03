@@ -66,6 +66,7 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
     private isDesktop: Boolean = true;
     private loadedDocumentCount = 0;
     private isLoadingMore = false;
+    private isInline = true;
 
     private settings = $.extend({}, constants.DEFAULT_VISUAL_SETTINGS);
 
@@ -145,8 +146,13 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
     public update(options: VisualUpdateOptions) {
         if (options['resizeMode']) {
             debounce(() => {
-                this.thumbnails.verticalReader.reposition();
-                this.changeWrapMode(options.viewport);
+                const shouldInline = this.isInlineSize(options.viewport);
+                if (!this.isInline && !shouldInline) {
+                    this.thumbnails.verticalReader.reposition();
+                }
+                else if (shouldInline !== this.isInline) {
+                    this.changeWrapMode(options.viewport);
+                }
             }, 200)();
             return;
         }
@@ -221,11 +227,16 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         console.log('loaded ' + this.loadedDocumentCount + ' documents');
     }
 
-    private changeWrapMode(viewport: IViewport) {
+    private isInlineSize(viewport: IViewport) {
         const thumbnailHeight = this.thumbnails.thumbnailInstances[0] && this.thumbnails.thumbnailInstances[0].$element.height();
-        const isViewPortHeightSmallEnoughForInlineThumbnails = thumbnailHeight &&
+        return thumbnailHeight &&
             viewport.height <= thumbnailHeight * constants.WRAP_HEIGHT_FACTOR;
+
+    }
+    private changeWrapMode(viewport: IViewport) {
+        const isViewPortHeightSmallEnoughForInlineThumbnails = this.isInlineSize(viewport);
         this.thumbnails.toggleInlineDisplayMode(isViewPortHeightSmallEnoughForInlineThumbnails);
+        this.isInline = isViewPortHeightSmallEnoughForInlineThumbnails;
     }
 
     private sendSelectionToHost(identities: DataViewScopeIdentity[]) {
