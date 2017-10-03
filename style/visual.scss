@@ -146,6 +146,12 @@ $thumbnail-flipping-animation-duration: 0.3s;
     border-bottom: none;
   }
 
+  .reader-content-header .header-source-link-box {
+    width: initial;
+    min-width: 170px;
+    max-width: 50%;
+  }
+
   .uncharted-thumbnails-thumbnail .card-content-container {
     padding-left: 10px;
     left: -10px;
