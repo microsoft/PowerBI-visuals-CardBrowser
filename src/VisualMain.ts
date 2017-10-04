@@ -224,6 +224,14 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         this.$container.toggleClass('shadow-style', this.settings.presentation.borderStyle === 'boxShadow');
         this.$container.toggleClass('border-style', this.settings.presentation.borderStyle === 'border');
         this.$container.find('.meta-data-images-container').toggle(this.settings.presentation.showImageOnBack);
+
+        // Colored band at top of card
+        this.thumbnails.thumbnailInstances.forEach((instance) => {
+           if (instance.data && instance.data.topBarColor) {
+               instance.$element.find('.card-content-container').css('border-top', '5px solid' + instance.data.topBarColor);
+           }
+        });
+
         console.log('loaded ' + this.loadedDocumentCount + ' documents');
     }
 

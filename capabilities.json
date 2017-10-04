@@ -61,6 +61,12 @@
       "kind": 0
     },
     {
+      "name": "topBarColor",
+      "displayName": "Top Bar Color",
+      "description": "Color of the bar at the top of the thumbnail card",
+      "kind": 0
+    },
+    {
       "name": "dummySortingField",
       "displayName": "Sorting Field",
       "description": "Field that can be used to sort the visual's data based on an arbitrary column",
@@ -100,6 +106,12 @@
           },
           "metadata": {
             "max": 10
+          },
+          "topBarColor": {
+            "max": 1
+          },
+          "dummySortingField": {
+            "max": 1
           }
         }
       ],
@@ -154,6 +166,11 @@
             {
               "bind": {
                 "to": "metadata"
+              }
+            },
+            {
+              "bind": {
+                "to": "topBarColor"
               }
             }
           ],
