@@ -236,7 +236,9 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
     }
 
     private isInlineSize(viewport: IViewport) {
-        const thumbnailHeight = this.thumbnails.thumbnailInstances[0] && this.thumbnails.thumbnailInstances[0].$element.height();
+        const thumbnailHeight = this.thumbnails.thumbnailInstances[0] ?
+            this.thumbnails.thumbnailInstances[0].$element.height() :
+            this.settings.reader.height; // a reasonable guess for when we're called before loadData (e.g. by ctor)
         return thumbnailHeight &&
             viewport.height <= thumbnailHeight * constants.WRAP_HEIGHT_FACTOR;
 
