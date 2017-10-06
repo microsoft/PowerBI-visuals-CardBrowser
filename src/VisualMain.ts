@@ -220,7 +220,6 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
             'verticalReader.height': this.settings.reader.height,
         });
         this.thumbnails.loadData(this.documentData.documentList);
-        this.changeWrapMode(viewport);
         this.$container.toggleClass('shadow-style', this.settings.presentation.borderStyle === 'boxShadow');
         this.$container.toggleClass('border-style', this.settings.presentation.borderStyle === 'border');
         this.$container.find('.meta-data-images-container').toggle(this.settings.presentation.showImageOnBack);
@@ -232,7 +231,10 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
            }
         });
 
-        console.log('loaded ' + this.loadedDocumentCount + ' documents');
+        window.setTimeout(() => {
+            this.thumbnails.thumbnailInstances.forEach(thumbnail => thumbnail.scaleHeaderImages());
+            this.changeWrapMode(viewport);
+        }, 250);
     }
 
     private isInlineSize(viewport: IViewport) {
