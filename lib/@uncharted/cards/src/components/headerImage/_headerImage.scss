@@ -1,0 +1,38 @@
+.uncharted-thumbnails-header-image {
+    height: 100px;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    .image {
+        height: 100%;
+        position: relative;
+        background-position: 50% 30%;
+        background-repeat: no-repeat;
+        background-color: #fff;
+        flex-grow: 1; 
+        background-size: cover;
+    }
+    .mirror-image-box {
+        flex-grow: 1;
+        position: relative;
+        display: flex;
+
+        .gradient {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            z-index: 1;
+        }
+
+        .image {
+            width: 100%;
+            transform: scaleX(-1);
+            right: 2px;
+        }
+
+        .padding {
+            border-left: 1px solid;
+            flex-grow: 1;
+        }
+    }
+}
