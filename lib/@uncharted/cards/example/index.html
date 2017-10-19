@@ -7,36 +7,84 @@
         <script src="http://code.jquery.com/jquery-3.2.1.js"></script>
     </head>
     <body>
-        <button id="load-more">loadMore</button>
-        <button id="toggle-inline-mode"> Toggle Inline Display Mode</button>
-        <button id="flip-cards">Flip Cards</button>
+        <div class="input-panel">
+            <div class="buttons-box">
+                <button id="load-more">loadMore</button>
+                <button id="toggle-inline-mode"> Toggle Inline Display Mode</button>
+                <button id="flip-cards">Flip Cards</button>
+            </div>
+            <div class="text-box-container">
+                <div class="config-box">
+                    <label for="config">
+                        Thumbnails Config:
+                    </label>
+                    <textarea name="config" id="config"></textarea>
+                </div>
+                <div class="data-box">
+                    <label for="data">
+                        Thumbnails Data:
+                    </label>
+                    <textarea name="data" id="data"></textarea>
+                </div>
+            </div>
+        </div>
+
         <div class="thumbnails-panel"></div>
 
         <script src="sampledata.js"></script>
         <script src="uncharted.cards.js"></script>
         <script>
+            function debounce(func, wait, immediate) {
+                var timeout;
+                return function() {
+                    var context = this, args = arguments;
+                    var later = function() {
+                        timeout = null;
+                        if (!immediate) func.apply(context, args);
+                    };
+                    var callNow = immediate && !timeout;
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                    if (callNow) func.apply(context, args);
+                };
+            };
+        </script>
+        <script>
             var Thumbnails = Uncharted.Thumbnails.default;
 
-            /* Default config values
-                {
-                    'inlineMode': true,
-                    'subtitleDelimiter': ' \u2022 ',
-                    'scrollToVerticalReaderDuration': 300,
-                    'inlineThumbnailCenteringDuration': 300,
-                    'thumbnail.expandedWidth': 520,
-                    'thumbnail.disableFlipping': false,
-                    'thumbnail.displayBackCardByDefault': false,
-                    'verticalReader.height': 500,
-                    'readerContent.headerBackgroundColor': '#555',
-                    'readerContent.headerSourceLinkColor': '#fff',
-                } 
-             */
+            // Initialize Control Panel
 
-            var thumbnailsConfig = {
-                inlineMode: true,
+            var DEFAULT_CONFIG = {
+                'inlineMode': true,
+                'subtitleDelimiter': ' \u2022 ',
+                'scrollToVerticalReaderDuration': 300,
+                'inlineThumbnailCenteringDuration': 300,
+                'thumbnail.width': 200,
+                'thumbnail.enableBoxShadow': false,
+                'thumbnail.expandedWidth': 520,
+                'thumbnail.disableFlipping': false,
+                'thumbnail.displayBackCardByDefault': false,
+                'verticalReader.height': 500,
+                'readerContent.headerBackgroundColor': '#555',
+                'readerContent.headerSourceLinkColor': '#fff',
             };
 
+            var thumbnailsConfig = DEFAULT_CONFIG;
             var data = [].concat(thumbnailsSampleData);
+
+            var updateThumbnails = function () {
+                var thumbnailsData, thumbnailsConfig;
+                try {
+                    thumbnailsData = JSON.parse($('#data')[0].value);
+                    thumbnailsConfig = JSON.parse($('#config')[0].value);
+                    $('.thumbnails-panel').html(thumbnails.reset(thumbnailsConfig).render());
+                    thumbnails.loadData(thumbnailsData);
+                } catch (e) {}
+            }
+
+            $('#data')[0].value = JSON.stringify(data, null, 2);
+            $('#config')[0].value = JSON.stringify(DEFAULT_CONFIG, null, 2);
+            $('#data, #config').on('input propertychange', debounce(updateThumbnails, 300));
 
             var getMoreData = function () {
                 var moreData = data.map(function (thumbnailData) { 
@@ -46,9 +94,15 @@
                 return moreData;
             };
 
+            for (var i = 0; i < 1; i++) {
+                var thumbnailData = (thumbnailData || []).concat(getMoreData());
+            }
+
+            // Initialize Thumbnails Component
+
             thumbnails = new Thumbnails(thumbnailsConfig);
-            var $thumbnails = $('.thumbnails-panel').append(thumbnails.$element);
-            thumbnails.loadData(data);
+            var $thumbnails = $('.thumbnails-panel').html(thumbnails.render());
+            thumbnails.loadData(thumbnailData);
 
             thumbnails.on('thumbnail:click', function (thumbnail) {
                 if (!thumbnail.isExpanded) {
@@ -69,9 +123,15 @@
 
             thumbnails.on('thumbnails:clickBackground verticalReader:clickBackground', function () { thumbnails.closeReader() });
 
-            // reposition reader on resize
-            $(window).resize(function () {
-                thumbnails.verticalReader.reposition();
+            let ticking = false;
+            $(window).resize(() => {
+                if (!ticking) {
+                    requestAnimationFrame(() => {
+                        thumbnails.resize();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
             });
 
             $('#toggle-inline-mode').click(function () {
@@ -79,7 +139,7 @@
             });
 
             $('#flip-cards').click(function () {
-                thumbnails.thumbnailInstances.forEach(function (thumbnail){ thumbnail.isFlipped = !thumbnail.isFlipped });
+                thumbnails.thumbnailInstances.forEach(function (thumbnail){ thumbnail.flip(); });
             });
 
             $('#load-more').click(function () {

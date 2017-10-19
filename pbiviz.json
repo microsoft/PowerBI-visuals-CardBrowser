@@ -1,10 +1,10 @@
 {
   "visual": {
-    "name": "Cards",
-    "displayName": "Cards",
+    "name": "FlipCards",
+    "displayName": "FlipCards",
     "guid": "Cards8D7CFFDA2E7E400C9474F41B9EDBBA58",
     "visualClassName": "Cards8D7CFFDA2E7E400C9474F41B9EDBBA58",
-    "description": "ESSEX Cards",
+    "description": "ESSEX FlipCards",
     "supportUrl": "http://community.powerbi.com",
     "gitHubUrl": ""
   },

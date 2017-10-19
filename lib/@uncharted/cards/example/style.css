@@ -1,11 +1,54 @@
 html, body {
     margin: 0;
     padding: 0;
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.input-panel {
+    width: 300px;
+    height: 100%;
+    position: relative;
+    border-right: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+}
+
+.buttons-box {
+    padding: 5px;
+}
+
+.text-box-container {
+    flex-grow: 1;
+}
+
+.data-box, .config-box {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 5px;
+}
+
+.config-box {
+    height: 20%;
+}
+
+.data-box {
+    height: 80%;
+}
+
+textarea {
+    width: 100%;
+    height: 100%;
+    resize: none;
 }
 
 .thumbnails-panel {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
     line-height: 1.42857;
-    height: 95vh;
+    width: calc(100% - 300px);
 }

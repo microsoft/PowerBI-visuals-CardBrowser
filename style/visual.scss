@@ -1,7 +1,7 @@
 @import url("https://opensource.keycdn.com/fontawesome/4.7.0/font-awesome.min.css");
 
-$thumbnail-height: 300px;
-$thumbnail-card-shadow: -1px 0 0 #e5e5e5, 0 0 2px rgba(0, 0, 0, 0.12), 2px 0 4px rgba(0, 0, 0, 0.24);
+$thumbnail-card-border-width: 0px;
+$thumbnail-card-shadow: -1px 0 0 rgba(0,0,0,.12), 0 0 2px rgba(0,0,0,.12), 2px 0 4px rgba(0,0,0,.24);
 $thumbnail-flipping-animation-duration: 0.3s;
 
 @import "../lib/@uncharted/cards/src/main.scss";
@@ -144,6 +144,9 @@ $thumbnail-flipping-animation-duration: 0.3s;
 
   .reader-content-header {
     border-bottom: none;
+    .close-button {
+      color: #404040;
+    }
   }
 
   .reader-content-header .header-source-link-box {
@@ -159,25 +162,6 @@ $thumbnail-flipping-animation-duration: 0.3s;
 
   .container {
     width: 100%;
-
-    &.border-style {
-      .uncharted-thumbnails-thumbnail .card-content-container {
-        padding-left: 12px;
-        left: -12px;
-      }
-
-      .card {
-        border: $thumbnail-card-border;
-        box-shadow: none;
-      }
-    }
-
-    &.shadow-style {
-      .card {
-        border: none;
-        box-shadow: $thumbnail-card-shadow;
-      }
-    }
 
     .uncharted-thumbnails.inline-mode {
       margin-left: 0;
@@ -195,6 +179,14 @@ $thumbnail-flipping-animation-duration: 0.3s;
         &.subtitle
         {
           display: none;
+        }
+      }
+    }
+
+    &.lightButton {
+      .reader-content-header {
+        .close-button {
+          color: #C0C0C0;
         }
       }
     }

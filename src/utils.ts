@@ -135,3 +135,67 @@ export function sanitizeHTML(html: string, whiteList: string[]): string {
 
     return cleanHTML;
 }
+
+
+/**
+ * Converts from RGB color space to HSL color space.
+ *
+ * @method toHSL
+ * @param {Array} rgb - An array containing the RGB components.
+ * @returns {Array}
+ */
+function toHSL(rgb) {
+    const [r, g, b] = rgb.map(n => n / 255);
+
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+
+    let h;
+    let s;
+    let l = (max + min) / 2;
+
+    if (max === min) {
+        h = s = 0; // achromatic
+    }
+    else {
+        const d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        switch (max) {
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+            case g: h = (b - r) / d + 2; break;
+            case b: h = (r - g) / d + 4; break;
+        }
+        h /= 6;
+    }
+    return [h, s, l];
+}
+
+/**
+ * Converts the given hex color string to the equivalent rgba color string.
+ * @param  {string}       hex     A hex color string.
+ * @param  {number = 100} opacity A percentage of the opacity.
+ * @return {string}               A rgba color string.
+ */
+export function hexToRgba(hex: string, opacity: number = 100) {
+    if ( !hex ) {
+        return 'rgba(221, 221, 221, 1)';
+    }
+    hex = hex.replace('#', '');
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+    return `rgba(${r}, ${g}, ${b}, ${opacity / 100})`;
+}
+
+/**
+ * Converts hex or rgba color to hsl color.
+ *
+ * @param  {string} colorString A hex or rgb(a) color string.
+ * @return {Array}             An array representing hsl color, [h, s, l].
+ */
+export function convertToHSL(colorString: string) {
+    const rgba = colorString.indexOf('#') >= 0 ? hexToRgba(colorString) : colorString;
+    const [r, g, b] = rgba.substring(rgba.indexOf('(') + 1, rgba.indexOf(')')).split(',').map(n => Number(n));
+    return toHSL([r, g, b]);
+}
+

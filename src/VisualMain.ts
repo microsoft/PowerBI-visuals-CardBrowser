@@ -88,7 +88,7 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
 
         this.thumbnails = new Thumbnails();
         this.$container = this.$element.find('.container');
-        this.$container.append(this.thumbnails.$element);
+        this.$container.append(this.thumbnails.render());
 
         this.thumbnails.on(EVENTS.THUMBNAIL_CLICK, (thumbnail) => {
             if (!thumbnail.isExpanded) {
@@ -119,16 +119,16 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         const isIE11 = !!navigator.userAgent.match(/Trident\/7\./);
         const onChange = isIE11 ? ((event) => {
             if (this.thumbnails.thumbnailInstances && this.thumbnails.thumbnailInstances.length) {
-                this.thumbnails.thumbnailInstances.forEach(thumbnail => (thumbnail.isFlipped = !thumbnail.isFlipped));
+                this.thumbnails.thumbnailInstances.forEach(thumbnail => thumbnail.flip());
                 return false;
             }
         }) : ((event) => {
             if (this.thumbnails.thumbnailInstances && this.thumbnails.thumbnailInstances.length) {
                 // ... 2. Text is blurry if certain animation-oriented CSS fx are permanently set, so only turn them on during the transition
-                this.$container.toggleClass('cards-flipped', this.thumbnails.thumbnailInstances[0].$element.find('.flipper').hasClass('flipped'));
+                this.$container.toggleClass('cards-flipped', this.thumbnails.thumbnailInstances[0].isFlipped);
                 this.$container.addClass('animating');
                 window.requestAnimationFrame(() => {
-                    this.thumbnails.thumbnailInstances.forEach(thumbnail => (thumbnail.isFlipped = !thumbnail.isFlipped));
+                    this.thumbnails.thumbnailInstances.forEach(thumbnail => thumbnail.flip());
                     setTimeout(() => this.$container.removeClass('animating cards-flipped'), constants.FLIP_ANIMATION_DURATION);
                 });
 
@@ -137,18 +137,19 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
         });
         this.$element.on('change', '.switch', onChange);
 
-        this.changeWrapMode({
-            width: options.element.offsetWidth,
-            height: options.element.offsetHeight
-        });
+        //this.changeWrapMode({
+        //    width: options.element.offsetWidth,
+        //    height: options.element.offsetHeight
+        //});
     }
 
     public update(options: VisualUpdateOptions) {
         if (options['resizeMode']) {
             debounce(() => {
                 const shouldInline = this.isInlineSize(options.viewport);
-                if (!this.isInline && !shouldInline) {
+                if (!this.isInline && !shouldInline && this.thumbnails.verticalReader) {
                     this.thumbnails.verticalReader.reposition();
+                    this.thumbnails.wrappedThumbnailsView.verticalReader._resizeReaderContentHeader();
                 }
                 else if (shouldInline !== this.isInline) {
                     this.changeWrapMode(options.viewport);
@@ -195,6 +196,9 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
                     utils.hasColumns(this.dataView, constants.METADATA_FIELDS))));
 
         this.hideRedundantInfo();
+
+        const headerHSL = utils.convertToHSL(this.settings.reader.headerBackgroundColor.solid.color);
+        this.$container.toggleClass('lightButton', headerHSL[2] < 0.5);
     }
 
     private hideRedundantInfo() {
@@ -210,41 +214,35 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
     }
 
     private updateThumbnails(viewport) {
-        this.thumbnails.reset({
+        this.$container.html(this.thumbnails.reset({
             'subtitleDelimiter': this.settings.presentation.separator,
             'thumbnail.disableFlipping': !this.settings.flipState.enableFlipping,
             'thumbnail.displayBackCardByDefault': this.settings.flipState.cardFaceDefault === constants.CARD_FACE_METADATA,
+            'thumbnail.enableBoxShadow': this.settings.presentation.shadow,
             'thumbnail.expandedWidth': this.settings.reader.width,
+            'thumbnail.width': this.settings.presentation.thumbnailWidth,
             'readerContent.headerBackgroundColor': this.settings.reader.headerBackgroundColor.solid.color,
             'readerContent.headerSourceLinkColor': this.settings.reader.headerTextColor.solid.color,
             'verticalReader.height': this.settings.reader.height,
-        });
+        }).render());
         this.thumbnails.loadData(this.documentData.documentList);
-        this.$container.toggleClass('shadow-style', this.settings.presentation.borderStyle === 'boxShadow');
-        this.$container.toggleClass('border-style', this.settings.presentation.borderStyle === 'border');
         this.$container.find('.meta-data-images-container').toggle(this.settings.presentation.showImageOnBack);
 
-        // Colored band at top of card
-        this.thumbnails.thumbnailInstances.forEach((instance) => {
-           if (instance.data && instance.data.topBarColor) {
-               instance.$element.find('.card-content-container').css('border-top', '5px solid' + instance.data.topBarColor);
-           }
-        });
-
         window.setTimeout(() => {
-            this.thumbnails.thumbnailInstances.forEach(thumbnail => thumbnail.scaleHeaderImages());
+            //this.thumbnails.thumbnailInstances.forEach(thumbnail => thumbnail.scaleHeaderImages());
             this.changeWrapMode(viewport);
         }, 250);
     }
 
     private isInlineSize(viewport: IViewport) {
-        const thumbnailHeight = this.thumbnails.thumbnailInstances[0] ?
+        const thumbnailHeight = (this.thumbnails.thumbnailInstances[0] && this.thumbnails.thumbnailInstances[0].$element) ?
             this.thumbnails.thumbnailInstances[0].$element.height() :
-            this.settings.reader.height; // a reasonable guess for when we're called before loadData (e.g. by ctor)
+            constants.WRAP_THRESHOLD; // a reasonable guess for when we're called before loadData (e.g. by ctor)
         return thumbnailHeight &&
             viewport.height <= thumbnailHeight * constants.WRAP_HEIGHT_FACTOR;
 
     }
+
     private changeWrapMode(viewport: IViewport) {
         const isViewPortHeightSmallEnoughForInlineThumbnails = this.isInlineSize(viewport);
         this.thumbnails.toggleInlineDisplayMode(isViewPortHeightSmallEnoughForInlineThumbnails);

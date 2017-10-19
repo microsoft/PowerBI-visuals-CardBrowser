@@ -67,6 +67,7 @@ export const HTML_WHITELIST_MEDIA = [
 export const HTML_WHITELIST_SUMMARY = HTML_WHITELIST_STANDARD;
 export const HTML_WHITELIST_CONTENT = HTML_WHITELIST_STANDARD.concat(HTML_WHITELIST_MEDIA);
 export const WRAP_HEIGHT_FACTOR = 1.25;
+export const WRAP_THRESHOLD = 400; //px
 export const FLIP_ANIMATION_DURATION = 317; // 300 ms from CSS plus one frame
 
 /**
@@ -74,15 +75,16 @@ export const FLIP_ANIMATION_DURATION = 317; // 300 ms from CSS plus one frame
  */
 export const DEFAULT_VISUAL_SETTINGS = {
     presentation: {
-        borderStyle: 'border',
+        shadow: true,
         dateFormat: 'MMM D, YYYY',
         separator: ' \u2022 ',
         showImageOnBack: true,
+        thumbnailWidth: 200,
     },
     reader: {
         headerBackgroundColor: {
             solid: {
-                color: '#000',
+                color: '#373737',
             }
         },
         headerTextColor: {

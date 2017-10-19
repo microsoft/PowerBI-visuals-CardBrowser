@@ -1,11 +1,11 @@
-<div class="uncharted-thumbnails-thumbnail {{#unless disableFlipping}} flip-container {{/unless}}" data-id="{{id}}">
-    <div class="flipper">
+<div class="uncharted-thumbnails-thumbnail {{#unless disableFlipping}}flip-container{{/unless}} {{#if titleOnly}}title-only{{/if}} {{#if isExpanded}}expanded{{/if}} {{#if boxShadow}}enable-shadow{{/if}}" style="width: {{width}}px;" data-id="{{id}}">
+    <div class="flipper {{#if isFlipped}}flipped{{/if}}">
         {{#unless removeFrontCard}}
             <div class="front card">
                 {{#if iconUrl}}
                     <div class="card-icon" style="background-image: url({{iconUrl}})"></div>
                 {{/if}}
-                <div class="card-content-container">
+                <div class="card-content-container" style="width: {{cardContentWidth}}px; {{#if topBarColor}} border-top: 5px solid {{topBarColor}};{{/if}}">
                     <div class="card-content">
                         <div class="card-image"></div>
                         <div class="card-body">
@@ -21,60 +21,62 @@
                         </div>
                     </div>
                 </div>
+                <div class="card-content-container card-reader-container" style="width: {{expandedWidth}}px;"></div>
             </div>
         {{/unless}}
         {{#unless removeBackCard}}
-        <div class="back card">
-            <div class="card-content-container metadata-content-container {{#if imageUrl}}has-image{{/if}}">
-                <div class="meta-data-content">
-                    <div class="card-body">
-                        <div class="meta-data-content-header">
-                            <div class="title-box overflow-box">
-                                <h1 class="title overflow-value">{{title}}</h1>
-                            </div>
-                            {{#if subtitle.length }}
-                                <div class="subtitle-box overflow-box">
-                                    <div class="subtitle meta-line overflow-value">
-                                        {{#each subtitle}}{{#unless @first}}<span class="delimiter">{{../subtitleDelimiter}}</span>{{/unless}}<span class="value">{{this}}</span>{{/each}}
-                                    </div>
+            <div class="back card">
+                <div class="card-content-container metadata-content-container {{#if imageUrl}}has-image{{/if}}" style="width: {{cardContentWidth}}px; {{#if topBarColor}} border-top: 5px solid {{topBarColor}};{{/if}}">
+                    <div class="meta-data-content">
+                        <div class="card-body">
+                            <div class="meta-data-content-header">
+                                <div class="title-box overflow-box">
+                                    <h1 class="title overflow-value">{{title}}</h1>
                                 </div>
-                            {{/if}}
-                        </div>
-                        <div class="meta-data-table">
-                            <div class="keys-container">
-                                {{#each metadata}}
-                                    <div class="value-box overflow-box">
-                                        <span class="value overflow-value">{{@key}}</span> 
+                                {{#if subtitle.length }}
+                                    <div class="subtitle-box overflow-box">
+                                        <div class="subtitle meta-line overflow-value">
+                                            {{#each subtitle}}{{#unless @first}}<span class="delimiter">{{../subtitleDelimiter}}</span>{{/unless}}<span class="value">{{this}}</span>{{/each}}
+                                        </div>
                                     </div>
-                                {{/each}}
+                                {{/if}}
                             </div>
-                            <div class="values-container">
-                                {{#each metadata}}
-                                    <div class="value-box overflow-box">
-                                        <span class="value overflow-value">
-                                            {{#if this}}
-                                                {{#isImageDataUrl this}}
-                                                    <img src="{{this}}" alt="">
-                                                {{else}}
-                                                    {{#linkify this}}{{/linkify}}
-                                                {{/isImageDataUrl}}
-                                            {{/if}}
-                                        </span>
-                                    </div>
-                                {{/each}}
+                            <div class="meta-data-table">
+                                <div class="keys-container">
+                                    {{#each metadata}}
+                                        <div class="value-box overflow-box">
+                                            <span class="value overflow-value">{{@key}}</span> 
+                                        </div>
+                                    {{/each}}
+                                </div>
+                                <div class="values-container">
+                                    {{#each metadata}}
+                                        <div class="value-box overflow-box">
+                                            <span class="value overflow-value">
+                                                {{#if this}}
+                                                    {{#isImageDataUrl this}}
+                                                        <img src="{{this}}" alt="">
+                                                    {{else}}
+                                                        {{#linkify this}}{{/linkify}}
+                                                    {{/isImageDataUrl}}
+                                                {{/if}}
+                                            </span>
+                                        </div>
+                                    {{/each}}
+                                </div>
                             </div>
                         </div>
+                        {{#if imageUrl}}
+                        <div class="meta-data-images-container">
+                            {{#cardImages imageUrl}}
+                            <div class="image" data-url="{{url}}" style="background-image:url({{url}})"></div>
+                            {{/cardImages}}
+                        </div>
+                        {{/if}}
                     </div>
-                    {{#if imageUrl}}
-                    <div class="meta-data-images-container">
-                        {{#cardImages imageUrl}}
-                        <div class="image" data-url="{{url}}" style="background-image:url({{url}})"></div>
-                        {{/cardImages}}
-                    </div>
-                    {{/if}}
                 </div>
+                <div class="card-content-container card-reader-container" style="width: {{expandedWidth}}px"></div>
             </div>
-        </div>
         {{/unless}}
     </div>
 </div>

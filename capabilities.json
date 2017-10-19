@@ -37,20 +37,8 @@
       "kind": 0
     },
     {
-      "name": "source",
-      "displayName": "Source",
-      "description": "Source domain for the document; shown in the reader header bar",
-      "kind": 0
-    },
-    {
-      "name": "sourceUrl",
-      "displayName": "Source URL",
-      "description": "Source link for the document; accessed by clicking the reader header bar",
-      "kind": 0
-    },
-    {
       "name": "sourceImage",
-      "displayName": "Source Image (url)",
+      "displayName": "Badge (Image URL)",
       "description": "URL for an image to display in the top-right corner of the thumbnail",
       "kind": 0
     },
@@ -94,12 +82,6 @@
           },
           "subtitle": {
             "max": 6
-          },
-          "source": {
-            "max": 1
-          },
-          "sourceUrl": {
-            "max": 1
           },
           "sourceImage": {
             "max": 1
@@ -150,16 +132,6 @@
             },
             {
               "bind": {
-                "to": "source"
-              }
-            },
-            {
-              "bind": {
-                "to": "sourceUrl"
-              }
-            },
-            {
-              "bind": {
                 "to": "sourceImage"
               }
             },
@@ -186,15 +158,11 @@
   "objects": {
     "presentation": {
       "properties": {
-        "borderStyle": {
-          "displayName": "Border Style",
+        "shadow": {
+          "displayName": "Shadow",
           "description": "Control the style of border around thumbnails.",
           "type": {
-            "enumeration": [
-              {"value": "border", "displayName": "Border"},
-              {"value": "flat", "displayName": "Flat"},
-              {"value": "boxShadow", "displayName": "Shadow"}
-            ]
+            "bool": "true"
           }
         },
         "dateFormat": {
@@ -230,17 +198,6 @@
             "fill": {
               "solid": {
                 "color": "#000"
-              }
-            }
-          }
-        },
-        "headerTextColor": {
-          "description": "Text color for the reader header (Source)",
-          "displayName": "Header Text Color",
-          "type": {
-            "fill": {
-              "solid": {
-                "color": "#fff"
               }
             }
           }

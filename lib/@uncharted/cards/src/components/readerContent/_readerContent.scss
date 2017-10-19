@@ -23,7 +23,8 @@
 
         .header-source-link-box {
             position: relative;
-            width: 170px;
+            min-width: 170px;
+            max-width: 50%;
             height: 27px;
             padding: 0 15px;
             top: 0;
@@ -42,6 +43,7 @@
 
         .source-link {
             z-index: 1;
+            flex-grow: 1;
             text-decoration: none;
             color: #fff;
             white-space: nowrap;

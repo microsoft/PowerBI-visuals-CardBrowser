@@ -1,11 +1,5 @@
 @import '../variables';
 
-.inline-mode .uncharted-thumbnails-thumbnail {
-    height: $inline-thumbnail-height;
-    max-height: $inline-thumbnail-max-height;
-    min-height: $inline-thumbnail-min-height;
-}
-
 .flip-tag-hidden {
     .flip-tag, .back .flip-tag {
         display: none;
@@ -14,7 +8,6 @@
 
 .uncharted-thumbnails-thumbnail {
     $thumbnail-card-outer: $thumbnail-card-margin + $thumbnail-card-border-width;
-    width: $thumbnail-width;
     height: $thumbnail-height;
     padding: $thumbnail-card-margin;
     flex-shrink: 0;
@@ -34,9 +27,35 @@
         }
     }
 
+    &.enable-shadow {
+        .card {
+            border: none;
+        }
+        .front {
+            box-shadow: $thumbnail-card-shadow;
+        }
+        .back {
+            box-shadow: none;
+        }
+        .flipped {
+            .front {
+                box-shadow: none;
+            }
+            .back {
+                box-shadow: $thumbnail-card-shadow;
+            }
+        }
+        .card-content-container {
+            padding-left: 0;
+            left: 0;
+            &:after {
+                width: 100%;
+            }    
+        }
+    }
+
     .card {
         border: $thumbnail-card-border;
-        box-shadow: $thumbnail-card-shadow;
         background-color: #fff;
         position: relative;
         overflow: hidden;
@@ -45,7 +64,6 @@
     .card-content-container {
         position: absolute;
         height: 100%;
-        width: $thumbnail-width;
         padding-left: $thumbnail-card-outer * 2;
         left: -(2 * $thumbnail-card-outer);
         transition: opacity $thumbnail-expanding-animation;
