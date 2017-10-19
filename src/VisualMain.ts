@@ -117,26 +117,30 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         // Flipping cards involves two hacks:
         // ... 1. IE11 doesn't behave well, so we skip the transition altogether there
         const isIE11 = !!navigator.userAgent.match(/Trident\/7\./);
-        const onChange = isIE11 ? ((event) => {
-            if (this.thumbnails.thumbnailInstances && this.thumbnails.thumbnailInstances.length) {
-                this.thumbnails.thumbnailInstances.forEach(thumbnail => thumbnail.flip());
-                return false;
-            }
-        }) : ((event) => {
-            if (this.thumbnails.thumbnailInstances && this.thumbnails.thumbnailInstances.length) {
-                // ... 2. Text is blurry if certain animation-oriented CSS fx are permanently set, so only turn them on during the transition
-                this.$container.toggleClass('cards-flipped', this.thumbnails.thumbnailInstances[0].isFlipped);
-                this.$container.addClass('animating');
-                window.requestAnimationFrame(() => {
-                    this.thumbnails.thumbnailInstances.forEach(thumbnail => thumbnail.flip());
-                    setTimeout(() => this.$container.removeClass('animating cards-flipped'), constants.FLIP_ANIMATION_DURATION);
-                });
 
-                return false;
-            }
+        const onChange = isIE11 ? (flipSide => {
+            this.thumbnails.thumbnailInstances.forEach(thumbnail => thumbnail.flip(flipSide));
+        }) : (flipSide => {
+            // ... 2. Text is blurry if certain animation-oriented CSS fx are permanently set, so only turn them on during the transition
+            this.$container.toggleClass('cards-flipped', !flipSide);
+            this.$container.addClass('animating');
+            window.requestAnimationFrame(() => {
+                this.thumbnails.thumbnailInstances.forEach(thumbnail => thumbnail.flip(flipSide));
+                setTimeout(() => this.$container.removeClass('animating cards-flipped'), constants.FLIP_ANIMATION_DURATION);
+            });
         });
 
-        this.$element.on('change', '.switch', onChange);
+        const onInput = (event) => {
+            if (this.thumbnails.thumbnailInstances && this.thumbnails.thumbnailInstances.length) {
+                const flipSide = (event.currentTarget.id === constants.CARD_FACE_METADATA);
+                const otherButtonId = '#' + (flipSide ? constants.CARD_FACE_PREVIEW : constants.CARD_FACE_METADATA);
+                $(event.target.parentElement).find(otherButtonId).removeAttr('checked');
+                onChange(flipSide);
+                return false;
+            }
+        };
+
+        this.$element.on('change', 'input', onInput);
     }
 
     public update(options: VisualUpdateOptions) {
@@ -150,6 +154,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
                 else if (shouldInline !== this.isInline) {
                     this.changeWrapMode(options.viewport);
                 }
+                this.thumbnails.resize();
             }, 200)();
             return;
         }
@@ -161,13 +166,15 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         const newObjects = this.dataView && this.dataView.metadata && this.dataView.metadata.objects;
         this.settings = $.extend(true, {}, constants.DEFAULT_VISUAL_SETTINGS, newObjects);
 
-        const switchElement: any = this.$element.find('.switchInput')[0];
-        switchElement.checked = this.settings.flipState.cardFaceDefault === constants.CARD_FACE_METADATA;
+        const previewButton: any = this.$element.find('#preview')[0];
+        previewButton.checked = this.settings.flipState.cardFaceDefault === constants.CARD_FACE_PREVIEW;
+        const metaDataButton: any = this.$element.find('#metadata')[0];
+        metaDataButton.checked = this.settings.flipState.cardFaceDefault === constants.CARD_FACE_METADATA;
 
         this.loadedDocumentCount = this.dataView ? countDocuments(this.dataView) : 0;
         this.isLoadingMore = (this.settings.loadMoreData.enabled
-            && this.loadedDocumentCount < this.settings.loadMoreData.limit
-            && !!this.dataView.metadata.segment);
+        && this.loadedDocumentCount < this.settings.loadMoreData.limit
+        && !!this.dataView.metadata.segment);
         if (this.isLoadingMore) {
             // need to load more data
             this.isLoadingMore = true;
@@ -184,12 +191,12 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         this.$element.toggleClass('enable-flipping', this.settings.flipState.enableFlipping &&
             (this.dataView !== undefined &&
                 // looking at back with front defined
-                (this.settings.flipState.cardFaceDefault === constants.CARD_FACE_METADATA &&
-                    (utils.findColumn(this.dataView, constants.SUMMARY_FIELD) !== undefined ||
-                        utils.findColumn(this.dataView, constants.CONTENT_FIELD) !== undefined)) ||
+            (this.settings.flipState.cardFaceDefault === constants.CARD_FACE_METADATA &&
+            (utils.findColumn(this.dataView, constants.SUMMARY_FIELD) !== undefined ||
+            utils.findColumn(this.dataView, constants.CONTENT_FIELD) !== undefined)) ||
                 // looking at front with back defined
-                (this.settings.flipState.cardFaceDefault === constants.CARD_FACE_PREVIEW &&
-                    utils.hasColumns(this.dataView, constants.METADATA_FIELDS))));
+            (this.settings.flipState.cardFaceDefault === constants.CARD_FACE_PREVIEW &&
+            utils.hasColumns(this.dataView, constants.METADATA_FIELDS))));
 
         this.hideRedundantInfo();
 
@@ -205,7 +212,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         let subtitleColumns = utils.findColumn(this.dataView, 'subtitle', true);
         if (subtitleColumns) {
             this.$container.toggleClass('disable-back-card-subtitle', subtitleColumns.findIndex((
-                subtitleColumn) => utils.hasRole(subtitleColumn, metadataRoleName)) > -1);
+                    subtitleColumn) => utils.hasRole(subtitleColumn, metadataRoleName)) > -1);
         }
     }
 

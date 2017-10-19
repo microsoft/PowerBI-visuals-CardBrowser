@@ -35,6 +35,7 @@
         .header-source-link-background {
             position: absolute;
             left: 0;
+            top: 0;
             width: 100%;
             height: 100%;
             background: #555;
@@ -90,6 +91,30 @@
     .reader-content-viewport {
         height: 100%;
         overflow: auto;
+        overflow: overlay; // for webkit browser
+    }
+
+    .reader-content-viewport {
+        &::-webkit-scrollbar {
+            width: 8px;
+            border-radius: 100px;
+            background-color: rgba(0, 0, 0, 0);
+        }
+        
+        &::-webkit-scrollbar:hover {
+            background-color: rgba(0, 0, 0, 0.09);
+        }
+        
+        &::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 100px;
+        }
+
+        &::-webkit-scrollbar-thumb:hover,
+        &::-webkit-scrollbar-thumb:active
+        {
+            background: rgba(0, 0, 0, 0.5);
+        }
     }
 
     .reader-content-body {

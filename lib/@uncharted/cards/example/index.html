@@ -123,10 +123,10 @@
 
             thumbnails.on('thumbnails:clickBackground verticalReader:clickBackground', function () { thumbnails.closeReader() });
 
-            let ticking = false;
-            $(window).resize(() => {
+            var ticking = false;
+            $(window).resize(function () {
                 if (!ticking) {
-                    requestAnimationFrame(() => {
+                    requestAnimationFrame(function () {
                         thumbnails.resize();
                         ticking = false;
                     });

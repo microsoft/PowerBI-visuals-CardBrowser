@@ -6,7 +6,35 @@ $thumbnail-flipping-animation-duration: 0.3s;
 
 @import "../lib/@uncharted/cards/src/main.scss";
 
+.uncharted-thumbnails-header-image .mirror-image-box .image {
+  right: 6px;
+}
+
 .visual .uncharted-thumbnails-style {
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    border-radius: 100px;
+    background-color: rgba(0, 0, 0, 0);
+  }
+
+  ::-webkit-scrollbar:hover {
+    background-color: rgba(0, 0, 0, 0.09);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 100px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover,
+  ::-webkit-scrollbar-thumb:active
+  {
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+
   a {
     text-decoration: none;
     color: #2C83C0;
@@ -51,14 +79,10 @@ $thumbnail-flipping-animation-duration: 0.3s;
     z-index: 1;
   }
 
-  /* Hide default HTML checkbox */
-  .switchInput {display:none;}
-
-  /* The slider */
+  /* The button */
   .flip-button {
     display: inline;
     position: relative;
-    cursor: pointer;
     font-size: 8px;
     left: 0;
     top: 0;
@@ -79,67 +103,48 @@ $thumbnail-flipping-animation-duration: 0.3s;
       transition: .3s;
     }
 
+    /* Hide default HTML checkbox */
+    input[type="radio"] {
+      display:none;
+    }
+
+    input[type="radio"] + label {
+      cursor: pointer;
+      .box {
+        background-color: transparent;
+      }
+      &:hover {
+        .box {
+          background-color: rgba(85, 85, 85, 0.5);
+        }
+      }
+    }
+
+    input[type="radio"]:checked + label {
+      .box {
+        background-color: #555;
+      }
+      &:hover {
+        .box {
+          background-color: #555;
+        }
+      }
+    }
+
+    .flip-button-input {
+
+    }
+
     .flip-left-side {
       border-right: 1px dotted #555;
       display: inline-block;
       padding-right: 6px;
       margin-right: 3px;
-      .box {
-        background-color: #555;
-      }
     }
 
     .flip-right-side {
       display: inline-block;
-      .box {
-        background-color: transparent;
-      }
     }
-
-    &:hover {
-      .flip-left-side {
-        .box {
-          background-color: transparent;
-        }
-      }
-      .flip-right-side {
-        .box {
-          background-color: rgba(85, 85, 85, 0.5);
-        }
-      }
-    }
-  }
-
-  .switchInput:checked + .flip-button {
-    .flip-left-side {
-      .box {
-        background-color: transparent;
-      }
-    }
-
-    .flip-right-side {
-      .box {
-        background-color: #555;
-      }
-    }
-
-    &:hover {
-      .flip-left-side {
-        .box {
-          background-color: rgba(85, 85, 85, 0.5);
-        }
-      }
-      .flip-right-side {
-        .box {
-          background-color: transparent;
-        }
-      }
-    }
-  }
-
-  .card {
-    border: none;
-    box-shadow: none;
   }
 
   .reader-content-header {

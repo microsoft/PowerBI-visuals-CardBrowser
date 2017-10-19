@@ -22,6 +22,9 @@
  */
 .uncharted-thumbnails-style {
     box-sizing: border-box;
+    * {
+        -ms-overflow-style: -ms-autohiding-scrollbar;
+    }
     *,
     *:before,
     *:after {

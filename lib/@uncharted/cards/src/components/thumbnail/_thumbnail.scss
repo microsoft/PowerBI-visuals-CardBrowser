@@ -27,7 +27,7 @@
         }
     }
 
-    &.enable-shadow {
+    &.shadow-enabled {
         .card {
             border: none;
         }
@@ -68,8 +68,10 @@
         left: -(2 * $thumbnail-card-outer);
         transition: opacity $thumbnail-expanding-animation;
         opacity: 1;
+        z-index: 1;
         &.card-reader-container {
             opacity: 0;
+            z-index: 0;
         }
     }
 
@@ -78,6 +80,7 @@
 
         &.card-reader-container {
             opacity: 1;
+            z-index: 2;
         }
     }
 
