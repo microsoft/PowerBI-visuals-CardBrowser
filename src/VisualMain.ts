@@ -54,7 +54,7 @@ import {
 } from '../lib/@uncharted/cards/src/components/constants';
 const visualTemplate = require('./visual.handlebars');
 
-export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
+export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
 
     private $element: JQuery;
     private $container: JQuery;
@@ -135,12 +135,8 @@ export default class Cards8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
                 return false;
             }
         });
-        this.$element.on('change', '.switch', onChange);
 
-        //this.changeWrapMode({
-        //    width: options.element.offsetWidth,
-        //    height: options.element.offsetHeight
-        //});
+        this.$element.on('change', '.switch', onChange);
     }
 
     public update(options: VisualUpdateOptions) {

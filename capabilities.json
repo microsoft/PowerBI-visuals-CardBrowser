@@ -160,7 +160,7 @@
       "properties": {
         "shadow": {
           "displayName": "Shadow",
-          "description": "Control the style of border around thumbnails.",
+          "description": "Control the style of border around cards.",
           "type": {
             "bool": "true"
           }
@@ -185,9 +185,16 @@
           "type": {
             "bool": "true"
           }
+        },
+        "thumbnailWidth": {
+          "displayName": "Card Width",
+          "description": "Width, in pixels, of each card",
+          "type": {
+            "numeric": 200
+          }
         }
       },
-      "displayName": "Thumbnail Cards"
+      "displayName": "Card Browser"
     },
     "reader": {
       "properties": {

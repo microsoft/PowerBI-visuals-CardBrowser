@@ -1,10 +1,10 @@
 {
   "visual": {
-    "name": "FlipCards",
-    "displayName": "FlipCards",
-    "guid": "Cards8D7CFFDA2E7E400C9474F41B9EDBBA58",
-    "visualClassName": "Cards8D7CFFDA2E7E400C9474F41B9EDBBA58",
-    "description": "ESSEX FlipCards",
+    "name": "CardBrowser",
+    "displayName": "Card Browser",
+    "guid": "CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58",
+    "visualClassName": "CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58",
+    "description": "ESSEX Card Browser",
     "supportUrl": "http://community.powerbi.com",
     "gitHubUrl": ""
   },
