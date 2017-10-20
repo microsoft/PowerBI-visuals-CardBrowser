@@ -94,34 +94,12 @@
         overflow: overlay; // for webkit browser
     }
 
-    .reader-content-viewport {
-        &::-webkit-scrollbar {
-            width: 8px;
-            border-radius: 100px;
-            background-color: rgba(0, 0, 0, 0);
-        }
-        
-        &::-webkit-scrollbar:hover {
-            background-color: rgba(0, 0, 0, 0.09);
-        }
-        
-        &::-webkit-scrollbar-thumb {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 100px;
-        }
-
-        &::-webkit-scrollbar-thumb:hover,
-        &::-webkit-scrollbar-thumb:active
-        {
-            background: rgba(0, 0, 0, 0.5);
-        }
-    }
-
     .reader-content-body {
         position: relative;
         padding: 8px 32px 22px;
         font-size: 12px;
     }
+
     &.no-header-image {
         .reader-content-body {
             padding-top: 40px;

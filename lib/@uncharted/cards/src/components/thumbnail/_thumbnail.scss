@@ -48,8 +48,11 @@
         .card-content-container {
             padding-left: 0;
             left: 0;
+            padding-left: $thumbnail-card-margin * 2;
+            left: -(2 * $thumbnail-card-margin);
             &:after {
                 width: 100%;
+                width: calc(100% - #{$thumbnail-card-margin * 2});
             }    
         }
     }

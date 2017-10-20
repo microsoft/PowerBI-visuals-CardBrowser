@@ -147,22 +147,10 @@ $thumbnail-flipping-animation-duration: 0.3s;
     }
   }
 
-  .reader-content-header {
-    border-bottom: none;
-    .close-button {
-      color: #404040;
-    }
-  }
-
   .reader-content-header .header-source-link-box {
     width: initial;
     min-width: 170px;
     max-width: 50%;
-  }
-
-  .uncharted-thumbnails-thumbnail .card-content-container {
-    padding-left: 10px;
-    left: -10px;
   }
 
   .container {
@@ -188,10 +176,30 @@ $thumbnail-flipping-animation-duration: 0.3s;
       }
     }
 
+    .reader-content-header {
+      border-bottom: none;
+      .close-button {
+        margin-right: 4px;
+        color: #404040;
+        &:hover {
+          color: #707070;
+          i {
+            color: #707070;
+          }
+        }
+      }
+    }
+
     &.lightButton {
       .reader-content-header {
         .close-button {
           color: #C0C0C0;
+          &:hover {
+            color: #909090;
+            i {
+              color: #909090;
+            }
+          }
         }
       }
     }
@@ -211,19 +219,27 @@ $thumbnail-flipping-animation-duration: 0.3s;
 .fix-blur-hack {
   // make thumbnails clean crisp
   .uncharted-thumbnails-thumbnail.flip-container {
-    .front,
-    .back {
-      backface-visibility: unset;
-      transform: none;
-    }
-    .flipper.flipped {
-      transition: none;
-      transform: none;
+    .flipper {
+      .front,
+      .back {
+        backface-visibility: unset;
+        transform: none;
+      }
       .front {
-        z-index: 0;
+        visibility: visible;
       }
       .back {
-        z-index: 2;
+        visibility: hidden;
+      }
+      &.flipped {
+        transition: none;
+        transform: none;
+        .front {
+          visibility: hidden;
+        }
+        .back {
+          visibility: visible;
+        }
       }
     }
   }
@@ -243,20 +259,25 @@ $thumbnail-flipping-animation-duration: 0.3s;
       &.flipped {
         transform: rotateY(180deg);
       }
+      .front {
+        transform: rotateY(0deg);
+      }
+      .back {
+        transform: rotateY(180deg);
+      }
+      .front,
+      .back {
+        backface-visibility: hidden;
+        position: absolute;
+        top: 0;
+        left: 0;
+        visibility: visible;
+      }
     }
-    .front,
-    .back {
-      backface-visibility: hidden;
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
-    .front {
-      z-index: 2;
-      transform: rotateY(0deg);
-    }
-    .back {
-      transform: rotateY(180deg);
+    &.expanded {
+      .flipper {
+        transition: none !important;
+      }
     }
   }
 

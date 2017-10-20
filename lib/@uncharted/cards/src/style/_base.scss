@@ -20,11 +20,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 .uncharted-thumbnails-style {
+
     box-sizing: border-box;
-    * {
-        -ms-overflow-style: -ms-autohiding-scrollbar;
+
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+        border-radius: 100px;
+        background-color: rgba(0, 0, 0, 0);
     }
+
+    ::-webkit-scrollbar:hover {
+        background-color: rgba(0, 0, 0, 0.09);
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 100px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover,
+    ::-webkit-scrollbar-thumb:active
+    {
+        background: rgba(0, 0, 0, 0.5);
+    }
+
     *,
     *:before,
     *:after {
