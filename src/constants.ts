@@ -69,6 +69,7 @@ export const HTML_WHITELIST_CONTENT = HTML_WHITELIST_STANDARD.concat(HTML_WHITEL
 export const WRAP_HEIGHT_FACTOR = 1.25;
 export const WRAP_THRESHOLD = 400; //px
 export const FLIP_ANIMATION_DURATION = 317; // 300 ms from CSS plus one frame
+export const INFINITE_SCROLL_DELAY = 50;
 
 /**
  * Default visual settings

@@ -36,6 +36,7 @@ import IColorInfo = powerbi.IColorInfo;
 import DataView = powerbi.DataView;
 import EnumerateVisualObjectInstancesOptions = powerbi.EnumerateVisualObjectInstancesOptions;
 import VisualObjectInstance = powerbi.VisualObjectInstance;
+import VisualDataChangeOperationKind = powerbi.VisualDataChangeOperationKind;
 
 import * as Promise from 'bluebird';
 import * as $ from 'jquery';
@@ -66,6 +67,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
     private isDesktop: Boolean = true;
     private loadedDocumentCount = 0;
     private isLoadingMore = false;
+    private hasMoreData = false;
     private isInline = true;
 
     private settings = $.extend({}, constants.DEFAULT_VISUAL_SETTINGS);
@@ -141,6 +143,33 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         };
 
         this.$element.on('change', 'input', onInput);
+
+        // set up infinite scroll
+        let infiniteScrollTimeoutId:any;
+
+        this.$element.on('wheel', '.uncharted-wrapped-thumbnails-view', (e) => {
+            if ($(e.target).height() + e.target.scrollTop >= e.target.scrollHeight) {
+                infiniteScrollTimeoutId = setTimeout(() => {
+                    clearTimeout(infiniteScrollTimeoutId);
+                    if (!this.isLoadingMore && this.hasMoreData) {
+                        this.isLoadingMore = true;
+                        this.hostServices.loadMoreData();
+                    }
+                }, constants.INFINITE_SCROLL_DELAY);
+            }
+        });
+
+        this.$element.on('wheel', '.uncharted-inline-thumbnails-view', (e) => {
+            if ($(e.target).width() + e.target.scrollLeft >= e.target.scrollWidth) {
+                infiniteScrollTimeoutId = setTimeout(() => {
+                    clearTimeout(infiniteScrollTimeoutId);
+                    if (!this.isLoadingMore && this.hasMoreData) {
+                        this.isLoadingMore = true;
+                        this.hostServices.loadMoreData();
+                    }
+                }, constants.INFINITE_SCROLL_DELAY);
+            }
+        });
     }
 
     public update(options: VisualUpdateOptions) {
@@ -171,10 +200,17 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         const metaDataButton: any = this.$element.find('#metadata')[0];
         metaDataButton.checked = this.settings.flipState.cardFaceDefault === constants.CARD_FACE_METADATA;
 
+        let previousLoadedDocumentCount = 0;
+        if (options.operationKind === VisualDataChangeOperationKind.Append) {
+            previousLoadedDocumentCount = this.loadedDocumentCount;
+        }
+
         this.loadedDocumentCount = this.dataView ? countDocuments(this.dataView) : 0;
+
+        this.hasMoreData = !!this.dataView.metadata.segment;
         this.isLoadingMore = (this.settings.loadMoreData.enabled
         && this.loadedDocumentCount < this.settings.loadMoreData.limit
-        && !!this.dataView.metadata.segment);
+        && this.hasMoreData);
         if (this.isLoadingMore) {
             // need to load more data
             this.isLoadingMore = true;
@@ -184,7 +220,12 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
 
         this.documentData = convertToDocumentData(this.dataView, this.settings, options['dataTransforms'] && options['dataTransforms'].roles);
         this.updateVisualStyleConfigs();
-        this.updateThumbnails(options.viewport);
+
+        if (previousLoadedDocumentCount) {
+            this.thumbnails.loadMoreData(this.documentData.documentList.slice(previousLoadedDocumentCount));
+        } else {
+            this.updateThumbnails(options.viewport);
+        }
     }
 
     private updateVisualStyleConfigs() {
@@ -232,7 +273,6 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         this.$container.find('.meta-data-images-container').toggle(this.settings.presentation.showImageOnBack);
 
         window.setTimeout(() => {
-            //this.thumbnails.thumbnailInstances.forEach(thumbnail => thumbnail.scaleHeaderImages());
             this.changeWrapMode(viewport);
         }, 250);
     }

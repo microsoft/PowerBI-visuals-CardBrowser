@@ -30,20 +30,7 @@
     &.shadow-enabled {
         .card {
             border: none;
-        }
-        .front {
             box-shadow: $thumbnail-card-shadow;
-        }
-        .back {
-            box-shadow: none;
-        }
-        .flipped {
-            .front {
-                box-shadow: none;
-            }
-            .back {
-                box-shadow: $thumbnail-card-shadow;
-            }
         }
         .card-content-container {
             padding-left: 0;
@@ -54,6 +41,20 @@
                 width: calc(100% - #{$thumbnail-card-margin * 2});
             }    
         }
+    }
+
+    &.flip-container.shadow-enabled {
+        .back {
+            box-shadow: none;
+        }
+        .flipped {
+            .back {
+                box-shadow: $thumbnail-card-shadow;
+            }
+            .front {
+                box-shadow: none;
+            }
+        } 
     }
 
     .card {
