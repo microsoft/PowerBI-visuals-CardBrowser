@@ -51,7 +51,6 @@
             padding-left: $thumbnail-card-margin * 2;
             left: -(2 * $thumbnail-card-margin);
             &:after {
-                width: 100%;
                 width: calc(100% - #{$thumbnail-card-margin * 2});
             }    
         }
@@ -161,7 +160,7 @@
     .meta-data-content {
         position: relative;
         height: 100%;
-        $title-line-height: 1.15em;
+        $title-line-height: 1.25em;
 
         .overflow-box {
             position: relative;
