@@ -54,6 +54,7 @@ import {
     EVENTS,
 } from '../lib/@uncharted/cards/src/components/constants';
 const visualTemplate = require('./visual.handlebars');
+const loaderTemplate = require('./loader.handlebars');
 
 export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVisual {
 
@@ -69,6 +70,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
     private isLoadingMore = false;
     private hasMoreData = false;
     private isInline = true;
+    private $loaderElement: JQuery;
 
     private settings = $.extend({}, constants.DEFAULT_VISUAL_SETTINGS);
 
@@ -87,6 +89,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         this.$element = $(visualTemplate({
             isDesktop: this.isDesktop,
         })).appendTo(options.element);
+        this.$loaderElement = $(loaderTemplate());
 
         this.thumbnails = new Thumbnails();
         this.$container = this.$element.find('.container');
@@ -110,7 +113,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         // close the reader when clicked above
         this.$element.find('.flip-panel').on('click', (event) => {
             if ($(event.target).hasClass('flip-panel')) {
-                // When the outside portion of the flip panel (that centers the switch) is clicked, 
+                // When the outside portion of the flip panel (that centers the switch) is clicked,
                 // close the reader
                 this.thumbnails.closeReader();
             }
@@ -153,6 +156,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
                 clearTimeout(infiniteScrollTimeoutId);
                 if (!this.isLoadingMore && this.hasMoreData) {
                     this.isLoadingMore = true;
+                    this.showLoader();
                     this.hostServices.loadMoreData();
                 }
             }, constants.INFINITE_SCROLL_DELAY);
@@ -197,6 +201,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         if (this.isLoadingMore) {
             // need to load more data
             this.isLoadingMore = true;
+            this.showLoader();
             this.hostServices.loadMoreData();
             return;
         }
@@ -204,6 +209,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         this.documentData = convertToDocumentData(this.dataView, this.settings, options['dataTransforms'] && options['dataTransforms'].roles);
         this.updateVisualStyleConfigs();
 
+        this.hideLoader();
         if (previousLoadedDocumentCount) {
             this.thumbnails.loadMoreData(this.documentData.documentList.slice(previousLoadedDocumentCount));
         } else {
@@ -253,7 +259,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
             'verticalReader.height': this.settings.reader.height,
         }).render());
         this.thumbnails.loadData(this.documentData.documentList);
-        this.$container.find('.meta-data-images-container').toggle(this.settings.presentation.showImageOnBack);
+        this.$container.toggleClass('disable-back-card-image', !this.settings.presentation.showImageOnBack);
 
         window.setTimeout(() => {
             this.changeWrapMode(viewport);
@@ -308,5 +314,19 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
     public destroy(): void {
         this.thumbnails = null;
         this.hostServices = null;
+    }
+
+    /**
+     * Show the animated loading icon.
+     */
+    private showLoader(): void {
+        this.$container.append(this.$loaderElement);
+    }
+
+    /**
+     * Hide the animated loading icon.
+     */
+    private hideLoader(): void {
+        this.$loaderElement.detach();
     }
 }
