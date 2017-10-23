@@ -147,28 +147,15 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         // set up infinite scroll
         let infiniteScrollTimeoutId:any;
 
-        this.$element.on('wheel', '.uncharted-wrapped-thumbnails-view', (e) => {
-            if ($(e.target).height() + e.target.scrollTop >= e.target.scrollHeight) {
-                infiniteScrollTimeoutId = setTimeout(() => {
-                    clearTimeout(infiniteScrollTimeoutId);
-                    if (!this.isLoadingMore && this.hasMoreData) {
-                        this.isLoadingMore = true;
-                        this.hostServices.loadMoreData();
-                    }
-                }, constants.INFINITE_SCROLL_DELAY);
-            }
-        });
-
-        this.$element.on('wheel', '.uncharted-inline-thumbnails-view', (e) => {
-            if ($(e.target).width() + e.target.scrollLeft >= e.target.scrollWidth) {
-                infiniteScrollTimeoutId = setTimeout(() => {
-                    clearTimeout(infiniteScrollTimeoutId);
-                    if (!this.isLoadingMore && this.hasMoreData) {
-                        this.isLoadingMore = true;
-                        this.hostServices.loadMoreData();
-                    }
-                }, constants.INFINITE_SCROLL_DELAY);
-            }
+        this.thumbnails.on('inlineThumbnailsView:scrollEnd wrappedThumbnailsView:scrollEnd', () => {
+            console.log('scrollEnd');
+            infiniteScrollTimeoutId = setTimeout(() => {
+                clearTimeout(infiniteScrollTimeoutId);
+                if (!this.isLoadingMore && this.hasMoreData) {
+                    this.isLoadingMore = true;
+                    this.hostServices.loadMoreData();
+                }
+            }, constants.INFINITE_SCROLL_DELAY);
         });
     }
 
@@ -176,11 +163,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         if (options['resizeMode']) {
             debounce(() => {
                 const shouldInline = this.isInlineSize(options.viewport);
-                if (!this.isInline && !shouldInline && this.thumbnails.verticalReader) {
-                    this.thumbnails.verticalReader.reposition();
-                    this.thumbnails.wrappedThumbnailsView.verticalReader._resizeReaderContentHeader();
-                }
-                else if (shouldInline !== this.isInline) {
+                if (shouldInline !== this.isInline) {
                     this.changeWrapMode(options.viewport);
                 }
                 this.thumbnails.resize();

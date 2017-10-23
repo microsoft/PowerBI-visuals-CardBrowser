@@ -123,6 +123,10 @@
 
             thumbnails.on('thumbnails:clickBackground verticalReader:clickBackground', function () { thumbnails.closeReader() });
 
+            thumbnails.on('inlineThumbnailsView:scrollEnd wrappedThumbnailsView:scrollEnd', function () {
+                console.log('scrollEnd');
+            });
+
             var ticking = false;
             $(window).resize(function () {
                 if (!ticking) {

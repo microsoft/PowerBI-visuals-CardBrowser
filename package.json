@@ -23,7 +23,7 @@
   "author": "Uncharted Software Inc.",
   "license": "MIT",
   "privateSubmodules": {
-    "@uncharted/cards": "0.8.12"
+    "@uncharted/cards": "0.9.1"
   },
   "devDependencies": {
     "@types/jquery": "^3.2.11",
