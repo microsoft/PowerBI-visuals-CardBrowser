@@ -73,6 +73,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
     private $loaderElement: JQuery;
 
     private settings = $.extend({}, constants.DEFAULT_VISUAL_SETTINGS);
+    private isFlipped = this.settings.flipState.cardFaceDefault === constants.CARD_FACE_METADATA;
 
     /* init function for legacy api */
     constructor(options: VisualConstructorOptions) {
@@ -137,10 +138,10 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
 
         const onInput = (event) => {
             if (this.thumbnails.thumbnailInstances && this.thumbnails.thumbnailInstances.length) {
-                const flipSide = (event.currentTarget.id === constants.CARD_FACE_METADATA);
-                const otherButtonId = '#' + (flipSide ? constants.CARD_FACE_PREVIEW : constants.CARD_FACE_METADATA);
+                this.isFlipped = (event.currentTarget.id === constants.CARD_FACE_METADATA);
+                const otherButtonId = '#' + (this.isFlipped ? constants.CARD_FACE_PREVIEW : constants.CARD_FACE_METADATA);
                 $(event.target.parentElement).find(otherButtonId).removeAttr('checked');
-                onChange(flipSide);
+                onChange(this.isFlipped);
                 return false;
             }
         };
@@ -182,11 +183,6 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         const newObjects = this.dataView && this.dataView.metadata && this.dataView.metadata.objects;
         this.settings = $.extend(true, {}, constants.DEFAULT_VISUAL_SETTINGS, newObjects);
 
-        const previewButton: any = this.$element.find('#preview')[0];
-        previewButton.checked = this.settings.flipState.cardFaceDefault === constants.CARD_FACE_PREVIEW;
-        const metaDataButton: any = this.$element.find('#metadata')[0];
-        metaDataButton.checked = this.settings.flipState.cardFaceDefault === constants.CARD_FACE_METADATA;
-
         let previousLoadedDocumentCount = 0;
         if (options.operationKind === VisualDataChangeOperationKind.Append) {
             previousLoadedDocumentCount = this.loadedDocumentCount;
@@ -207,11 +203,20 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         }
 
         this.documentData = convertToDocumentData(this.dataView, this.settings, options['dataTransforms'] && options['dataTransforms'].roles);
+
+        if (!previousLoadedDocumentCount) {
+            this.isFlipped = this.settings.flipState.cardFaceDefault === constants.CARD_FACE_METADATA;
+        }
         this.updateVisualStyleConfigs();
 
         this.hideLoader();
         if (previousLoadedDocumentCount) {
             this.thumbnails.loadMoreData(this.documentData.documentList.slice(previousLoadedDocumentCount));
+            if (this.isFlipped !== (this.settings.flipState.cardFaceDefault === constants.CARD_FACE_METADATA)) {
+                for (let i = previousLoadedDocumentCount; i < this.loadedDocumentCount; i++ ) {
+                    this.thumbnails.thumbnailInstances[i].flip(this.isFlipped);
+                }
+            }
         } else {
             this.updateThumbnails(options.viewport);
         }
@@ -232,6 +237,11 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
 
         const headerHSL = utils.convertToHSL(this.settings.reader.headerBackgroundColor.solid.color);
         this.$container.toggleClass('lightButton', headerHSL[2] < 0.5);
+
+        const previewButton: any = this.$element.find('#preview')[0];
+        previewButton.checked = !this.isFlipped;
+        const metaDataButton: any = this.$element.find('#metadata')[0];
+        metaDataButton.checked = this.isFlipped;
     }
 
     private hideRedundantInfo() {
@@ -247,10 +257,11 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
     }
 
     private updateThumbnails(viewport) {
+        this.isFlipped = this.settings.flipState.cardFaceDefault === constants.CARD_FACE_METADATA;
         this.$container.html(this.thumbnails.reset({
             'subtitleDelimiter': this.settings.presentation.separator,
             'thumbnail.disableFlipping': !this.settings.flipState.enableFlipping,
-            'thumbnail.displayBackCardByDefault': this.settings.flipState.cardFaceDefault === constants.CARD_FACE_METADATA,
+            'thumbnail.displayBackCardByDefault': this.isFlipped,
             'thumbnail.enableBoxShadow': this.settings.presentation.shadow,
             'thumbnail.expandedWidth': this.settings.reader.width,
             'thumbnail.width': this.settings.presentation.thumbnailWidth,
