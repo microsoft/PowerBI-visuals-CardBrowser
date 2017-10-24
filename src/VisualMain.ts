@@ -130,10 +130,10 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
             // ... 2. Text is blurry if certain animation-oriented CSS fx are permanently set, so only turn them on during the transition
             this.$container.toggleClass('cards-flipped', !this.isFlipped);
             this.$container.addClass('animating');
-            window.requestAnimationFrame(() => {
+            setTimeout(() => {
                 this.thumbnails.thumbnailInstances.forEach(thumbnail => thumbnail.flip(this.isFlipped));
                 setTimeout(() => this.$container.removeClass('animating cards-flipped'), constants.FLIP_ANIMATION_DURATION);
-            });
+            }, 50);
         });
 
         const onInput = (event) => {
