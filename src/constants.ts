@@ -25,6 +25,7 @@ export const METADATA_FIELDS = ['metadata'];
 export const REQUIRED_FIELDS = ['id'];
 export const SUMMARY_FIELD = 'summary';
 export const CONTENT_FIELD = 'content';
+export const IMAGE_FIELD = 'imageUrl';
 export const CARD_FACE_METADATA = 'metadata';
 export const CARD_FACE_PREVIEW = 'preview';
 
@@ -70,6 +71,7 @@ export const WRAP_HEIGHT_FACTOR = 1.25;
 export const WRAP_THRESHOLD = 400; //px
 export const FLIP_ANIMATION_DURATION = 317; // 300 ms from CSS plus one frame
 export const INFINITE_SCROLL_DELAY = 50;
+export const MIN_THUMBNAIL_WIDTH = 11;
 
 /**
  * Default visual settings

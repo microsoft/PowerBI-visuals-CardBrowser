@@ -124,14 +124,14 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         // ... 1. IE11 doesn't behave well, so we skip the transition altogether there
         const isIE11 = !!navigator.userAgent.match(/Trident\/7\./);
 
-        const onChange = isIE11 ? (flipSide => {
-            this.thumbnails.thumbnailInstances.forEach(thumbnail => thumbnail.flip(flipSide));
-        }) : (flipSide => {
+        const onChange = isIE11 ? (() => {
+            this.thumbnails.thumbnailInstances.forEach(thumbnail => thumbnail.flip(this.isFlipped));
+        }) : (() => {
             // ... 2. Text is blurry if certain animation-oriented CSS fx are permanently set, so only turn them on during the transition
-            this.$container.toggleClass('cards-flipped', !flipSide);
+            this.$container.toggleClass('cards-flipped', !this.isFlipped);
             this.$container.addClass('animating');
             window.requestAnimationFrame(() => {
-                this.thumbnails.thumbnailInstances.forEach(thumbnail => thumbnail.flip(flipSide));
+                this.thumbnails.thumbnailInstances.forEach(thumbnail => thumbnail.flip(this.isFlipped));
                 setTimeout(() => this.$container.removeClass('animating cards-flipped'), constants.FLIP_ANIMATION_DURATION);
             });
         });
@@ -141,17 +141,17 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
                 this.isFlipped = (event.currentTarget.id === constants.CARD_FACE_METADATA);
                 const otherButtonId = '#' + (this.isFlipped ? constants.CARD_FACE_PREVIEW : constants.CARD_FACE_METADATA);
                 $(event.target.parentElement).find(otherButtonId).removeAttr('checked');
-                onChange(this.isFlipped);
+                onChange();
                 return false;
             }
         };
 
-        this.$element.on('change', 'input', onInput);
+        this.$element.find('input').on('change', onInput);
 
         // set up infinite scroll
         let infiniteScrollTimeoutId:any;
 
-        this.thumbnails.on('inlineThumbnailsView:scrollEnd wrappedThumbnailsView:scrollEnd', () => {
+        this.thumbnails.on('inlineThumbnailsView:scrollEnd wrappedThumbnailsView:scrollEnd', debounce(() => {
             console.log('scrollEnd');
             infiniteScrollTimeoutId = setTimeout(() => {
                 clearTimeout(infiniteScrollTimeoutId);
@@ -161,7 +161,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
                     this.hostServices.loadMoreData();
                 }
             }, constants.INFINITE_SCROLL_DELAY);
-        });
+        }));
     }
 
     public update(options: VisualUpdateOptions) {
@@ -228,6 +228,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
                 // looking at back with front defined
             (this.settings.flipState.cardFaceDefault === constants.CARD_FACE_METADATA &&
             (utils.findColumn(this.dataView, constants.SUMMARY_FIELD) !== undefined ||
+            utils.findColumn(this.dataView, constants.IMAGE_FIELD) !== undefined ||
             utils.findColumn(this.dataView, constants.CONTENT_FIELD) !== undefined)) ||
                 // looking at front with back defined
             (this.settings.flipState.cardFaceDefault === constants.CARD_FACE_PREVIEW &&
@@ -264,8 +265,9 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
             'thumbnail.displayBackCardByDefault': this.isFlipped,
             'thumbnail.enableBoxShadow': this.settings.presentation.shadow,
             'thumbnail.expandedWidth': this.settings.reader.width,
-            'thumbnail.width': this.settings.presentation.thumbnailWidth,
+            'thumbnail.width': Math.max(constants.MIN_THUMBNAIL_WIDTH, this.settings.presentation.thumbnailWidth),
             'readerContent.headerBackgroundColor': this.settings.reader.headerBackgroundColor.solid.color,
+            'readerContent.headerImageMaxWidth': this.settings.presentation.thumbnailWidth - 10,
             'readerContent.headerSourceLinkColor': this.settings.reader.headerTextColor.solid.color,
             'verticalReader.height': this.settings.reader.height,
         }).render());

@@ -1,10 +1,24 @@
+/*
+ * Copyright 2017 Uncharted Software Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 // thumbnail
 $thumbnail-height: 300px !default;
 $thumbnail-card-border-width: 1px !default;
 $thumbnail-card-border: $thumbnail-card-border-width solid #F2F2F2 !default;
 $thumbnail-card-shadow: -1px 0 0 rgba(0,0,0,.12), 0 0 2px rgba(0,0,0,.12), 2px 0 4px rgba(0,0,0,.24) !default;
-$thumbnail-card-shadow: none !default;
 $thumbnail-card-margin: 5px !default;
 $thumbnail-expanding-animation: 0.3s ease-out !default;
 $thumbnail-flipping-animation-duration: 0.3s !default;

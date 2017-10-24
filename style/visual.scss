@@ -6,9 +6,6 @@ $thumbnail-flipping-animation-duration: 0.3s;
 
 @import "../lib/@uncharted/cards/src/main.scss";
 
-.uncharted-thumbnails-header-image .mirror-image-box .image {
-  right: 6px;
-}
 
 .visual-CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 {
   padding: 0 !important;
@@ -127,10 +124,6 @@ $thumbnail-flipping-animation-duration: 0.3s;
           background-color: #555;
         }
       }
-    }
-
-    .flip-button-input {
-
     }
 
     .flip-left-side {
