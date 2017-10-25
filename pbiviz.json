@@ -16,9 +16,9 @@
   "assets": {
     "icon": "assets/icon.svg",
     "thumbnail": "assets/thumbnail.png",
-    "screenshot": "assets/screenshot.png"
+    "screenshot": "assets/1-preview.png"
   },
   "style": "style/visual.scss",
   "capabilities": "capabilities.json",
-  "output": "dist/essex.cards.pbiviz"
+  "output": "dist/essex.cardbrowser.pbiviz"
 }

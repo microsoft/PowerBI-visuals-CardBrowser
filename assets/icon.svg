@@ -6,9 +6,17 @@
 	.st0{fill:#808080;}
 	.st1{fill:none;stroke:#2D2D2D;stroke-miterlimit:10;}
 	.st2{fill:none;stroke:#4D4D4D;stroke-miterlimit:10;}
-	.st3{fill:#006682;}
+	.st3{fill:#ACACAC;}
 	.st4{fill:none;stroke:#4EB8D1;stroke-miterlimit:10;}
 </style>
+<g>
+	<rect x="11" y="3" class="st0" width="8" height="13"/>
+</g>
+<line class="st1" x1="16" y1="8.5" x2="12" y2="8.5"/>
+<line class="st2" x1="17" y1="12.5" x2="12" y2="12.5"/>
+<line class="st2" x1="18" y1="10.5" x2="12" y2="10.5"/>
+<rect x="11" y="3" class="st3" width="8" height="4"/>
+<line class="st4" x1="19" y1="3.5" x2="11" y2="3.5"/>
 <g>
 	<rect x="1" y="3" class="st0" width="8" height="13"/>
 </g>
@@ -17,18 +25,4 @@
 <line class="st2" x1="8" y1="10.5" x2="2" y2="10.5"/>
 <rect x="1" y="3" class="st3" width="8" height="4"/>
 <line class="st4" x1="9" y1="3.5" x2="1" y2="3.5"/>
-<g>
-	<rect x="11" y="3" class="st0" width="8" height="13"/>
-</g>
-<line class="st2" x1="14" y1="7.5" x2="12" y2="7.5"/>
-<line class="st2" x1="14" y1="11.5" x2="12" y2="11.5"/>
-<line class="st2" x1="14" y1="9.5" x2="12" y2="9.5"/>
-<line class="st2" x1="18" y1="7.5" x2="15" y2="7.5"/>
-<line class="st2" x1="18" y1="11.5" x2="15" y2="11.5"/>
-<line class="st2" x1="18" y1="9.5" x2="15" y2="9.5"/>
-<line class="st2" x1="14" y1="5.5" x2="12" y2="5.5"/>
-<line class="st2" x1="18" y1="5.5" x2="15" y2="5.5"/>
-<line class="st4" x1="19" y1="3.5" x2="11" y2="3.5"/>
-<line class="st2" x1="14" y1="13.5" x2="12" y2="13.5"/>
-<line class="st2" x1="18" y1="13.5" x2="15" y2="13.5"/>
 </svg>

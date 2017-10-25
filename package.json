@@ -1,7 +1,7 @@
 {
   "name": "WidgetCards",
   "version": "1.0.0",
-  "description": "Cards, a thumbnails custom visual for PowerBI",
+  "description": "Card Browser, a thumbnails custom visual for PowerBI",
   "main": "src/index.js",
   "scripts": {
     "preinstall:prereq": "npm install targz mv --save-dev",

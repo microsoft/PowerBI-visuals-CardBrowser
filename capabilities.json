@@ -26,7 +26,7 @@
     },
     {
       "name": "imageUrl",
-      "displayName": "Title Image (url)",
+      "displayName": "Title Image (URL)",
       "description": "Main image(s) for the document; displayed on thumbnails and in the reader",
       "kind": 0
     },
@@ -194,7 +194,7 @@
           }
         }
       },
-      "displayName": "Card Browser"
+      "displayName": "Cards"
     },
     "reader": {
       "properties": {
