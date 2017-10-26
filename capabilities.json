@@ -274,5 +274,5 @@
     "default": {}
   },
   "suppressDefaultTitle": true,
-  "supportsHighlight": true
+  "supportsHighlight": false
 }
