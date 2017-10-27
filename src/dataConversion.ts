@@ -39,32 +39,12 @@ function flattenMetaData(metaData) {
     return metaDataObject;
 }
 
-function selectionIdBuilder(i, dataView: DataView, host: IVisualHost) {
+function createSelectionId(i, dataView: DataView, host) {
     const category = dataView.categorical.categories && dataView.categorical.categories[0];
 
     return host.createSelectionIdBuilder()
         .withCategory(category, i)
         .createSelectionId();
-
-    //const selectionId = SelectionId.createWithId(obj.identity);
-    //selectionId['selectorsByColumn'] = {
-    //    metadata: dataView.metadata.columns.find((column) => column.roles.id),
-    //    id: obj.id,
-    //};
-    //return selectionId;
-
-//    return _.assign(
-// {
-//        getKey: function() { return obj.id; },
-//        hasIdentity: function() { return obj.identity !== undefined; },
-//        getSelector: function() {
-//            return {
-//                metadata: dataView.metadata.columns.find((column) => column.roles.id),
-//                id: obj.id,
-//            };
-//        },
-//        identity: obj.identity
-//    }, obj);
 }
 
 function convertToDocuments(rowObjs, dataView, host) {
@@ -79,7 +59,7 @@ function convertToDocuments(rowObjs, dataView, host) {
         obj = rowObjs[i];
         docId = obj.id;
         if (!documents[docId]) {
-            obj.selectionId = selectionIdBuilder(i, dataView, host);
+            obj.selectionId = createSelectionId(i, dataView, host);
             documents[docId] = obj;
             documentList.push(documents[docId]);
         }
