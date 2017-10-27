@@ -99,12 +99,10 @@
       ],
       "categorical": {
         "categories": {
+          "for": {
+            "in": "id"
+          },
           "select": [
-            {
-              "bind": {
-                "to": "id"
-              }
-            },
             {
               "bind": {
                 "to": "title"
@@ -143,6 +141,20 @@
             {
               "bind": {
                 "to": "topBarColor"
+              }
+            }
+          ],
+          "dataReductionAlgorithm": {
+            "window": {
+              "count": 200
+            }
+          }
+        },
+        "values": {
+          "select": [
+            {
+              "for": {
+                "in": "id"
               }
             }
           ],
@@ -192,6 +204,13 @@
           "type": {
             "numeric": 200
           }
+        },
+        "filter": {
+          "type": {
+            "bool": true
+          },
+          "displayName": "Filter",
+          "description": "If true, selecting a card filters other visuals to that article."
         }
       },
       "displayName": "Cards"

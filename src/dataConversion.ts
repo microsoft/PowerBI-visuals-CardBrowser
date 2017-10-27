@@ -20,8 +20,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
+import DataView = powerbi.DataView;
 import IColorInfo = powerbi.IColorInfo;
+import IVisualHost = powerbi.extensibility.v120.IVisualHost;
+import SelectionId = powerbi.visuals.SelectionId;
 
 import * as _ from 'lodash';
 import * as utils from './utils';
@@ -37,7 +39,35 @@ function flattenMetaData(metaData) {
     return metaDataObject;
 }
 
-function convertToDocuments(rowObjs) {
+function selectionIdBuilder(i, dataView: DataView, host: IVisualHost) {
+    const category = dataView.categorical.categories && dataView.categorical.categories[0];
+
+    return host.createSelectionIdBuilder()
+        .withCategory(category, i)
+        .createSelectionId();
+
+    //const selectionId = SelectionId.createWithId(obj.identity);
+    //selectionId['selectorsByColumn'] = {
+    //    metadata: dataView.metadata.columns.find((column) => column.roles.id),
+    //    id: obj.id,
+    //};
+    //return selectionId;
+
+//    return _.assign(
+// {
+//        getKey: function() { return obj.id; },
+//        hasIdentity: function() { return obj.identity !== undefined; },
+//        getSelector: function() {
+//            return {
+//                metadata: dataView.metadata.columns.find((column) => column.roles.id),
+//                id: obj.id,
+//            };
+//        },
+//        identity: obj.identity
+//    }, obj);
+}
+
+function convertToDocuments(rowObjs, dataView, host) {
     const documents = {};
     const documentList = [];
     let obj;
@@ -49,6 +79,7 @@ function convertToDocuments(rowObjs) {
         obj = rowObjs[i];
         docId = obj.id;
         if (!documents[docId]) {
+            obj.selectionId = selectionIdBuilder(i, dataView, host);
             documents[docId] = obj;
             documentList.push(documents[docId]);
         }
@@ -89,7 +120,7 @@ function assignValue(role, columns, idx, columnValue) {
     }
 }
 
-function convertToRowObjs(dataView, settings, roles = null) {
+function convertToRowObjs(dataView: DataView, settings, roles = null) {
     const table = dataView.table;
     const rows = table.rows;
     const columns = dataView.metadata.columns;
@@ -110,7 +141,7 @@ function convertToRowObjs(dataView, settings, roles = null) {
         row.forEach((colValue, idx) => {
             colRoles = Object.keys(columns[idx].roles);
             columnValue = colValue && (columns[idx].type.dateTime ?
-                moment(colValue).format(settings.presentation.dateFormat) : colValue);
+                    moment(colValue).format(settings.presentation.dateFormat) : colValue);
             colRoles.forEach((role) => {
                 if (rowObj[role] === undefined) {
                     rowObj[role] = assignValue(role, columns, idx, columnValue);
@@ -165,12 +196,12 @@ function convertToRowObjs(dataView, settings, roles = null) {
     return result;
 }
 
-function convertToDocumentData(dataView, settings, roles) {
+function convertToDocumentData(dataView: DataView, settings, roles, host: IVisualHost) {
     const rowObjs = convertToRowObjs(dataView, settings, roles);
-    return convertToDocuments(rowObjs);
+    return convertToDocuments(rowObjs, dataView, host);
 }
 
-function countDocuments(dataView) {
+function countDocuments(dataView: DataView) {
     const table = dataView.table;
     const rows = table.rows;
     const columns = dataView.metadata.columns;
