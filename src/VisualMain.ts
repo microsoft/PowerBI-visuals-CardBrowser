@@ -39,6 +39,7 @@ import VisualObjectInstance = powerbi.VisualObjectInstance;
 import VisualDataChangeOperationKind = powerbi.VisualDataChangeOperationKind;
 
 import * as Promise from 'bluebird';
+import 'babel-polyfill'
 import * as $ from 'jquery';
 import Thumbnails from '../lib/@uncharted/cards/src';
 import * as _ from 'lodash';
