@@ -38,12 +38,9 @@ import EnumerateVisualObjectInstancesOptions = powerbi.EnumerateVisualObjectInst
 import VisualObjectInstance = powerbi.VisualObjectInstance;
 import VisualDataChangeOperationKind = powerbi.VisualDataChangeOperationKind;
 
-import * as Promise from 'bluebird';
-import 'babel-polyfill'
 import * as $ from 'jquery';
-import Thumbnails from '../lib/@uncharted/cards/src';
-import * as _ from 'lodash';
-import * as debounce from 'lodash/debounce';
+import Thumbnails from '../lib/@uncharted/cards/src/index.js';
+const debounce = require('lodash/debounce');
 import * as utils from './utils';
 import {
     convertToDocumentData,

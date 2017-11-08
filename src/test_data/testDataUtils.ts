@@ -44,7 +44,7 @@ export default function populateData(data, highlights = null) {
     });
 
     if (highlights) {
-        dataView.categorical.values[0].highlights = highlights;
+        dataView.categorical.values[0]['highlights'] = highlights;
     }
 
     dataView.table = table;

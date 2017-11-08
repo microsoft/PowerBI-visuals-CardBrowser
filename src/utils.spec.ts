@@ -28,6 +28,7 @@ import mockDataView from './test_data/mockdataview';
 import * as _ from 'lodash';
 import { HTML_WHITELIST_CONTENT } from './constants';
 import testHtmlStrings from './test_data/testHtmlStrings.js';
+import DataView = powerbi.DataView;
 
 describe('utils', () => {
     it('findColumn', () => {

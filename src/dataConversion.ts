@@ -27,7 +27,7 @@ import SelectionId = powerbi.visuals.SelectionId;
 
 import * as _ from 'lodash';
 import * as utils from './utils';
-import * as moment from 'moment';
+const moment = require('moment');
 import { HTML_WHITELIST_SUMMARY, HTML_WHITELIST_CONTENT } from './constants';
 
 function flattenMetaData(metaData) {

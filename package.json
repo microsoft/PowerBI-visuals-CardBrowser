@@ -1,6 +1,6 @@
 {
   "name": "WidgetCards",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Card Browser, a thumbnails custom visual for PowerBI",
   "main": "src/index.js",
   "scripts": {
@@ -22,18 +22,21 @@
   "keywords": [],
   "author": "Uncharted Software Inc.",
   "license": "MIT",
+  "privacyTerms": "https://privacy.microsoft.com/en-US/privacystatement/",
   "privateSubmodules": {
-    "@uncharted/cards": "0.10.1"
+    "@uncharted/cards": "0.10.2"
   },
   "devDependencies": {
     "@types/jquery": "^3.2.11",
+    "@types/lodash": "^4.14.71",
     "@types/mocha": "^2.2.41",
     "@types/node": "^8.0.28",
+    "@types/requirejs": "^2.1.30",
     "@types/sinon": "^2.3.3",
     "@types/sinon-chai": "^2.7.28",
     "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.1",
-    "babel-preset-env": "^1.6.0",
+    "babel-loader": "^7.1.2",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-latest": "^6.24.1",
     "chai": "^4.1.1",
     "chokidar": "^1.7.0",
@@ -68,19 +71,13 @@
     "sinon": "^2.4.1",
     "sinon-chai": "^2.13.0",
     "targz": "^1.0.1",
-    "ts-loader": "^2.3.7",
-    "tslint": "^5.6.0",
+    "ts-loader": "^2.3.2",
+    "tslint": "^5.5.0",
     "tslint-loader": "^3.5.3",
     "typescript": "^2.4.2",
-    "underscore": "^1.8.3",
-    "webpack": "^3.5.5",
-    "webpack-dev-server": "^2.7.1"
+    "webpack": "^3.5.5"
   },
   "dependencies": {
-    "babel-polyfill": "^6.26.0",
-    "bluebird": "^3.5.0",
-    "jquery": "^3.2.1",
-    "lodash": "^4.17.4",
     "moment": "^2.18.1"
   }
 }
