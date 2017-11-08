@@ -20,6 +20,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+window['powerbi'] = {
+    visuals: {
+        SelectionIdBuilder: function () {
+            this.withCategory = function () { return this; };
+            this.createSelectionId = function () { return this; };
+        }
+    }
+};
 
 import * as dataConversion from './dataConversion';
 import * as sinon from 'sinon';

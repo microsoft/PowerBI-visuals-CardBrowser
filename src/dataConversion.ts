@@ -42,7 +42,7 @@ function flattenMetaData(metaData) {
 function createSelectionId(i, dataView: DataView, host) {
     const category = dataView.categorical.categories && dataView.categorical.categories[0];
 
-    return host.createSelectionIdBuilder()
+    return new powerbi.visuals.SelectionIdBuilder()
         .withCategory(category, i)
         .createSelectionId();
 }

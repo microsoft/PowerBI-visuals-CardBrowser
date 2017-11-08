@@ -21,42 +21,16 @@
  * SOFTWARE.
  */
 
-// fake powerbi functions
-window['powerbi'] = {
-    DataViewObjects: {
-        getValue: () => undefined,
-    },
-    visuals: {
-        valueFormatter: {
-            create: (obj) => ({ format: (value) => obj.format + value }),
-        },
-        utility: {
-            SelectionManager: function () {
-
-            },
-        }
-    },
-    extensibility: {
-        visualApiVersions: [],
-    },
-    createEnumType: function (description) { return description; },
-    VisualUpdateType: {
-        Resize: 4,
-    }
-};
-
 import * as $ from 'jquery';
 import * as sinon from 'sinon';
 import { expect } from 'chai';
-import NewsThreads from './VisualMain';
-import VisualInitOptions = powerbi.VisualInitOptions;
-import VisualUpdateOptions = powerbi.VisualUpdateOptions;
+import CardBrowser from './VisualMain';
 import VisualConstructorOptions = powerbi.extensibility.v110.VisualConstructorOptions;
 import DataViewObjects = powerbi.DataViewObjects;
 import populateData from './test_data/testDataUtils';
 import colors from './test_data/colors';
 
-describe('News Threads Visual', () => {
+describe('Card Browser Visual', () => {
     let visual;
 
     before(function () {
@@ -65,14 +39,14 @@ describe('News Threads Visual', () => {
             createSelectionManager: () => ({ hostServices: 'hostService' } as any),
             colors: colors,
         };
-        visual = new NewsThreads(<VisualConstructorOptions>{
+        visual = new CardBrowser(<VisualConstructorOptions>{
             element: element[0],
             host: dummyHost,
         });
     });
 
     it('exists', () => {
-        expect(NewsThreads).to.be.ok;
+        expect(CardBrowser).to.be.ok;
         expect(visual).to.be.ok;
     });
 
