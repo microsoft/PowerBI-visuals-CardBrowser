@@ -24,7 +24,7 @@
   "license": "MIT",
   "privacyTerms": "https://privacy.microsoft.com/en-US/privacystatement/",
   "privateSubmodules": {
-    "@uncharted/cards": "0.10.2"
+    "@uncharted/cards": "0.10.3"
   },
   "devDependencies": {
     "@types/jquery": "^3.2.11",
