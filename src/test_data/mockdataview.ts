@@ -20,7 +20,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import DataViewValueColumnGroup = powerbi.DataViewValueColumnGroup;
 
 export default {
     'viewport': {
@@ -1703,7 +1702,7 @@ export default {
                     }
                 ],
                 'values': Object.assign({}, Array.prototype, {
-                    'grouped': function () : DataViewValueColumnGroup[] { return null; },
+                    'grouped': function () { return null; },
                     '0': {
                         'source': {
                             'roles': {
