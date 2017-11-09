@@ -53,8 +53,14 @@ module.exports = function (config) {
                     },
                     {
                         test: /\.ts?$/,
-                        loader: 'ts-loader',
-                        exclude: /node_modules/,
+                        loaders: [{
+                            loader: 'babel-loader',
+                            options: {
+                                presets: [
+                                    ['latest', {es2015: {modules: false}}],
+                                ],
+                            },
+                        }, 'ts-loader'],
                     },
                 ],
             },

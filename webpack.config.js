@@ -1,13 +1,11 @@
 const webpack = require('webpack');
 const path = require('path');
-
 const ENTRY = './src/VisualMain.ts';
 const regex = path.normalize(ENTRY).replace(/\\/g, '\\\\').replace(/\./g, '\\.');
-const isServing = (process.env.WEBPACK_ENV === 'serve'); // eslint-disable-line
 
 module.exports = {
-    entry: ENTRY,
-    devtool: 'inline-source-map',
+    entry: ['./src/sandboxPolyfill.js', ENTRY],
+    devtool: 'eval',
     resolve: {
         extensions: ['.js', '.json', '.ts', '.handlebars'],
         alias: {
@@ -19,12 +17,6 @@ module.exports = {
             {
                 test: new RegExp(regex),
                 loader: path.join(__dirname, 'bin', 'pbiPluginLoader'),
-            },
-            {
-                enforce: 'pre',
-                test: /\.js$/,
-                exclude: /node_modules/,
-                loader: 'eslint-loader',
             },
             {
                 test: /\.js$/,
@@ -47,17 +39,20 @@ module.exports = {
             },
             {
                 test: /\.ts?$/,
-                exclude: [/node_modules/, /\.spec.ts?$/],
-                loader: 'ts-loader',
+                loaders: [{
+                    loader: 'babel-loader',
+                    options: {
+                        presets: [
+                            ['latest', {es2015: {modules: false}}],
+                        ],
+                    },
+                }, 'ts-loader'],
             },
-        ],
+        ]
     },
     externals: [
         {
             jquery: 'jQuery',
         },
-    ],
-    plugins: [
-        new webpack.optimize.ModuleConcatenationPlugin(),
-    ],
+    ]
 };

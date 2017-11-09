@@ -83,6 +83,7 @@ export const DEFAULT_VISUAL_SETTINGS = {
         separator: ' \u2022 ',
         showImageOnBack: true,
         thumbnailWidth: 200,
+        filter: true,
     },
     reader: {
         headerBackgroundColor: {

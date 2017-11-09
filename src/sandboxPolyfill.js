@@ -21,32 +21,34 @@
  * SOFTWARE.
  */
 
-import DataView = powerbi.DataView;
-import * as _ from 'lodash';
-import mockDataView from './mockdataview';
-import table from './table';
+// If, and only if, we are sandboxed, load babel-polyfill
+if (window.parent !== window) {
+    "use strict";
 
-// pbi wraps the categories with a "wrapCtor" that has the actual data accessors
-function wrapCtor(category, values) {
-    this.source = category.source;
-    this.identity = [];
-    this.identityFields = [];
-    this.values = values || [];
-}
+    require("core-js/shim");
 
-export default function populateData(data, highlights = null) {
-    const options = _.cloneDeep(mockDataView);
+    require("regenerator-runtime/runtime");
 
-    let dataView = options.dataViews[0];
+    require("core-js/fn/regexp/escape");
 
-    dataView.categorical.categories = dataView.categorical.categories.map(function (category, index) {
-        return new wrapCtor(category, data && data[index]);
-    });
+    if (global._babelPolyfill) {
+        throw new Error("only one instance of babel-polyfill is allowed");
+    }
+    global._babelPolyfill = true;
 
-    if (highlights) {
-        dataView.categorical.values[0]['highlights'] = highlights;
+    var DEFINE_PROPERTY = "defineProperty";
+    function define(O, key, value) {
+        O[key] || Object[DEFINE_PROPERTY](O, key, {
+            writable: true,
+            configurable: true,
+            value: value
+        });
     }
 
-    dataView.table = table;
-    return options;
+    define(String.prototype, "padLeft", "".padStart);
+    define(String.prototype, "padRight", "".padEnd);
+
+    "pop,reverse,shift,keys,values,entries,indexOf,every,some,forEach,map,filter,find,findIndex,includes,join,slice,concat,push,splice,unshift,sort,lastIndexOf,reduce,reduceRight,copyWithin,fill".split(",").forEach(function (key) {
+        [][key] && define(Array, key, Function.call.bind([][key]));
+    });
 }

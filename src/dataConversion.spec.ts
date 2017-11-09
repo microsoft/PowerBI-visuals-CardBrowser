@@ -20,12 +20,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+window['powerbi'] = {
+    visuals: {
+        SelectionIdBuilder: function () {
+            this.withCategory = function () { return this; };
+            this.createSelectionId = function () { return this; };
+        }
+    }
+};
 
 import * as dataConversion from './dataConversion';
 import * as sinon from 'sinon';
 import { expect } from 'chai';
 import populateData from './test_data/testDataUtils';
 import colors from './test_data/colors';
+import IVisualHost = powerbi.extensibility.v120.IVisualHost;
 
 const DEFAULT_SETTINGS = {
     presentation: {
@@ -54,7 +63,8 @@ describe('dataConversion', () => {
     });
 
     it('convertToDocumentData', () => {
-        documentData = dataConversion.convertToDocumentData(options.dataViews[0], DEFAULT_SETTINGS, {});
+        documentData = dataConversion.convertToDocumentData(options.dataViews[0], DEFAULT_SETTINGS, {},
+            <IVisualHost>{});
         expect(documentData).to.be.ok;
         expect(documentData.documentList.length).to.equal(4);
         expect(documentData.documents).to.be.ok;

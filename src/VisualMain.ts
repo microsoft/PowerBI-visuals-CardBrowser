@@ -23,13 +23,13 @@
 
 /// <reference path="../node_modules/powerbi-visuals/lib/powerbi-visuals.d.ts"/>
 
-import IVisual = powerbi.extensibility.v110.IVisual;
-import VisualConstructorOptions = powerbi.extensibility.v110.VisualConstructorOptions;
+import IVisual = powerbi.extensibility.v120.IVisual;
+import VisualConstructorOptions = powerbi.extensibility.v120.VisualConstructorOptions;
 import VisualUpdateOptions = powerbi.VisualUpdateOptions;
 import IViewport = powerbi.IViewport;
 import DataViewMetadataColumn = powerbi.DataViewMetadataColumn;
 import ISelectionManager = powerbi.extensibility.ISelectionManager;
-import IVisualHost = powerbi.extensibility.v110.IVisualHost;
+import IVisualHost = powerbi.extensibility.v120.IVisualHost;
 import DataViewScopeIdentity = powerbi.DataViewScopeIdentity;
 import IVisualHostServices = powerbi.IVisualHostServices;
 import IColorInfo = powerbi.IColorInfo;
@@ -38,12 +38,9 @@ import EnumerateVisualObjectInstancesOptions = powerbi.EnumerateVisualObjectInst
 import VisualObjectInstance = powerbi.VisualObjectInstance;
 import VisualDataChangeOperationKind = powerbi.VisualDataChangeOperationKind;
 
-import * as Promise from 'bluebird';
-import 'babel-polyfill'
 import * as $ from 'jquery';
-import Thumbnails from '../lib/@uncharted/cards/src';
-import * as _ from 'lodash';
-import * as debounce from 'lodash/debounce';
+import Thumbnails from '../lib/@uncharted/cards/src/index.js';
+const debounce = require('lodash/debounce');
 import * as utils from './utils';
 import {
     convertToDocumentData,
@@ -72,16 +69,21 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
     private hasMoreData = false;
     private isInline = true;
     private $loaderElement: JQuery;
+    private host: IVisualHost;
+    private selectionManager: ISelectionManager;
 
     private settings = $.extend({}, constants.DEFAULT_VISUAL_SETTINGS);
     private isFlipped = this.settings.flipState.cardFaceDefault === constants.CARD_FACE_METADATA;
 
     /* init function for legacy api */
     constructor(options: VisualConstructorOptions) {
-        this.hostServices = options.host.createSelectionManager()['hostServices'];
+        this.host = options.host;
+        this.selectionManager = options.host.createSelectionManager();
+        this.hostServices = this.selectionManager['hostServices'];
 
         // Start hacks to detect sandboxing & desktop...
         this.isSandboxed = this.hostServices['messageProxy'];
+        //console.log(!!options.host.createSelectionManager()['hostServices']['applyJsonFilter']);
         // this.isSandboxed = (this.hostServices.constructor.name === "SandboxVisualHostServices");
         // this.isSandboxed = (this.hostServices.constructor.name.toLowerCase().indexOf('sandbox') !== -1);
         //const anyData : any = powerbi.data;
@@ -101,6 +103,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
             if (!thumbnail.isExpanded) {
                 this.thumbnails.updateReaderContent(thumbnail, thumbnail.data);
                 this.thumbnails.openReader(thumbnail);
+                this.applySelection(thumbnail.data);
             }
         });
 
@@ -110,6 +113,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
 
         this.thumbnails.on(`${EVENTS.READER_CONTENT_CLICK_CLOSE} ${EVENTS.THUMBNAILS_CLICK_BACKGROUND} ${EVENTS.VERTICAL_READER_CLICK_BACKGROUND}`, () => {
             this.thumbnails.closeReader();
+            this.applySelection(null);
         });
 
         // close the reader when clicked above
@@ -182,6 +186,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
 
         this.dataView = options.dataViews[0];
         const newObjects = this.dataView && this.dataView.metadata && this.dataView.metadata.objects;
+        //const wasFiltering = this.settings.presentation.filter;
         this.settings = $.extend(true, {}, constants.DEFAULT_VISUAL_SETTINGS, newObjects);
 
         let previousLoadedDocumentCount = 0;
@@ -203,12 +208,17 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
             return;
         }
 
-        this.documentData = convertToDocumentData(this.dataView, this.settings, options['dataTransforms'] && options['dataTransforms'].roles);
+        this.documentData = convertToDocumentData(this.dataView,
+            this.settings, options['dataTransforms'] && options['dataTransforms'].roles, this.host);
 
         if (!previousLoadedDocumentCount) {
             this.isFlipped = this.settings.flipState.cardFaceDefault === constants.CARD_FACE_METADATA;
         }
         this.updateVisualStyleConfigs();
+        //if (wasFiltering && !this.settings.presentation.filter) {
+        //    // clear any current filter
+        //    this.selectionManager.clear();
+        //}
 
         this.hideLoader();
         if (previousLoadedDocumentCount) {
@@ -342,5 +352,21 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
      */
     private hideLoader(): void {
         this.$loaderElement.detach();
+    }
+
+    /**
+     * Send the selected article to the host, for filtering.
+     *
+     * @param {Object} selectedDocument - The data for the selected article
+     */
+    private applySelection(selectedDocument) {
+        if (this.settings.presentation.filter) {
+            if (selectedDocument) {
+                this.selectionManager.select(selectedDocument.selectionId);
+            }
+            else {
+                this.selectionManager.clear();
+            }
+        }
     }
 }

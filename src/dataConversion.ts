@@ -20,12 +20,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
+import DataView = powerbi.DataView;
 import IColorInfo = powerbi.IColorInfo;
+import IVisualHost = powerbi.extensibility.v120.IVisualHost;
+import SelectionId = powerbi.visuals.SelectionId;
 
 import * as _ from 'lodash';
 import * as utils from './utils';
-import * as moment from 'moment';
+const moment = require('moment');
 import { HTML_WHITELIST_SUMMARY, HTML_WHITELIST_CONTENT } from './constants';
 
 function flattenMetaData(metaData) {
@@ -37,7 +39,15 @@ function flattenMetaData(metaData) {
     return metaDataObject;
 }
 
-function convertToDocuments(rowObjs) {
+function createSelectionId(i, dataView: DataView, host) {
+    const category = dataView.categorical.categories && dataView.categorical.categories[0];
+
+    return new powerbi.visuals.SelectionIdBuilder()
+        .withCategory(category, i)
+        .createSelectionId();
+}
+
+function convertToDocuments(rowObjs, dataView, host) {
     const documents = {};
     const documentList = [];
     let obj;
@@ -49,6 +59,7 @@ function convertToDocuments(rowObjs) {
         obj = rowObjs[i];
         docId = obj.id;
         if (!documents[docId]) {
+            obj.selectionId = createSelectionId(i, dataView, host);
             documents[docId] = obj;
             documentList.push(documents[docId]);
         }
@@ -89,7 +100,7 @@ function assignValue(role, columns, idx, columnValue) {
     }
 }
 
-function convertToRowObjs(dataView, settings, roles = null) {
+function convertToRowObjs(dataView: DataView, settings, roles = null) {
     const table = dataView.table;
     const rows = table.rows;
     const columns = dataView.metadata.columns;
@@ -110,7 +121,7 @@ function convertToRowObjs(dataView, settings, roles = null) {
         row.forEach((colValue, idx) => {
             colRoles = Object.keys(columns[idx].roles);
             columnValue = colValue && (columns[idx].type.dateTime ?
-                moment(colValue).format(settings.presentation.dateFormat) : colValue);
+                    moment(colValue).format(settings.presentation.dateFormat) : colValue);
             colRoles.forEach((role) => {
                 if (rowObj[role] === undefined) {
                     rowObj[role] = assignValue(role, columns, idx, columnValue);
@@ -165,12 +176,12 @@ function convertToRowObjs(dataView, settings, roles = null) {
     return result;
 }
 
-function convertToDocumentData(dataView, settings, roles) {
+function convertToDocumentData(dataView: DataView, settings, roles, host: IVisualHost) {
     const rowObjs = convertToRowObjs(dataView, settings, roles);
-    return convertToDocuments(rowObjs);
+    return convertToDocuments(rowObjs, dataView, host);
 }
 
-function countDocuments(dataView) {
+function countDocuments(dataView: DataView) {
     const table = dataView.table;
     const rows = table.rows;
     const columns = dataView.metadata.columns;

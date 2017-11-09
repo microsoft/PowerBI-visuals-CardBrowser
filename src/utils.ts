@@ -32,7 +32,7 @@ import DataViewMetadataColumn = powerbi.DataViewMetadataColumn;
  * @param  {boolean}  multi        A boolean flag indicating whether to find multiple matching columns.
  * @return {any}                   A dataview table column or an array of the columns.
  */
-export function findColumn(dataView: DataView, dataRoleName: string, multi?: boolean): any {
+export function findColumn(dataView: DataView | any, dataRoleName: string, multi?: boolean): any {
     const columns = dataView.metadata.columns;
     const result = (columns || []).filter((col: any) => col && col.roles[dataRoleName]);
     return multi
@@ -48,7 +48,7 @@ export function findColumn(dataView: DataView, dataRoleName: string, multi?: boo
  * @param   {string[]} dataRoleNames An array of the data role names for corresponding columns.
  * @returns {boolean}                A Boolean value indicating whether the dataView has all matching columns.
  */
-export function hasColumns(dataView: DataView, dataRoleNames: string[]): boolean {
+export function hasColumns(dataView: DataView | any, dataRoleNames: string[]): boolean {
     return dataRoleNames.reduce((prev, dataRoleName) => prev && findColumn(dataView, dataRoleName) !== undefined, true);
 }
 

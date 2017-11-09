@@ -1,19 +1,12 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "sourceMap": true,
     "allowJs": true,
-    "types": [
-      "mocha",
-      "sinon-chai",
-      // add node as an option
-      "node"
-    ],
-    "lib": [
-      "dom",
-      "es2015"
-    ],
-    "experimentalDecorators": true
+    "types": ["mocha", "sinon-chai", "requirejs"],
+    "experimentalDecorators": true,
+    "lib": ["es2015", "DOM"],
+    "outDir": "generated"
   },
   "compileOnSave": false,
   "exclude": [
