@@ -4,7 +4,7 @@ const ENTRY = './src/VisualMain.ts';
 const regex = path.normalize(ENTRY).replace(/\\/g, '\\\\').replace(/\./g, '\\.');
 
 module.exports = {
-    entry: ['./src/sandboxPolyfill.js', 'url-polyfill', ENTRY],
+    entry: ['./src/sandboxPolyfill.js', ENTRY],
     devtool: 'eval',
     resolve: {
         extensions: ['.js', '.json', '.ts', '.handlebars'],
