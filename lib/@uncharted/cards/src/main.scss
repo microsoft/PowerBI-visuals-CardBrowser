@@ -15,8 +15,8 @@
  */
 
 @import 'style/base';
+@import 'components/thumbnails/thumbnails';
 .uncharted-thumbnails-style {
-  @import 'components/thumbnails/thumbnails';
   @import 'components/inlineThumbnailsView/inlineThumbnailsView';
   @import 'components/wrappedThumbnailsView/wrappedThumbnailsView';
   @import 'components/thumbnail/thumbnail';
