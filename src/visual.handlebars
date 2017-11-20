@@ -27,18 +27,18 @@
         <div class="switch">
             <!--<input type="checkbox" class="switchInput">-->
             <div class="flip-button">
-                <input id="preview" type="radio" name="preview" class="flip-button-input" checked="checked"/>
-                <label for="preview" class="flip-left-side">
+                <input id={{previewId}} type="radio" name={{previewId}} class="preview" checked="checked"/>
+                <label for={{previewId}} class="flip-left-side">
                     <div class="box" aria-hidden="true"></div>
                     <div class="box" aria-hidden="true"></div>
                 </label>
-                <input id="metadata" type="radio" name="metadata" class="flip-button-input"/>
-                <label for="metadata" class="flip-right-side">
+                <input id={{metadataId}} type="radio" name={{metadataId}} class="metadata"/>
+                <label for={{metadataId}} class="flip-right-side">
                     <div class="box" aria-hidden="true"></div>
                     <div class="box" aria-hidden="true"></div>
                 </label>
             </div>
         </div>
     </div>
-    <div class="container {{#if isDesktop}} fix-blur-hack {{/if}}"></div>
+    <div class="container {{#if enableBlurFix}} fix-blur-hack {{/if}}"></div>
 </div>
