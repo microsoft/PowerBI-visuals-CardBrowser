@@ -1,6 +1,6 @@
 {
   "name": "WidgetCards",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Card Browser, a thumbnails custom visual for PowerBI",
   "main": "src/index.js",
   "scripts": {
@@ -24,7 +24,7 @@
   "license": "MIT",
   "privacyTerms": "https://privacy.microsoft.com/en-US/privacystatement/",
   "privateSubmodules": {
-    "@uncharted/cards": "0.10.3"
+    "@uncharted/cards": "0.10.5"
   },
   "devDependencies": {
     "@types/jquery": "^3.2.11",
@@ -79,6 +79,7 @@
   },
   "dependencies": {
     "jquery": "^3.2.1",
-    "moment": "^2.18.1"
+    "moment": "^2.18.1",
+    "@uncharted/cards": "0.10.4"
   }
 }

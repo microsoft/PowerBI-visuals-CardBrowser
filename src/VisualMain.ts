@@ -63,7 +63,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
     private documentData: any;
     private hostServices: IVisualHostServices;
     private isSandboxed: Boolean;
-    private isDesktop: Boolean = true;
+    private context: any;
     private loadedDocumentCount = 0;
     private isLoadingMore = false;
     private hasMoreData = false;
@@ -87,12 +87,15 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         // this.isSandboxed = (this.hostServices.constructor.name === "SandboxVisualHostServices");
         // this.isSandboxed = (this.hostServices.constructor.name.toLowerCase().indexOf('sandbox') !== -1);
         //const anyData : any = powerbi.data;
-        //this.isDesktop = (anyData.dsr.wireContracts !== undefined); // this check isn't working in sand-box mode
         // ... end hacks
 
-        this.$element = $(visualTemplate({
-            isDesktop: this.isDesktop,
-        })).appendTo(options.element);
+        this.context = {
+            enableBlurFix: true,
+            //enableBlurFix: (anyData.dsr.wireContracts !== undefined), // this check isn't working in sand-box mode
+            previewId: 'preview-' + this.hostServices['instanceId'],
+            metadataId: 'metadata-' + this.hostServices['instanceId'],
+        };
+        this.$element = $(visualTemplate(this.context)).appendTo(options.element);
         this.$loaderElement = $(loaderTemplate());
 
         this.thumbnails = new Thumbnails();
@@ -143,8 +146,8 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
 
         const onInput = (event) => {
             if (this.thumbnails.thumbnailInstances && this.thumbnails.thumbnailInstances.length) {
-                this.isFlipped = (event.currentTarget.id === constants.CARD_FACE_METADATA);
-                const otherButtonId = '#' + (this.isFlipped ? constants.CARD_FACE_PREVIEW : constants.CARD_FACE_METADATA);
+                this.isFlipped = (event.currentTarget.id === this.context.metadataId);
+                const otherButtonId = '#' + (this.isFlipped ? this.context.previewId : this.context.metadataId);
                 $(event.target.parentElement).find(otherButtonId).removeAttr('checked');
                 onChange();
                 return false;
@@ -250,9 +253,9 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         const headerHSL = utils.convertToHSL(this.settings.reader.headerBackgroundColor.solid.color);
         this.$container.toggleClass('lightButton', headerHSL[2] < 0.5);
 
-        const previewButton: any = this.$element.find('#preview')[0];
+        const previewButton: any = this.$element.find('#' + this.context.previewId)[0];
         previewButton.checked = !this.isFlipped;
-        const metaDataButton: any = this.$element.find('#metadata')[0];
+        const metaDataButton: any = this.$element.find('#' + this.context.metadataId)[0];
         metaDataButton.checked = this.isFlipped;
     }
 
