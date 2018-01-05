@@ -83,15 +83,15 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
 
         // Start hacks to detect sandboxing & desktop...
         this.isSandboxed = this.hostServices['messageProxy'];
-        //console.log(!!options.host.createSelectionManager()['hostServices']['applyJsonFilter']);
+        // console.log(!!options.host.createSelectionManager()['hostServices']['applyJsonFilter']);
         // this.isSandboxed = (this.hostServices.constructor.name === "SandboxVisualHostServices");
         // this.isSandboxed = (this.hostServices.constructor.name.toLowerCase().indexOf('sandbox') !== -1);
-        //const anyData : any = powerbi.data;
+        // const anyData : any = powerbi.data;
         // ... end hacks
 
         this.context = {
             enableBlurFix: true,
-            //enableBlurFix: (anyData.dsr.wireContracts !== undefined), // this check isn't working in sand-box mode
+            // enableBlurFix: (anyData.dsr.wireContracts !== undefined), // this check isn't working in sand-box mode
             previewId: 'preview-' + this.hostServices['instanceId'],
             metadataId: 'metadata-' + this.hostServices['instanceId'],
         };
@@ -157,7 +157,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         this.$element.find('input').on('change', onInput);
 
         // set up infinite scroll
-        let infiniteScrollTimeoutId:any;
+        let infiniteScrollTimeoutId: any;
 
         this.thumbnails.on('inlineThumbnailsView:scrollEnd wrappedThumbnailsView:scrollEnd', debounce(() => {
             console.log('scrollEnd');
@@ -189,7 +189,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
 
         this.dataView = options.dataViews[0];
         const newObjects = this.dataView && this.dataView.metadata && this.dataView.metadata.objects;
-        //const wasFiltering = this.settings.presentation.filter;
+        // const wasFiltering = this.settings.presentation.filter;
         this.settings = $.extend(true, {}, constants.DEFAULT_VISUAL_SETTINGS, newObjects);
 
         let previousLoadedDocumentCount = 0;
@@ -218,10 +218,10 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
             this.isFlipped = this.settings.flipState.cardFaceDefault === constants.CARD_FACE_METADATA;
         }
         this.updateVisualStyleConfigs();
-        //if (wasFiltering && !this.settings.presentation.filter) {
+        // if (wasFiltering && !this.settings.presentation.filter) {
         //    // clear any current filter
         //    this.selectionManager.clear();
-        //}
+        // }
 
         this.hideLoader();
         if (previousLoadedDocumentCount) {
@@ -273,6 +273,8 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
 
     private updateThumbnails(viewport) {
         this.isFlipped = this.settings.flipState.cardFaceDefault === constants.CARD_FACE_METADATA;
+        // We do need innerHTML, so suppress tslint
+        // tslint:disable-next-line
         this.$container.html(this.thumbnails.reset({
             'subtitleDelimiter': this.settings.presentation.separator,
             'thumbnail.disableFlipping': !this.settings.flipState.enableFlipping,

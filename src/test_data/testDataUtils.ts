@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 
-import DataView = powerbi.DataView;
 import * as _ from 'lodash';
 import mockDataView from './mockdataview';
 import table from './table';

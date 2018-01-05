@@ -26,7 +26,6 @@ import * as sinon from 'sinon';
 import { expect } from 'chai';
 import CardBrowser from './VisualMain';
 import VisualConstructorOptions = powerbi.extensibility.v110.VisualConstructorOptions;
-import DataViewObjects = powerbi.DataViewObjects;
 import populateData from './test_data/testDataUtils';
 import colors from './test_data/colors';
 
@@ -69,7 +68,7 @@ describe('Card Browser Visual', () => {
         expect(instanceProperties.separator).to.equal(' \u2022 ');
         expect(instanceProperties.thumbnailWidth).to.equal(200);
     });
-    
+
     it('destroy', () => {
         visual.destroy();
     });
