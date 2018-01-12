@@ -47,7 +47,7 @@
                     timeout = setTimeout(later, wait);
                     if (callNow) func.apply(context, args);
                 };
-            };
+            }
         </script>
         <script>
             var Thumbnails = Uncharted.Thumbnails.default;
@@ -64,9 +64,11 @@
                 'thumbnail.expandedWidth': 520,
                 'thumbnail.disableFlipping': false,
                 'thumbnail.displayBackCardByDefault': false,
+                'thumbnail.disableLinkNavigation': false,
                 'verticalReader.height': 500,
                 'readerContent.headerBackgroundColor': '#555',
                 'readerContent.headerSourceLinkColor': '#fff',
+                'readerContent.disableLinkNavigation': false,
             };
 
             var thumbnailsConfig = DEFAULT_CONFIG;
@@ -80,7 +82,7 @@
                     $('.thumbnails-panel').html(thumbnails.reset(thumbnailsConfig).render());
                     thumbnails.loadData(thumbnailsData);
                 } catch (e) {}
-            }
+            };
 
             $('#data')[0].value = JSON.stringify(data, null, 2);
             $('#config')[0].value = JSON.stringify(DEFAULT_CONFIG, null, 2);
@@ -125,6 +127,14 @@
 
             thumbnails.on('inlineThumbnailsView:scrollEnd wrappedThumbnailsView:scrollEnd', function () {
                 console.log('scrollEnd');
+            });
+
+            thumbnails.on('thumbnail:clickLink', function (event) {
+                console.log('click link', event.currentTarget.href);
+            });
+
+            thumbnails.on('readerContent:clickLink', function (event) {
+                console.log('click reader link', event.currentTarget.href);
             });
 
             var ticking = false;

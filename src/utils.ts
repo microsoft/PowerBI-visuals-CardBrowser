@@ -95,6 +95,9 @@ export function sanitizeHTML(html: string, whiteList: string[]): string {
         }
 
         let div = $('<div/>');
+
+        // For the reasons above, we do need innerHTML, so suppress tslint
+        // tslint:disable-next-line
         div.html(html);
 
         let filter: any = function (node) {

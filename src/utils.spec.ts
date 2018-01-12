@@ -66,7 +66,7 @@ describe('utils', () => {
     });
 
     it('hasRole', () => {
-        const column : any = mockDataView.dataViews[0].metadata.columns[0];
+        const column: any = mockDataView.dataViews[0].metadata.columns[0];
         expect(utils.hasRole(column, 'title')).to.be.false;
         expect(utils.hasRole(column, 'id')).to.be.true;
         expect(utils.hasRole(column, 'document')).to.be.true;

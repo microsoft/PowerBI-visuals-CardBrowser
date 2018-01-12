@@ -4,8 +4,6 @@ const isTddMode = process.argv.indexOf("--tdd") > -1;
 const webpackConfig = require('./webpack.config');
 const webpack = require('webpack');
 const path = require('path');
-const ENTRY = './src/VisualMain.ts';
-const regex = path.normalize(ENTRY).replace(/\\/g, '\\\\').replace(/\./g, '\\.');
 
 module.exports = function (config) {
     config.set({
@@ -36,10 +34,6 @@ module.exports = function (config) {
                                 path.resolve(__dirname, 'lib/@uncharted/cards/src/handlebarHelper'),
                             ],
                         },
-                    },
-                    {
-                        test: new RegExp(regex),
-                        loader: path.join(__dirname, 'bin', 'pbiPluginLoader'),
                     },
                     {
                         test: /\.js$/,

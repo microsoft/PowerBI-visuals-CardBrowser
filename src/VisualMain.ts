@@ -71,6 +71,8 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
     private $loaderElement: JQuery;
     private host: IVisualHost;
     private selectionManager: ISelectionManager;
+    private loadMoreData: Function;
+    private launchUrl: Function;
 
     private settings = $.extend({}, constants.DEFAULT_VISUAL_SETTINGS);
     private isFlipped = this.settings.flipState.cardFaceDefault === constants.CARD_FACE_METADATA;
@@ -83,15 +85,15 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
 
         // Start hacks to detect sandboxing & desktop...
         this.isSandboxed = this.hostServices['messageProxy'];
-        //console.log(!!options.host.createSelectionManager()['hostServices']['applyJsonFilter']);
+        // console.log(!!options.host.createSelectionManager()['hostServices']['applyJsonFilter']);
         // this.isSandboxed = (this.hostServices.constructor.name === "SandboxVisualHostServices");
         // this.isSandboxed = (this.hostServices.constructor.name.toLowerCase().indexOf('sandbox') !== -1);
-        //const anyData : any = powerbi.data;
+        // const anyData : any = powerbi.data;
         // ... end hacks
 
         this.context = {
             enableBlurFix: true,
-            //enableBlurFix: (anyData.dsr.wireContracts !== undefined), // this check isn't working in sand-box mode
+            // enableBlurFix: (anyData.dsr.wireContracts !== undefined), // this check isn't working in sand-box mode
             previewId: 'preview-' + this.hostServices['instanceId'],
             metadataId: 'metadata-' + this.hostServices['instanceId'],
         };
@@ -102,7 +104,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         this.$container = this.$element.find('.container');
         this.$container.append(this.thumbnails.render());
 
-        this.thumbnails.on(EVENTS.THUMBNAIL_CLICK, (thumbnail) => {
+        this.thumbnails.on(`${EVENTS.THUMBNAIL_CLICK}`, (thumbnail) => {
             if (!thumbnail.isExpanded) {
                 this.thumbnails.updateReaderContent(thumbnail, thumbnail.data);
                 this.thumbnails.openReader(thumbnail);
@@ -157,16 +159,31 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         this.$element.find('input').on('change', onInput);
 
         // set up infinite scroll
-        let infiniteScrollTimeoutId:any;
+        let infiniteScrollTimeoutId: any;
 
-        this.thumbnails.on('inlineThumbnailsView:scrollEnd wrappedThumbnailsView:scrollEnd', debounce(() => {
+        const findApi = (methodName) => {
+            return this.host[methodName] ? (arg) => {
+                this.host[methodName](arg);
+            } : this.hostServices && this.hostServices[methodName] ? (arg) => {
+                this.hostServices[methodName](arg);
+            } : null;
+        };
+
+        this.loadMoreData = findApi("loadMoreData");
+        this.launchUrl = findApi("launchUrl");
+
+        this.launchUrl && this.thumbnails.on(`${EVENTS.THUMBNAIL_CLICK_LINK} ${EVENTS.READER_CONTENT_CLICK_LINK}`, (event) => {
+            this.launchUrl(event.currentTarget.href);
+        });
+
+        this.thumbnails.on(`${EVENTS.INLINE_THUMBNAILS_VIEW_SCROLL_END} ${EVENTS.WRAPPED_THUMBNAILS_VIEW_SCROLL_END}`, debounce(() => {
             console.log('scrollEnd');
             infiniteScrollTimeoutId = setTimeout(() => {
                 clearTimeout(infiniteScrollTimeoutId);
-                if (!this.isLoadingMore && this.hasMoreData) {
+                if (!this.isLoadingMore && this.hasMoreData && this.loadMoreData) {
                     this.isLoadingMore = true;
                     this.showLoader();
-                    this.hostServices.loadMoreData();
+                    this.loadMoreData();
                 }
             }, constants.INFINITE_SCROLL_DELAY);
         }));
@@ -189,7 +206,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
 
         this.dataView = options.dataViews[0];
         const newObjects = this.dataView && this.dataView.metadata && this.dataView.metadata.objects;
-        //const wasFiltering = this.settings.presentation.filter;
+        // const wasFiltering = this.settings.presentation.filter;
         this.settings = $.extend(true, {}, constants.DEFAULT_VISUAL_SETTINGS, newObjects);
 
         let previousLoadedDocumentCount = 0;
@@ -200,14 +217,14 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         this.loadedDocumentCount = this.dataView ? countDocuments(this.dataView) : 0;
 
         this.hasMoreData = !!this.dataView.metadata.segment;
-        this.isLoadingMore = (this.settings.loadMoreData.enabled
+        this.isLoadingMore = (this.settings.loadMoreData.enabled && this.loadMoreData
         && this.loadedDocumentCount < this.settings.loadMoreData.limit
         && this.hasMoreData);
         if (this.isLoadingMore) {
             // need to load more data
             this.isLoadingMore = true;
             this.showLoader();
-            this.hostServices.loadMoreData();
+            this.loadMoreData();
             return;
         }
 
@@ -218,10 +235,10 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
             this.isFlipped = this.settings.flipState.cardFaceDefault === constants.CARD_FACE_METADATA;
         }
         this.updateVisualStyleConfigs();
-        //if (wasFiltering && !this.settings.presentation.filter) {
+        // if (wasFiltering && !this.settings.presentation.filter) {
         //    // clear any current filter
         //    this.selectionManager.clear();
-        //}
+        // }
 
         this.hideLoader();
         if (previousLoadedDocumentCount) {
@@ -273,16 +290,20 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
 
     private updateThumbnails(viewport) {
         this.isFlipped = this.settings.flipState.cardFaceDefault === constants.CARD_FACE_METADATA;
+        // We do need innerHTML, so suppress tslint
+        // tslint:disable-next-line
         this.$container.html(this.thumbnails.reset({
             'subtitleDelimiter': this.settings.presentation.separator,
             'thumbnail.disableFlipping': !this.settings.flipState.enableFlipping,
             'thumbnail.displayBackCardByDefault': this.isFlipped,
+            'thumbnail.disableLinkNavigation': true,
             'thumbnail.enableBoxShadow': this.settings.presentation.shadow,
             'thumbnail.expandedWidth': this.settings.reader.width,
             'thumbnail.width': Math.max(constants.MIN_THUMBNAIL_WIDTH, this.settings.presentation.thumbnailWidth),
             'readerContent.headerBackgroundColor': this.settings.reader.headerBackgroundColor.solid.color,
             'readerContent.headerImageMaxWidth': this.settings.presentation.thumbnailWidth - 10,
             'readerContent.headerSourceLinkColor': this.settings.reader.headerTextColor.solid.color,
+            'readerContent.disableLinkNavigation': true,
             'verticalReader.height': this.settings.reader.height,
         }).render());
         this.thumbnails.loadData(this.documentData.documentList);
