@@ -101,11 +101,16 @@ function assignValue(role, columns, idx, columnValue) {
 }
 
 function convertToRowObjs(dataView: DataView, settings, roles = null) {
+    const result = [];
     const table = dataView.table;
+
+    if (!table) {
+        return result;
+    }
+
     const rows = table.rows;
     const columns = dataView.metadata.columns;
     const identities = table.identity || [];
-    const result = [];
     const rowCount = rows.length;
     let row;
     let identity;
@@ -173,6 +178,7 @@ function convertToRowObjs(dataView: DataView, settings, roles = null) {
 
         result.push(rowObj);
     }
+
     return result;
 }
 
@@ -183,6 +189,9 @@ function convertToDocumentData(dataView: DataView, settings, roles, host: IVisua
 
 function countDocuments(dataView: DataView) {
     const table = dataView.table;
+    if  (!table) {
+        return 0;
+    }
     const rows = table.rows;
     const columns = dataView.metadata.columns;
     const rowCount = rows.length;
