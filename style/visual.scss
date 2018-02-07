@@ -1,25 +1,25 @@
 /**
- * Copyright (c) 2017 Uncharted Software Inc.
- * http://www.uncharted.software/
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
- * this software and associated documentation files (the 'Software'), to deal in
- * the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
- * of the Software, and to permit persons to whom the Software is furnished to do
- * so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
+* Copyright (c) 2017 Uncharted Software Inc.
+* http://www.uncharted.software/
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy of
+* this software and associated documentation files (the 'Software'), to deal in
+* the Software without restriction, including without limitation the rights to
+* use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+* of the Software, and to permit persons to whom the Software is furnished to do
+* so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included in all
+* copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE.
+*/
 @import url("https://opensource.keycdn.com/fontawesome/4.7.0/font-awesome.min.css");
 
 $thumbnail-card-border-width: 0px;
@@ -40,35 +40,31 @@ $thumbnail-flipping-animation-duration: 0.3s;
     border-radius: 100px;
     background-color: rgba(0, 0, 0, 0);
   }
-
+  
   ::-webkit-scrollbar:hover {
     background-color: rgba(0, 0, 0, 0.09);
   }
-
+  
   ::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, 0.2);
     border-radius: 100px;
   }
-
+  
   ::-webkit-scrollbar-thumb:hover,
   ::-webkit-scrollbar-thumb:active
   {
     background: rgba(0, 0, 0, 0.5);
   }
-
+  
   -ms-overflow-style: -ms-autohiding-scrollbar;
-
+  
   a {
     text-decoration: none;
     color: #2C83C0;
   }
-
+  
   padding-left: 0;
   padding-right: 0;
-}
-
-.uncharted-thumbnails-header-image {
-  overflow: hidden
 }
 
 .uncharted-thumbnails-thumbnail .card {
@@ -78,14 +74,14 @@ $thumbnail-flipping-animation-duration: 0.3s;
 .visual-container {
   height: 100%;
   width: 100%;
-
+  
   .flip-panel {
     position: absolute;
     height: 22px;
     top: 0;
     width: 100%;
   }
-
+  
   /* The switch - the box around the slider */
   .switch {
     border: none;
@@ -95,7 +91,7 @@ $thumbnail-flipping-animation-duration: 0.3s;
     width: 64px;
     z-index: 1;
   }
-
+  
   /* The button */
   .flip-button {
     display: inline;
@@ -108,7 +104,7 @@ $thumbnail-flipping-animation-duration: 0.3s;
     background-color: transparent;
     -webkit-transition: .4s;
     transition: .4s;
-
+    
     .box {
       display: inline-block;
       border: 1px solid #555;
@@ -119,12 +115,12 @@ $thumbnail-flipping-animation-duration: 0.3s;
       -webkit-transition: .3s;
       transition: .3s;
     }
-
+    
     /* Hide default HTML checkbox */
     input[type="radio"] {
       display:none;
     }
-
+    
     input[type="radio"] + label {
       cursor: pointer;
       .box {
@@ -136,7 +132,7 @@ $thumbnail-flipping-animation-duration: 0.3s;
         }
       }
     }
-
+    
     input[type="radio"]:checked + label {
       .box {
         background-color: #555;
@@ -147,48 +143,48 @@ $thumbnail-flipping-animation-duration: 0.3s;
         }
       }
     }
-
+    
     .flip-left-side {
       border-right: 1px dotted #555;
       display: inline-block;
       padding-right: 6px;
       margin-right: 3px;
     }
-
+    
     .flip-right-side {
       display: inline-block;
     }
   }
-
+  
   .reader-content-header .header-source-link-box {
     width: initial;
     min-width: 170px;
     max-width: 50%;
   }
-
+  
   .container {
     position: absolute;
     top: 0;
     bottom: 0;
     width: 100%;
-
+    
     .moreDataLoader {
       position: absolute;
       bottom: 50px;
       right: 100px;
     }
-
+    
     .uncharted-thumbnails.inline-mode {
       margin-left: 0;
       margin-right: 0;
     }
-
+    
     &.disable-back-card-title {
       .uncharted-thumbnails-thumbnail .meta-data-content .title-box {
         display: none;
       }
     }
-
+    
     &.disable-back-card-subtitle {
       .uncharted-thumbnails-thumbnail .meta-data-content .meta-line {
         &.subtitle
@@ -197,13 +193,13 @@ $thumbnail-flipping-animation-duration: 0.3s;
         }
       }
     }
-
+    
     &.disable-back-card-image {
       .meta-data-images-container {
         display: none;
       }
     }
-
+    
     .reader-content-header {
       border-bottom: none;
       .close-button {
@@ -217,7 +213,7 @@ $thumbnail-flipping-animation-duration: 0.3s;
         }
       }
     }
-
+    
     &.lightButton {
       .reader-content-header {
         .close-button {
@@ -231,13 +227,20 @@ $thumbnail-flipping-animation-duration: 0.3s;
         }
       }
     }
+    &.uncropped {
+      .uncharted-thumbnails-header-image {
+        .image {
+          background-size: contain;
+        }
+      } 
+    }
   }
-
+  
   &.enable-flipping {
     .container {
       top: 22px;
     }
-
+    
     .switch {
       display: block;
     }
@@ -271,13 +274,13 @@ $thumbnail-flipping-animation-duration: 0.3s;
       }
     }
   }
-
+  
   &.animating {
     .switch {
       pointer-events: none;
     }
   }
-
+  
   // Flipping animation
   &.animating .uncharted-thumbnails-thumbnail.flip-container {
     perspective: 1000px;
@@ -308,7 +311,7 @@ $thumbnail-flipping-animation-duration: 0.3s;
       }
     }
   }
-
+  
   &.animating.cards-flipped .uncharted-thumbnails-thumbnail.flip-container {
     .flipper.flipped {
       transition: 0s;

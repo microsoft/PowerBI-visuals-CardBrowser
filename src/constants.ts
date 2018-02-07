@@ -84,6 +84,7 @@ export const DEFAULT_VISUAL_SETTINGS = {
         showImageOnBack: true,
         thumbnailWidth: 200,
         filter: true,
+        autocrop: true,
     },
     reader: {
         headerBackgroundColor: {

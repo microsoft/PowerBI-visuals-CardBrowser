@@ -269,6 +269,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
 
         const headerHSL = utils.convertToHSL(this.settings.reader.headerBackgroundColor.solid.color);
         this.$container.toggleClass('lightButton', headerHSL[2] < 0.5);
+        this.$container.toggleClass('uncropped', !this.settings.presentation.autocrop);
 
         const previewButton: any = this.$element.find('#' + this.context.previewId)[0];
         previewButton.checked = !this.isFlipped;

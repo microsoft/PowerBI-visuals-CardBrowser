@@ -210,7 +210,14 @@
             "bool": true
           },
           "displayName": "Filter",
-          "description": "If true, selecting a card filters other visuals to that article."
+          "description": "If on, selecting a card filters other visuals to that article."
+        },
+        "autocrop": {
+          "displayName": "Crop Image",
+          "description": "If on, crop and recenter the image to fill the top of the thumbnail",
+          "type": {
+            "bool": true
+          }
         }
       },
       "displayName": "Cards"
