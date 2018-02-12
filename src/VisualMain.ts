@@ -50,6 +50,7 @@ import * as constants from './constants';
 
 import {
     EVENTS,
+    DEFAULT_CONFIG,
 } from '../lib/@uncharted/cards/src/components/constants';
 const visualTemplate = require('./visual.handlebars');
 const loaderTemplate = require('./loader.handlebars');
@@ -269,7 +270,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
 
         const headerHSL = utils.convertToHSL(this.settings.reader.headerBackgroundColor.solid.color);
         this.$container.toggleClass('lightButton', headerHSL[2] < 0.5);
-        this.$container.toggleClass('uncropped', !this.settings.presentation.autocrop);
+        this.$container.toggleClass('uncropped', !this.settings.presentation.cropImages);
 
         const previewButton: any = this.$element.find('#' + this.context.previewId)[0];
         previewButton.checked = !this.isFlipped;
@@ -291,6 +292,8 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
 
     private updateThumbnails(viewport) {
         this.isFlipped = this.settings.flipState.cardFaceDefault === constants.CARD_FACE_METADATA;
+        const width = Math.max(constants.MIN_THUMBNAIL_WIDTH, this.settings.presentation.thumbnailWidth);
+
         // We do need innerHTML, so suppress tslint
         // tslint:disable-next-line
         this.$container.html(this.thumbnails.reset({
@@ -300,11 +303,13 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
             'thumbnail.disableLinkNavigation': true,
             'thumbnail.enableBoxShadow': this.settings.presentation.shadow,
             'thumbnail.expandedWidth': this.settings.reader.width,
-            'thumbnail.width': Math.max(constants.MIN_THUMBNAIL_WIDTH, this.settings.presentation.thumbnailWidth),
+            'thumbnail.width': width,
+            'thumbnail.displayLargeImage': !this.settings.presentation.cropImages,
             'readerContent.headerBackgroundColor': this.settings.reader.headerBackgroundColor.solid.color,
             'readerContent.headerImageMaxWidth': this.settings.presentation.thumbnailWidth - 10,
             'readerContent.headerSourceLinkColor': this.settings.reader.headerTextColor.solid.color,
             'readerContent.disableLinkNavigation': true,
+            'readerContent.cropImages': this.settings.presentation.cropImages,
             'verticalReader.height': this.settings.reader.height,
         }).render());
         this.thumbnails.loadData(this.documentData.documentList);

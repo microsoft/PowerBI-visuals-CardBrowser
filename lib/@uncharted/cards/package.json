@@ -1,6 +1,6 @@
 {
   "name": "@uncharted/cards",
-  "version": "0.10.8",
+  "version": "0.10.10",
   "main": "dist/uncharted.thumbnails.js",
   "scripts": {
     "test": "karma start",
