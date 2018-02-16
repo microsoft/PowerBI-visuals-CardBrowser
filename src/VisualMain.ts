@@ -134,10 +134,11 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         // Flipping cards involves two hacks:
         // ... 1. IE11 doesn't behave well, so we skip the transition altogether there
         const isIE11 = !!navigator.userAgent.match(/Trident\/7\./);
-        const isSafariOrUiwebview = /(iPhone|iPod|iPad).*AppleWebKit/i.test(navigator.userAgent);
+        const isSafari = /.*AppleWebKit(?!.*Chrome)/i.test(navigator.userAgent);
+        const isIOS = /(iPhone|iPod|iPad).*AppleWebKit/i.test(navigator.userAgent);
         const isNativeAndroidApp = /AppName\/[0-9\.]+$/.test(navigator.userAgent);
 
-        const onChange = (isIE11 || isSafariOrUiwebview) ? (() => {
+        const onChange = (isIE11 || isSafari || isIOS) ? (() => {
             this.thumbnails.thumbnailInstances.forEach(thumbnail => thumbnail.flip(this.isFlipped));
         }) : (() => {
             // ... 2. Text is blurry if certain animation-oriented CSS fx are permanently set, so only turn them on during the transition
@@ -160,7 +161,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         };
 
         this.$element.find('input').on('change', onInput);
-        if (isIE11 || isSafariOrUiwebview || isNativeAndroidApp) {
+        if (isIOS || isNativeAndroidApp) {
             this.$element.toggleClass('mobile', true);
         }
 

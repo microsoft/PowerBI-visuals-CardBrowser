@@ -246,12 +246,24 @@ $thumbnail-flipping-animation-duration: 0.3s;
     }
   }
   &.mobile {
-    .flip-button {
-      font-size:24px;
-      .box {
-        width: 24px;
-        height: 24px;
+    .flip-panel {
+      height: 44px;
+      .switch {
+        width: 150px;
+        .flip-button {
+          font-size: 24px;
+          .flip-left-side {
+            padding-right: 10px;
+          }
+          .box {
+            width: 24px;
+            height: 24px;
+          }
+        }
       }
+    }
+    .container {
+      top: 44px;
     }
   }
 }
