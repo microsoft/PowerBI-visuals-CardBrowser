@@ -1,6 +1,6 @@
 {
   "name": "@uncharted/cards",
-  "version": "0.10.10",
+  "version": "0.10.11",
   "main": "dist/uncharted.thumbnails.js",
   "scripts": {
     "test": "karma start",
@@ -37,7 +37,7 @@
     "npm-run-all": "^4.0.2",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
-    "webpack": "^3.4.1",
-    "webpack-dev-server": "^2.6.1"
+    "webpack": "^3.11.0",
+    "webpack-dev-server": "^2.11.1"
   }
 }

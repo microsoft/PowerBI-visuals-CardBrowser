@@ -25,7 +25,6 @@ import IColorInfo = powerbi.IColorInfo;
 import IVisualHost = powerbi.extensibility.v120.IVisualHost;
 import SelectionId = powerbi.visuals.SelectionId;
 
-import * as _ from 'lodash';
 import * as utils from './utils';
 const moment = require('moment');
 import { HTML_WHITELIST_SUMMARY, HTML_WHITELIST_CONTENT } from './constants';
