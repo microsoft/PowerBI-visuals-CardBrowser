@@ -176,11 +176,8 @@ function main() {
         const installArgs = findDependencies(libPath);
         if (installArgs.length) {
             npmInstall(installArgs).then(() => {
-                createSymLinks(libPath);
                 return Promise.resolve(true);
             });
-        } else {
-            createSymLinks(libPath);
         }
 
         return Promise.resolve(true);

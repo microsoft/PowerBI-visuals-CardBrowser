@@ -1,6 +1,6 @@
 {
   "name": "WidgetCards",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Card Browser, a thumbnails custom visual for PowerBI",
   "main": "src/index.js",
   "scripts": {
@@ -13,6 +13,7 @@
     "tdd": "npm-run-all --parallel dev test:tdd",
     "dev": "node bin/startDev",
     "package": "node bin/packageVisual",
+    "postinstall": "node bin/createSymLink",
     "test": "karma start --color | node bin/filterErrors",
     "test:tdd": "karma start --color --tdd | node bin/filterErrors",
     "lint": "tslint --project ./tsconfig.json src/**/*.ts",
@@ -24,7 +25,7 @@
   "license": "MIT",
   "privacyTerms": "https://privacy.microsoft.com/en-US/privacystatement/",
   "privateSubmodules": {
-    "@uncharted/cards": "0.10.10"
+    "@uncharted/cards": "0.10.11"
   },
   "devDependencies": {
     "@types/jquery": "^3.3.0",
@@ -46,6 +47,7 @@
     "eslint-loader": "^1.9.0",
     "handlebars": "^4.0.11",
     "handlebars-loader": "^1.6.0",
+    "jquery": "^3.3.1",
     "json": "^9.0.6",
     "karma": "^2.0.0",
     "karma-babel-preprocessor": "^7.0.0",
@@ -74,13 +76,12 @@
     "ts-loader": "^3.5.0",
     "tslint": "^5.9.1",
     "tslint-loader": "^3.5.3",
-    "tslint-microsoft-contrib": "^5.0.2",
-    "typescript": "^2.7.1",
-    "webpack": "^3.10.0"
+    "tslint-microsoft-contrib": "^5.0.3",
+    "typescript": "^2.7.2",
+    "webpack": "^3.11.0"
   },
   "dependencies": {
     "font-awesome": "^4.7.0",
-    "jquery": "^3.3.1",
     "lodash": "^4.17.5",
     "moment": "^2.20.1"
   }

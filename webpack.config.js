@@ -53,6 +53,7 @@ module.exports = {
     externals: [
         {
             jquery: 'jQuery',
+            lodash: '_'
         },
-    ]
+    ],
 };

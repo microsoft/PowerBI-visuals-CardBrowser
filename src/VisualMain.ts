@@ -38,7 +38,6 @@ import EnumerateVisualObjectInstancesOptions = powerbi.EnumerateVisualObjectInst
 import VisualObjectInstance = powerbi.VisualObjectInstance;
 import VisualDataChangeOperationKind = powerbi.VisualDataChangeOperationKind;
 
-import * as $ from 'jquery';
 import Thumbnails from '../lib/@uncharted/cards/src/index.js';
 const debounce = require('lodash/debounce');
 import * as utils from './utils';
