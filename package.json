@@ -22,7 +22,7 @@
   "config": {},
   "keywords": [],
   "author": "Uncharted Software Inc.",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "privacyTerms": "https://privacy.microsoft.com/en-US/privacystatement/",
   "privateSubmodules": {
     "@uncharted/cards": "0.10.11"
