@@ -146,7 +146,7 @@
           ],
           "dataReductionAlgorithm": {
             "window": {
-              "count": 200
+              "count": 500
             }
           }
         },
@@ -158,10 +158,16 @@
               }
             }
           ],
-          "dataReductionAlgorithm": {
-            "window": {
-              "count": 200
-            }
+          "dataReductionAlgorithm": {"window": {"count": 20000}}
+        },
+        "rowCount": {
+          "preferred": {
+            "min": 500,
+            "max": 6000
+          },
+          "supported": {
+            "min": 0,
+            "max": 20000
           }
         }
       }
