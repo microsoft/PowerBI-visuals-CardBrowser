@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-// thumbnail
-$thumbnail-height: 300px !default;
-$thumbnail-card-border-width: 1px !default;
-$thumbnail-card-border: $thumbnail-card-border-width solid #F2F2F2 !default;
-$thumbnail-card-shadow: -1px 0 0 rgba(0,0,0,.12), 0 0 2px rgba(0,0,0,.12), 2px 0 4px rgba(0,0,0,.24) !default;
-$thumbnail-card-margin: 5px !default;
-$thumbnail-expanding-animation: 0.3s ease-out !default;
-$thumbnail-flipping-animation-duration: 0.3s !default;
+// card
+$card-height: 300px !default;
+$card-border-width: 1px !default;
+$card-border: $card-border-width solid #F2F2F2 !default;
+$card-shadow: -1px 0 0 rgba(0,0,0,.12), 0 0 2px rgba(0,0,0,.12), 2px 0 4px rgba(0,0,0,.24) !default;
+$card-margin: 5px !default;
+$card-expanding-animation: 0.3s ease-out !default;
+$card-flipping-animation-duration: 0.3s !default;
 
-$inline-thumbnail-max-height: 400px !default;
-$inline-thumbnail-min-height: 150px !default;
-$inline-thumbnail-height: 100% !default;
+$inline-card-max-height: 400px !default;
+$inline-card-min-height: 150px !default;
+$inline-card-height: 100% !default;

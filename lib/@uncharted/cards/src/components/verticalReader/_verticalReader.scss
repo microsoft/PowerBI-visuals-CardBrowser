@@ -15,13 +15,13 @@
  */
 
 $reader-animation-duration: 0.3s;
-.uncharted-thumbnails-reader-holder {
+.uncharted-cards-reader-holder {
     width: 100%;
     height: 0;
     transition: height $reader-animation-duration ease-out;
 }
 
-.uncharted-thumbnails-vertical-reader {
+.uncharted-cards-vertical-reader {
     height: 100%;
     width: 100%;
     position: relative;

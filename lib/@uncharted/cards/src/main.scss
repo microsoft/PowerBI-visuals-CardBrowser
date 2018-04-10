@@ -15,11 +15,11 @@
  */
 
 @import 'style/base';
-@import 'components/thumbnails/thumbnails';
-.uncharted-thumbnails-style {
-  @import 'components/inlineThumbnailsView/inlineThumbnailsView';
-  @import 'components/wrappedThumbnailsView/wrappedThumbnailsView';
-  @import 'components/thumbnail/thumbnail';
+@import 'components/cards/cards';
+.uncharted-cards-style {
+  @import 'components/inlineCardsView/inlineCardsView';
+  @import 'components/wrappedCardsView/wrappedCardsView';
+  @import 'components/card/card';
   @import 'components/readerContent/readerContent';
   @import 'components/verticalReader/verticalReader';
   @import 'components/headerImage/headerImage';

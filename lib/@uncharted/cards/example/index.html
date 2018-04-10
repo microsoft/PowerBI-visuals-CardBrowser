@@ -1,7 +1,7 @@
 <!DOCTYPE> 
 <html>
     <head>
-        <title>Thumbnails</title>
+        <title>Cards</title>
         <link rel="stylesheet" href="font-awesome.min.css">
         <link rel="stylesheet" href="style.css">
         <script src="http://code.jquery.com/jquery-3.2.1.js"></script>
@@ -16,20 +16,20 @@
             <div class="text-box-container">
                 <div class="config-box">
                     <label for="config">
-                        Thumbnails Config:
+                        Cards Config:
                     </label>
                     <textarea name="config" id="config"></textarea>
                 </div>
                 <div class="data-box">
                     <label for="data">
-                        Thumbnails Data:
+                        Cards Data:
                     </label>
                     <textarea name="data" id="data"></textarea>
                 </div>
             </div>
         </div>
 
-        <div class="thumbnails-panel"></div>
+        <div class="cards-panel"></div>
 
         <script src="sampledata.js"></script>
         <script src="uncharted.cards.js"></script>
@@ -50,7 +50,7 @@
             }
         </script>
         <script>
-            var Thumbnails = Uncharted.Thumbnails.default;
+            var Cards = Uncharted.Cards.default;
 
             // Initialize Control Panel
 
@@ -58,14 +58,14 @@
                 'inlineMode': true,
                 'subtitleDelimiter': ' \u2022 ',
                 'scrollToVerticalReaderDuration': 300,
-                'inlineThumbnailCenteringDuration': 300,
-                'thumbnail.width': 200,
-                'thumbnail.enableBoxShadow': true,
-                'thumbnail.expandedWidth': 520,
-                'thumbnail.disableFlipping': false,
-                'thumbnail.displayBackCardByDefault': false,
-                'thumbnail.disableLinkNavigation': false,
-                'thumbnail.displayLargeImage': false,
+                'inlineCardCenteringDuration': 300,
+                'card.width': 200,
+                'card.enableBoxShadow': true,
+                'card.expandedWidth': 520,
+                'card.disableFlipping': false,
+                'card.displayBackCardByDefault': false,
+                'card.disableLinkNavigation': false,
+                'card.displayLargeImage': false,
                 'verticalReader.height': 500,
                 'readerContent.headerBackgroundColor': '#555',
                 'readerContent.headerSourceLinkColor': '#fff',
@@ -73,69 +73,69 @@
                 'readerContent.cropImages': true,
             };
 
-            var thumbnailsConfig = DEFAULT_CONFIG;
-            var data = [].concat(thumbnailsSampleData);
+            var cardsConfig = DEFAULT_CONFIG;
+            var data = [].concat(cardsSampleData);
 
-            var updateThumbnails = function () {
-                var thumbnailsData, thumbnailsConfig;
+            var updateCards = function () {
+                var cardsData, cardsConfig;
                 try {
-                    thumbnailsData = JSON.parse($('#data')[0].value);
-                    thumbnailsConfig = JSON.parse($('#config')[0].value);
-                    $('.thumbnails-panel').html(thumbnails.reset(thumbnailsConfig).render());
-                    thumbnails.loadData(thumbnailsData);
+                    cardsData = JSON.parse($('#data')[0].value);
+                    cardsConfig = JSON.parse($('#config')[0].value);
+                    $('.cards-panel').html(cards.reset(cardsConfig).render());
+                    cards.loadData(cardsData);
                 } catch (e) {}
             };
 
             $('#data')[0].value = JSON.stringify(data, null, 2);
             $('#config')[0].value = JSON.stringify(DEFAULT_CONFIG, null, 2);
-            $('#data, #config').on('input propertychange', debounce(updateThumbnails, 300));
+            $('#data, #config').on('input propertychange', debounce(updateCards, 300));
 
             var getMoreData = function () {
-                var moreData = data.map(function (thumbnailData) { 
+                var moreData = data.map(function (cardData) { 
                     var id = '_' + Math.random().toString(36).substr(2, 9);
-                    return Object.assign({}, thumbnailData, { id: id });
+                    return Object.assign({}, cardData, { id: id });
                 });
                 return moreData;
             };
 
             for (var i = 0; i < 1; i++) {
-                var thumbnailData = (thumbnailData || []).concat(getMoreData());
+                var cardData = (cardData || []).concat(getMoreData());
             }
 
-            // Initialize Thumbnails Component
+            // Initialize Cards Component
 
-            thumbnails = new Thumbnails(thumbnailsConfig);
-            var $thumbnails = $('.thumbnails-panel').html(thumbnails.render());
-            thumbnails.loadData(thumbnailData);
+            cards = new Cards(cardsConfig);
+            var $cards = $('.cards-panel').html(cards.render());
+            cards.loadData(cardData);
 
-            thumbnails.on('thumbnail:click', function (thumbnail) {
-                if (!thumbnail.isExpanded) {
-                    thumbnails.updateReaderContent(thumbnail, $.extend({
+            cards.on('card:click', function (card) {
+                if (!card.isExpanded) {
+                    cards.updateReaderContent(card, $.extend({
                             content: '<div class="zn-body__read-all"><p class="zn-body__paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam diam massa, consequat non dolor ac, dignissim elementum est. Quisque non nulla odio. Phasellus urna diam, condimentum blandit mi ac, euismod faucibus libero. Maecenas nec purus non mauris volutpat lacinia et id leo. Quisque quis maximus dolor. Morbi placerat sagittis tristique. Duis rhoncus sed urna sed dictum.    </p><p>    Curabitur rhoncus viverra ex, in mollis quam. Vivamus ultrices orci id mi pretium convallis. Nunc venenatis finibus mauris, eget gravida nunc porta ut. Praesent aliquet cursus orci quis auctor. Vivamus aliquet, metus pharetra egestas vulputate, sem libero molestie dui, non lobortis enim mi tincidunt lorem. Aenean nec enim ac libero vestibulum pellentesque vel ut elit. Aenean ac neque vel eros tincidunt sodales. Praesent lacinia ex urna, vel rutrum purus rhoncus et. Nulla finibus elit sit amet mi dictum interdum. Etiam quis neque felis. Etiam malesuada finibus blandit. Suspendisse condimentum, tortor ut egestas varius, sem lectus lacinia augue, at vulputate lacus elit ac elit. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam gravida eleifend erat, id ultricies lorem auctor in. Ut euismod risus at eros ullamcorper interdum.</p><p>Integer accumsan gravida congue. Etiam elementum ultricies consequat. Maecenas ac ipsum tincidunt, fringilla leo at, molestie ipsum. Mauris a ante eros. Morbi placerat nisi et nulla congue, at finibus nibh finibus. Nunc malesuada, metus eu condimentum sodales, sem ex dapibus arcu, ut consequat leo orci at ex. Donec posuere purus vulputate, vehicula purus sit amet, convallis est. Sed egestas tincidunt laoreet. Cras facilisis ultricies arcu id rhoncus. Fusce luctus leo tortor, eu faucibus elit posuere eget. Nam mattis rhoncus nulla, in mollis velit congue ut.</p><p>Aenean quis lobortis arcu. Suspendisse tincidunt tellus id felis interdum convallis. Sed placerat elit quis urna auctor, vel hendrerit nulla rhoncus. Mauris non gravida ex, ac tempor magna. Proin condimentum elementum risus ut fringilla. In tortor turpis, viverra vel eros a, ullamcorper semper nisl. Etiam pulvinar aliquam dolor viverra facilisis. Nulla facilisi. Proin sed euismod diam. Cras finibus, magna sed porta molestie, mauris libero vestibulum erat, ut aliquam risus purus sit amet mi. Curabitur vel nulla sem. Aenean in aliquet felis. Nulla nec justo ac odio elementum tristique at accumsan felis. Nullam tincidunt suscipit suscipit. Praesent et tempus velit, sit amet condimentum est. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p><p>Mauris euismod pretium hendrerit. Aliquam dapibus vehicula magna, a convallis orci luctus sed. Nullam tristique diam diam, quis sollicitudin dolor porta eget. Morbi lobortis neque vitae metus cursus, id tincidunt nulla semper. Pellentesque luctus fermentum turpis, eu ullamcorper diam ultrices et. Aliquam sollicitudin dui a dolor ultricies viverra. Aliquam leo metus, molestie et ultricies et, consectetur sit amet dui. Nunc pellentesque dictum ipsum, eleifend tempus turpis fringilla a. Nulla id aliquet mauris. Fusce tortor diam, imperdiet sed posuere sit amet, porta ac sapien. Maecenas varius euismod turpis eu vehicula. Proin aliquet mauris vitae ligula auctor aliquet nec et lorem. Mauris dignissim, augue nec fringilla dapibus, dolor magna euismod risus, at placerat mauris magna lobortis nibh. Ut porta tincidunt augue.</p></p><div class="el__leafmedia el__leafmedia--raw-html"><a href="https://twitter.com/CNNpolitics" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @CNNpolitics</a> </div></div>',
-                    }, thumbnail.data));
-                    thumbnails.openReader(thumbnail);
+                    }, card.data));
+                    cards.openReader(card);
                 }
             });
 
-            thumbnails.on('verticalReader:navigateToThumbnail', function (thumbnail) {
-                thumbnails.updateReaderContent(thumbnail, thumbnail.data);
+            cards.on('verticalReader:navigateToCard', function (card) {
+                cards.updateReaderContent(card, card.data);
             });
 
-            thumbnails.on('readerContent:clickCloseButton', function (readerContent) {
-                thumbnails.closeReader();
+            cards.on('readerContent:clickCloseButton', function (readerContent) {
+                cards.closeReader();
             });
 
-            thumbnails.on('thumbnails:clickBackground verticalReader:clickBackground', function () { thumbnails.closeReader() });
+            cards.on('cards:clickBackground verticalReader:clickBackground', function () { cards.closeReader() });
 
-            thumbnails.on('inlineThumbnailsView:scrollEnd wrappedThumbnailsView:scrollEnd', function () {
+            cards.on('inlineCardsView:scrollEnd wrappedCardsView:scrollEnd', function () {
                 console.log('scrollEnd');
             });
 
-            thumbnails.on('thumbnail:clickLink', function (event) {
+            cards.on('card:clickLink', function (event) {
                 console.log('click link', event.currentTarget.href);
             });
 
-            thumbnails.on('readerContent:clickLink', function (event) {
+            cards.on('readerContent:clickLink', function (event) {
                 console.log('click reader link', event.currentTarget.href);
             });
 
@@ -143,7 +143,7 @@
             $(window).resize(function () {
                 if (!ticking) {
                     requestAnimationFrame(function () {
-                        thumbnails.resize();
+                        cards.resize();
                         ticking = false;
                     });
                     ticking = true;
@@ -151,15 +151,15 @@
             });
 
             $('#toggle-inline-mode').click(function () {
-                thumbnails.toggleInlineDisplayMode();
+                cards.toggleInlineDisplayMode();
             });
 
             $('#flip-cards').click(function () {
-                thumbnails.thumbnailInstances.forEach(function (thumbnail){ thumbnail.flip(); });
+                cards.cardInstances.forEach(function (card){ card.flip(); });
             });
 
             $('#load-more').click(function () {
-                thumbnails.loadMoreData(getMoreData());
+                cards.loadMoreData(getMoreData());
             });
         </script>
     </body>

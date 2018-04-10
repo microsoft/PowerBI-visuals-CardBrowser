@@ -1,4 +1,3 @@
-{{!-- 
 /*
  * Copyright 2017 Uncharted Software Inc.
  *
@@ -14,7 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- --}}
 
-<div class="uncharted-thumbnails-style uncharted-thumbnails">
-</div>
+@import '../variables';
+
+.uncharted-cards {
+    width: 100%;
+    height: 100%;
+}

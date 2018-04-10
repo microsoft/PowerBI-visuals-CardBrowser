@@ -22,12 +22,12 @@
     }
 }
 
-.uncharted-thumbnails-thumbnail {
-    $thumbnail-card-outer: $thumbnail-card-margin + $thumbnail-card-border-width;
-    height: $thumbnail-height;
-    padding: $thumbnail-card-margin;
+.uncharted-cards-card {
+    $card-outer: $card-margin + $card-border-width;
+    height: $card-height;
+    padding: $card-margin;
     flex-shrink: 0;
-    transition: width $thumbnail-expanding-animation;
+    transition: width $card-expanding-animation;
 
     &.title-only {
         .card-image {
@@ -46,15 +46,15 @@
     &.shadow-enabled {
         .card {
             border: none;
-            box-shadow: $thumbnail-card-shadow;
+            box-shadow: $card-shadow;
         }
         .card-content-container {
             padding-left: 0;
             left: 0;
-            padding-left: $thumbnail-card-margin * 2;
-            left: -(2 * $thumbnail-card-margin);
+            padding-left: $card-margin * 2;
+            left: -(2 * $card-margin);
             &:after {
-                width: calc(100% - #{$thumbnail-card-margin * 2});
+                width: calc(100% - #{$card-margin * 2});
             }
         }
     }
@@ -65,7 +65,7 @@
         }
         .flipped {
             .back {
-                box-shadow: $thumbnail-card-shadow;
+                box-shadow: $card-shadow;
             }
             .front {
                 box-shadow: none;
@@ -74,7 +74,7 @@
     }
 
     .card {
-        border: $thumbnail-card-border;
+        border: $card-border;
         background-color: #fff;
         position: relative;
         overflow: hidden;
@@ -83,9 +83,9 @@
     .card-content-container {
         position: absolute;
         height: 100%;
-        padding-left: $thumbnail-card-outer * 2;
-        left: -(2 * $thumbnail-card-outer);
-        transition: opacity $thumbnail-expanding-animation;
+        padding-left: $card-outer * 2;
+        left: -(2 * $card-outer);
+        transition: opacity $card-expanding-animation;
         opacity: 1;
         z-index: 1;
         &.card-reader-container {
@@ -108,7 +108,7 @@
         pointer-events: none;
         position: absolute;
         background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #fff 85%);
-        width: calc(100% - #{$thumbnail-card-outer * 2});
+        width: calc(100% - #{$card-outer * 2});
         height: 50px;
         bottom: 0;
     }
@@ -169,7 +169,7 @@
         top: 2px;
         right: 3px;
         z-index: 999;
-        transition: opacity $thumbnail-expanding-animation;
+        transition: opacity $card-expanding-animation;
     }
 
     &.expanded .card-icon {
@@ -282,7 +282,7 @@
 }
 
 
-.uncharted-thumbnails-thumbnail {
+.uncharted-cards-card {
     .flipper,
     .front,
     .back {
@@ -295,10 +295,10 @@
 }
 
 // Flipping animation
-.uncharted-thumbnails-thumbnail.flip-container {
+.uncharted-cards-card.flip-container {
     perspective: 1000px;
     .flipper {
-        transition: $thumbnail-flipping-animation-duration;
+        transition: $card-flipping-animation-duration;
         transform-style: preserve-3d;
         &.flipped {
             transform: rotateY(180deg);
@@ -320,7 +320,7 @@
     }
 }
 
-.uncharted-thumbnails-thumbnail.flip-container.expanded {
+.uncharted-cards-card.flip-container.expanded {
     .flipper {
         transition: none;
     }

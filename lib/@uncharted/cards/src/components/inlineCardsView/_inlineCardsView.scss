@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-.uncharted-inline-thumbnails-view {
+.uncharted-inline-cards-view {
     height: 100%;
     width: 100%;
     overflow: auto;
-    .thumbnails-container {
+    .cards-container {
         height: 100%;
         display: flex;
         flex-wrap: nowrap;
@@ -26,9 +26,9 @@
         justify-content: flex-start;
     }
 
-    .uncharted-thumbnails-thumbnail {
-        height: $inline-thumbnail-height;
-        max-height: $inline-thumbnail-max-height;
-        min-height: $inline-thumbnail-min-height;
+    .uncharted-cards-card {
+        height: $inline-card-height;
+        max-height: $inline-card-max-height;
+        min-height: $inline-card-min-height;
     }
 }

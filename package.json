@@ -1,7 +1,7 @@
 {
-  "name": "WidgetCards",
+  "name": "powerbi-visuals-cardbrowser",
   "version": "1.0.6",
-  "description": "Card Browser, a thumbnails custom visual for PowerBI",
+  "description": "Card Browser, a custom visual for PowerBI",
   "main": "src/index.js",
   "scripts": {
     "preinstall:prereq": "npm install targz mv --save-dev",
@@ -25,7 +25,7 @@
   "license": "Apache-2.0",
   "privacyTerms": "https://privacy.microsoft.com/en-US/privacystatement/",
   "privateSubmodules": {
-    "@uncharted/cards": "0.10.11"
+    "@uncharted/cards": "0.11.0"
   },
   "devDependencies": {
     "@types/jquery": "^3.3.0",
