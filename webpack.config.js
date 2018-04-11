@@ -64,12 +64,12 @@ module.exports = {
                     },
                 }, 'ts-loader'],
             },
-        ]
+        ],
     },
-    externals: [
-        {
-            jquery: 'jQuery',
-            lodash: '_'
-        },
+    plugins: [
+        new webpack.ProvidePlugin({
+            $: 'jquery',
+            jQuery: 'jquery',
+        }),
     ],
 };
