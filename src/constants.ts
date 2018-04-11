@@ -64,7 +64,7 @@ export const WRAP_HEIGHT_FACTOR = 1.25;
 export const WRAP_THRESHOLD = 400; // px
 export const FLIP_ANIMATION_DURATION = 317; // 300 ms from CSS plus one frame
 export const INFINITE_SCROLL_DELAY = 50;
-export const MIN_THUMBNAIL_WIDTH = 11;
+export const MIN_CARD_WIDTH = 11;
 
 /**
  * Default visual settings
@@ -75,7 +75,7 @@ export const DEFAULT_VISUAL_SETTINGS = {
         dateFormat: 'MMM D, YYYY',
         separator: ' \u2022 ',
         showImageOnBack: true,
-        thumbnailWidth: 200,
+        cardWidth: 200,
         filter: true,
         cropImages: true,
     },

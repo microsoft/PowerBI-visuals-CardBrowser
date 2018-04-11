@@ -59,7 +59,7 @@ describe('Card Browser Visual', () => {
         expect(instanceProperties.dateFormat).to.equal('MMM D, YYYY');
         expect(instanceProperties.separator).to.equal(' \u2022 ');
         expect(instanceProperties.separator).to.equal(' \u2022 ');
-        expect(instanceProperties.thumbnailWidth).to.equal(200);
+        expect(instanceProperties.cardWidth).to.equal(200);
     });
 
     it('destroy', () => {

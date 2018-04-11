@@ -32,7 +32,7 @@ import VisualObjectInstance = powerbi.VisualObjectInstance;
 import VisualDataChangeOperationKind = powerbi.VisualDataChangeOperationKind;
 
 import * as $ from 'jquery';
-import Thumbnails from '../lib/@uncharted/cards/src/index.js';
+import Cards from '../lib/@uncharted/cards/src/index.js';
 import * as utils from './utils';
 import {
     convertToDocumentData,
@@ -54,7 +54,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
     private $element: JQuery;
     private $container: JQuery;
     private dataView: DataView;
-    private thumbnails: any;
+    private cards: any;
     private documentData: any;
     private hostServices: IVisualHostServices;
     private isSandboxed: Boolean;
@@ -95,24 +95,24 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         this.$element = $(visualTemplate(this.context)).appendTo(options.element);
         this.$loaderElement = $(loaderTemplate());
 
-        this.thumbnails = new Thumbnails();
+        this.cards = new Cards();
         this.$container = this.$element.find('.container');
-        this.$container.append(this.thumbnails.render());
+        this.$container.append(this.cards.render());
 
-        this.thumbnails.on(`${EVENTS.THUMBNAIL_CLICK}`, (thumbnail) => {
-            if (!thumbnail.isExpanded) {
-                this.thumbnails.updateReaderContent(thumbnail, thumbnail.data);
-                this.thumbnails.openReader(thumbnail);
-                this.applySelection(thumbnail.data);
+        this.cards.on(`${EVENTS.THUMBNAIL_CLICK}`, (card) => {
+            if (!card.isExpanded) {
+                this.cards.updateReaderContent(card, card.data);
+                this.cards.openReader(card);
+                this.applySelection(card.data);
             }
         });
 
-        this.thumbnails.on(EVENTS.VERTICAL_READER_NAVIGATE_THUMBNAIL, (thumbnail) => {
-            this.thumbnails.updateReaderContent(thumbnail, thumbnail.data);
+        this.cards.on(EVENTS.VERTICAL_READER_NAVIGATE_THUMBNAIL, (card) => {
+            this.cards.updateReaderContent(card, card.data);
         });
 
-        this.thumbnails.on(`${EVENTS.READER_CONTENT_CLICK_CLOSE} ${EVENTS.THUMBNAILS_CLICK_BACKGROUND} ${EVENTS.VERTICAL_READER_CLICK_BACKGROUND}`, () => {
-            this.thumbnails.closeReader();
+        this.cards.on(`${EVENTS.READER_CONTENT_CLICK_CLOSE} ${EVENTS.THUMBNAILS_CLICK_BACKGROUND} ${EVENTS.VERTICAL_READER_CLICK_BACKGROUND}`, () => {
+            this.cards.closeReader();
             this.applySelection(null);
         });
 
@@ -121,7 +121,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
             if ($(event.target).hasClass('flip-panel')) {
                 // When the outside portion of the flip panel (that centers the switch) is clicked,
                 // close the reader
-                this.thumbnails.closeReader();
+                this.cards.closeReader();
             }
         });
 
@@ -133,19 +133,19 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         const isNativeAndroidApp = /AppName\/[0-9\.]+$/.test(navigator.userAgent);
 
         const onChange = (isIE11 || isSafari || isIOS) ? (() => {
-            this.thumbnails.thumbnailInstances.forEach(thumbnail => thumbnail.flip(this.isFlipped));
+            this.cards.cardInstances.forEach(card => card.flip(this.isFlipped));
         }) : (() => {
             // ... 2. Text is blurry if certain animation-oriented CSS fx are permanently set, so only turn them on during the transition
             this.$container.toggleClass('cards-flipped', !this.isFlipped);
             this.$container.addClass('animating');
             setTimeout(() => {
-                this.thumbnails.thumbnailInstances.forEach(thumbnail => thumbnail.flip(this.isFlipped));
+                this.cards.cardInstances.forEach(card => card.flip(this.isFlipped));
                 setTimeout(() => this.$container.removeClass('animating cards-flipped'), constants.FLIP_ANIMATION_DURATION);
             }, 50);
         });
 
         const onInput = (event) => {
-            if (this.thumbnails.thumbnailInstances && this.thumbnails.thumbnailInstances.length) {
+            if (this.cards.cardInstances && this.cards.cardInstances.length) {
                 this.isFlipped = (event.currentTarget.id === this.context.metadataId);
                 const otherButtonId = '#' + (this.isFlipped ? this.context.previewId : this.context.metadataId);
                 $(event.target.parentElement).find(otherButtonId).removeAttr('checked');
@@ -173,11 +173,11 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         this.loadMoreData = findApi("loadMoreData");
         this.launchUrl = findApi("launchUrl");
 
-        this.launchUrl && this.thumbnails.on(`${EVENTS.THUMBNAIL_CLICK_LINK} ${EVENTS.READER_CONTENT_CLICK_LINK}`, (event) => {
+        this.launchUrl && this.cards.on(`${EVENTS.THUMBNAIL_CLICK_LINK} ${EVENTS.READER_CONTENT_CLICK_LINK}`, (event) => {
             this.launchUrl(event.currentTarget.href);
         });
 
-        this.thumbnails.on(`${EVENTS.INLINE_THUMBNAILS_VIEW_SCROLL_END} ${EVENTS.WRAPPED_THUMBNAILS_VIEW_SCROLL_END}`, debounce(() => {
+        this.cards.on(`${EVENTS.INLINE_THUMBNAILS_VIEW_SCROLL_END} ${EVENTS.WRAPPED_THUMBNAILS_VIEW_SCROLL_END}`, debounce(() => {
             console.log('scrollEnd');
             infiniteScrollTimeoutId = setTimeout(() => {
                 clearTimeout(infiniteScrollTimeoutId);
@@ -197,7 +197,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
                 if (shouldInline !== this.isInline) {
                     this.changeWrapMode(options.viewport);
                 }
-                this.thumbnails.resize();
+                this.cards.resize();
             }, 200)();
             return;
         }
@@ -243,10 +243,10 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
 
         this.hideLoader();
         if (previousLoadedDocumentCount) {
-            this.thumbnails.loadMoreData(this.documentData.documentList.slice(previousLoadedDocumentCount));
+            this.cards.loadMoreData(this.documentData.documentList.slice(previousLoadedDocumentCount));
             if (this.isFlipped !== (this.settings.flipState.cardFaceDefault === constants.CARD_FACE_METADATA)) {
                 for (let i = previousLoadedDocumentCount; i < this.loadedDocumentCount; i++ ) {
-                    this.thumbnails.thumbnailInstances[i].flip(this.isFlipped);
+                    this.cards.cardInstances[i].flip(this.isFlipped);
                 }
             }
         } else {
@@ -292,27 +292,27 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
 
     private updateThumbnails(viewport) {
         this.isFlipped = this.settings.flipState.cardFaceDefault === constants.CARD_FACE_METADATA;
-        const width = Math.max(constants.MIN_THUMBNAIL_WIDTH, this.settings.presentation.thumbnailWidth);
+        const width = Math.max(constants.MIN_CARD_WIDTH, this.settings.presentation.cardWidth);
 
         // We do need innerHTML, so suppress tslint
         // tslint:disable-next-line
-        this.$container.html(this.thumbnails.reset({
+        this.$container.html(this.cards.reset({
             'subtitleDelimiter': this.settings.presentation.separator,
-            'thumbnail.disableFlipping': !this.settings.flipState.enableFlipping,
-            'thumbnail.displayBackCardByDefault': this.isFlipped,
-            'thumbnail.disableLinkNavigation': true,
-            'thumbnail.enableBoxShadow': this.settings.presentation.shadow,
-            'thumbnail.expandedWidth': this.settings.reader.width,
-            'thumbnail.width': width,
-            'thumbnail.displayLargeImage': !this.settings.presentation.cropImages,
+            'card.disableFlipping': !this.settings.flipState.enableFlipping,
+            'card.displayBackCardByDefault': this.isFlipped,
+            'card.disableLinkNavigation': true,
+            'card.enableBoxShadow': this.settings.presentation.shadow,
+            'card.expandedWidth': this.settings.reader.width,
+            'card.width': width,
+            'card.displayLargeImage': !this.settings.presentation.cropImages,
             'readerContent.headerBackgroundColor': this.settings.reader.headerBackgroundColor.solid.color,
-            'readerContent.headerImageMaxWidth': this.settings.presentation.thumbnailWidth - 10,
+            'readerContent.headerImageMaxWidth': this.settings.presentation.cardWidth - 10,
             'readerContent.headerSourceLinkColor': this.settings.reader.headerTextColor.solid.color,
             'readerContent.disableLinkNavigation': true,
             'readerContent.cropImages': this.settings.presentation.cropImages,
             'verticalReader.height': this.settings.reader.height,
         }).render());
-        this.thumbnails.loadData(this.documentData.documentList);
+        this.cards.loadData(this.documentData.documentList);
         this.$container.toggleClass('disable-back-card-image', !this.settings.presentation.showImageOnBack);
 
         window.setTimeout(() => {
@@ -321,17 +321,17 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
     }
 
     private isInlineSize(viewport: IViewport) {
-        const thumbnailHeight = (this.thumbnails.thumbnailInstances[0] && this.thumbnails.thumbnailInstances[0].$element) ?
-            this.thumbnails.thumbnailInstances[0].$element.height() :
+        const cardHeight = (this.cards.cardInstances[0] && this.cards.cardInstances[0].$element) ?
+            this.cards.cardInstances[0].$element.height() :
             constants.WRAP_THRESHOLD; // a reasonable guess for when we're called before loadData (e.g. by ctor)
-        return thumbnailHeight &&
-            viewport.height <= thumbnailHeight * constants.WRAP_HEIGHT_FACTOR;
+        return cardHeight &&
+            viewport.height <= cardHeight * constants.WRAP_HEIGHT_FACTOR;
 
     }
 
     private changeWrapMode(viewport: IViewport) {
         const isViewPortHeightSmallEnoughForInlineThumbnails = this.isInlineSize(viewport);
-        this.thumbnails.toggleInlineDisplayMode(isViewPortHeightSmallEnoughForInlineThumbnails);
+        this.cards.toggleInlineDisplayMode(isViewPortHeightSmallEnoughForInlineThumbnails);
         this.isInline = isViewPortHeightSmallEnoughForInlineThumbnails;
     }
 
@@ -366,7 +366,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
      * @method destroy
      */
     public destroy(): void {
-        this.thumbnails = null;
+        this.cards = null;
         this.hostServices = null;
     }
 
