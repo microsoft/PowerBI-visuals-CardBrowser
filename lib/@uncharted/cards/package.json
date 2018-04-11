@@ -1,6 +1,6 @@
 {
   "name": "@uncharted/cards",
-  "version": "0.11.0",
+  "version": "0.12.1",
   "main": "dist/uncharted.cards.js",
   "scripts": {
     "test": "./node_modules/.bin/karma start",
