@@ -99,7 +99,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         this.$container = this.$element.find('.container');
         this.$container.append(this.cards.render());
 
-        this.cards.on(`${EVENTS.THUMBNAIL_CLICK}`, (card) => {
+        this.cards.on(`${EVENTS.CARD_CLICK}`, (card) => {
             if (!card.isExpanded) {
                 this.cards.updateReaderContent(card, card.data);
                 this.cards.openReader(card);
@@ -107,11 +107,11 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
             }
         });
 
-        this.cards.on(EVENTS.VERTICAL_READER_NAVIGATE_THUMBNAIL, (card) => {
+        this.cards.on(EVENTS.VERTICAL_READER_NAVIGATE_CARD, (card) => {
             this.cards.updateReaderContent(card, card.data);
         });
 
-        this.cards.on(`${EVENTS.READER_CONTENT_CLICK_CLOSE} ${EVENTS.THUMBNAILS_CLICK_BACKGROUND} ${EVENTS.VERTICAL_READER_CLICK_BACKGROUND}`, () => {
+        this.cards.on(`${EVENTS.READER_CONTENT_CLICK_CLOSE} ${EVENTS.CARDS_CLICK_BACKGROUND} ${EVENTS.VERTICAL_READER_CLICK_BACKGROUND}`, () => {
             this.cards.closeReader();
             this.applySelection(null);
         });
@@ -173,11 +173,11 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         this.loadMoreData = findApi("loadMoreData");
         this.launchUrl = findApi("launchUrl");
 
-        this.launchUrl && this.cards.on(`${EVENTS.THUMBNAIL_CLICK_LINK} ${EVENTS.READER_CONTENT_CLICK_LINK}`, (event) => {
+        this.launchUrl && this.cards.on(`${EVENTS.CARD_CLICK_LINK} ${EVENTS.READER_CONTENT_CLICK_LINK}`, (event) => {
             this.launchUrl(event.currentTarget.href);
         });
 
-        this.cards.on(`${EVENTS.INLINE_THUMBNAILS_VIEW_SCROLL_END} ${EVENTS.WRAPPED_THUMBNAILS_VIEW_SCROLL_END}`, debounce(() => {
+        this.cards.on(`${EVENTS.INLINE_CARDS_VIEW_SCROLL_END} ${EVENTS.WRAPPED_CARDS_VIEW_SCROLL_END}`, debounce(() => {
             console.log('scrollEnd');
             infiniteScrollTimeoutId = setTimeout(() => {
                 clearTimeout(infiniteScrollTimeoutId);
