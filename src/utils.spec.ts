@@ -15,12 +15,11 @@
  */
 
 import * as utils from './utils';
-import * as sinon from 'sinon';
 import mockDataView from './test_data/mockdataview';
-import * as _ from 'lodash';
+import { cloneDeep } from 'lodash';
 import { HTML_WHITELIST_CONTENT } from './constants';
 import testHtmlStrings from './test_data/testHtmlStrings.js';
-// import DataView = powerbi.DataView;
+import DataViewMetadataColumn = powerbi.DataViewMetadataColumn;
 
 describe('utils', () => {
     it('findColumn', () => {
@@ -56,7 +55,7 @@ describe('utils', () => {
     });
 
     it('hasRole', () => {
-        const column = mockDataView.dataViews[0].metadata.columns[0];
+        const column = <DataViewMetadataColumn>mockDataView.dataViews[0].metadata.columns[0];
         expect(utils.hasRole(column, 'title')).toBe(false);
         expect(utils.hasRole(column, 'id')).toBe(true);
         expect(utils.hasRole(column, 'document')).toBe(true);

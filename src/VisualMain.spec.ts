@@ -15,21 +15,20 @@
  */
 
 import * as $ from 'jquery';
-import * as sinon from 'sinon';
-import CardBrowser from './VisualMain';
 import populateData from './test_data/testDataUtils';
 import colors from './test_data/colors';
+import CardBrowser from './VisualMain';
 
 describe('Card Browser Visual', () => {
     let visual;
 
-    before(function () {
+    beforeAll(function () {
         const element = $('<div></div>');
         const dummyHost = {
             createSelectionManager: () => ({ hostServices: 'hostService' }),
             colors: colors,
         };
-        visual = new CardBrowser({
+        visual = new CardBrowser(<any>{
             element: element[0],
             host: dummyHost,
         });

@@ -6,6 +6,7 @@
     "types": ["mocha", "sinon-chai", "requirejs"],
     "experimentalDecorators": true,
     "lib": ["es2015", "DOM"],
+    "types": ["jest", "node"],
     "outDir": "generated"
   },
   "compileOnSave": false,

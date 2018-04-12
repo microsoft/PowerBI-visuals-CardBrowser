@@ -24,10 +24,9 @@ window['powerbi'] = {
 };
 
 import * as dataConversion from './dataConversion';
-import * as sinon from 'sinon';
 import populateData from './test_data/testDataUtils';
 import colors from './test_data/colors';
-// import IVisualHost = powerbi.extensibility.v120.IVisualHost;
+import IVisualHost = powerbi.extensibility.v120.IVisualHost;
 
 const DEFAULT_SETTINGS = {
     presentation: {
@@ -46,7 +45,7 @@ describe('dataConversion', () => {
     let options;
     let documentData;
 
-    before(function () {
+    beforeAll(function () {
         options = populateData([]);
     });
 
@@ -56,7 +55,7 @@ describe('dataConversion', () => {
     });
 
     it('convertToDocumentData', () => {
-        documentData = dataConversion.convertToDocumentData(options.dataViews[0], DEFAULT_SETTINGS, {}, {});
+        documentData = dataConversion.convertToDocumentData(options.dataViews[0], DEFAULT_SETTINGS, {}, <IVisualHost>{});
         expect(documentData).toBeTruthy();
         expect(documentData.documentList.length).toBe(4);
         expect(documentData.documents).toBeTruthy();

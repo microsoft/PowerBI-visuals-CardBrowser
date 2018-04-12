@@ -32,18 +32,19 @@ import VisualObjectInstance = powerbi.VisualObjectInstance;
 import VisualDataChangeOperationKind = powerbi.VisualDataChangeOperationKind;
 
 import * as $ from 'jquery';
-import Cards from '../lib/@uncharted/cards/src/index.js';
+
+import Cards from '../lib/@uncharted/cards/src/index';
+import {
+    EVENTS,
+    DEFAULT_CONFIG,
+} from '../lib/@uncharted/cards/src/components/constants';
+
 import * as utils from './utils';
 import {
     convertToDocumentData,
     countDocuments,
 } from './dataConversion';
 import * as constants from './constants';
-
-import {
-    EVENTS,
-    DEFAULT_CONFIG,
-} from '../lib/@uncharted/cards/src/components/constants';
 
 const debounce = require('lodash/debounce');
 const visualTemplate = require('./visual.handlebars');
