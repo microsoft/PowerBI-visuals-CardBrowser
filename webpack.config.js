@@ -37,11 +37,6 @@ module.exports = {
             {
                 test: /\.js$/,
                 loader: 'babel-loader',
-                options: {
-                    presets: [
-                        [ 'latest', { es2015: { modules: false } } ],
-                    ],
-                },
                 exclude: /node_modules/,
             },
             {
@@ -57,11 +52,6 @@ module.exports = {
                 test: /\.ts?$/,
                 loaders: [{
                     loader: 'babel-loader',
-                    options: {
-                        presets: [
-                            ['latest', {es2015: {modules: false}}],
-                        ],
-                    },
                 }, 'ts-loader'],
             },
         ],

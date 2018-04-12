@@ -38,7 +38,7 @@
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-polyfill": "^6.26.0",
-    "babel-preset-latest": "^6.24.1",
+    "babel-preset-env": "^1.6.1",
     "chai": "^4.1.2",
     "chokidar": "^2.0.0",
     "clean-css": "^4.1.9",
@@ -47,6 +47,7 @@
     "eslint-loader": "^1.9.0",
     "handlebars": "^4.0.11",
     "handlebars-loader": "^1.6.0",
+    "jest": "^22.4.3",
     "jquery": "^3.3.1",
     "json": "^9.0.6",
     "karma": "^2.0.0",
@@ -73,6 +74,7 @@
     "sinon": "^4.2.2",
     "sinon-chai": "^2.14.0",
     "targz": "^1.0.1",
+    "ts-jest": "^22.4.2",
     "ts-loader": "^3.5.0",
     "tslint": "^5.9.1",
     "tslint-loader": "^3.5.3",
@@ -84,5 +86,18 @@
     "font-awesome": "^4.7.0",
     "lodash": "^4.17.5",
     "moment": "^2.20.1"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json"
+    ]
   }
 }
