@@ -59,7 +59,7 @@ describe('utils', () => {
     });
 
     it('hasRole', () => {
-        const column: any = mockDataView.dataViews[0].metadata.columns[0];
+        const column = mockDataView.dataViews[0].metadata.columns[0];
         expect(utils.hasRole(column, 'title')).to.be.false;
         expect(utils.hasRole(column, 'id')).to.be.true;
         expect(utils.hasRole(column, 'document')).to.be.true;
@@ -67,7 +67,7 @@ describe('utils', () => {
 
     it('removeScriptAttributes', () => {
         const $el = $('<p src=1 href=1 onerror="javascript:alert(13)"></p>');
-        const element: any = $el[0];
+        const element = $el[0];
         expect([].find.call(element.attributes, (element, index, array) => element.nodeName === 'onerror')).to.be.ok;
         utils.removeScriptAttributes(element);
         expect([].find.call(element.attributes, (element, index, array) => element.nodeName === 'onerror')).to.be.undefined;

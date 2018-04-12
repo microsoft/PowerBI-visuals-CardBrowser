@@ -27,10 +27,10 @@ describe('Card Browser Visual', () => {
     before(function () {
         const element = $('<div></div>');
         const dummyHost = {
-            createSelectionManager: () => ({ hostServices: 'hostService' } as any),
+            createSelectionManager: () => ({ hostServices: 'hostService' }),
             colors: colors,
         };
-        visual = new CardBrowser(<any>{
+        visual = new CardBrowser({
             element: element[0],
             host: dummyHost,
         });
