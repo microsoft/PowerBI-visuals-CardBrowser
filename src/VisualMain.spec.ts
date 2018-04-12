@@ -18,7 +18,6 @@ import * as $ from 'jquery';
 import * as sinon from 'sinon';
 import { expect } from 'chai';
 import CardBrowser from './VisualMain';
-import VisualConstructorOptions = powerbi.extensibility.v110.VisualConstructorOptions;
 import populateData from './test_data/testDataUtils';
 import colors from './test_data/colors';
 
@@ -31,7 +30,7 @@ describe('Card Browser Visual', () => {
             createSelectionManager: () => ({ hostServices: 'hostService' } as any),
             colors: colors,
         };
-        visual = new CardBrowser(<VisualConstructorOptions>{
+        visual = new CardBrowser(<any>{
             element: element[0],
             host: dummyHost,
         });
