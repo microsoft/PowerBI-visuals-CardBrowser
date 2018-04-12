@@ -16,7 +16,6 @@
 
 import * as $ from 'jquery';
 import * as sinon from 'sinon';
-import { expect } from 'chai';
 import CardBrowser from './VisualMain';
 import populateData from './test_data/testDataUtils';
 import colors from './test_data/colors';
@@ -37,8 +36,8 @@ describe('Card Browser Visual', () => {
     });
 
     it('exists', () => {
-        expect(CardBrowser).to.be.ok;
-        expect(visual).to.be.ok;
+        expect(CardBrowser).toBeTruthy();
+        expect(visual).toBeTruthy();
     });
 
     it('update', () => {
@@ -51,14 +50,14 @@ describe('Card Browser Visual', () => {
             objectName: 'presentation',
         };
         const instances = visual.enumerateObjectInstances(options);
-        expect(instances).to.be.ok;
-        expect(instances.length).to.equal(1);
+        expect(instances).toBeTruthy();
+        expect(instances.length).toBe(1);
         const instanceProperties = instances[0].properties;
-        expect(instanceProperties.shadow).to.be.true;
-        expect(instanceProperties.dateFormat).to.equal('MMM D, YYYY');
-        expect(instanceProperties.separator).to.equal(' \u2022 ');
-        expect(instanceProperties.separator).to.equal(' \u2022 ');
-        expect(instanceProperties.cardWidth).to.equal(200);
+        expect(instanceProperties.shadow).toBe(true);
+        expect(instanceProperties.dateFormat).toBe('MMM D, YYYY');
+        expect(instanceProperties.separator).toBe(' \u2022 ');
+        expect(instanceProperties.separator).toBe(' \u2022 ');
+        expect(instanceProperties.cardWidth).toBe(200);
     });
 
     it('destroy', () => {

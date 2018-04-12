@@ -16,7 +16,6 @@
 
 import * as utils from './utils';
 import * as sinon from 'sinon';
-import { expect } from 'chai';
 import mockDataView from './test_data/mockdataview';
 import * as _ from 'lodash';
 import { HTML_WHITELIST_CONTENT } from './constants';
@@ -28,55 +27,53 @@ describe('utils', () => {
         let options = _.cloneDeep(mockDataView);
         let dataView = options.dataViews[0];
         const result = utils.findColumn(dataView, 'document', false);
-        expect(result).to.deep.equal(
-            {
-                "roles": {
-                    "id": true,
-                    "document": true
+        expect(result).toEqual({
+            "roles": {
+                "id": true,
+                "document": true
+            },
+            "type": {
+                "underlyingType": 260,
+                "category": null
+            },
+            "displayName": "documentID",
+            "queryName": "betsydevos_lsh_strippets_browser.documentID",
+            "expr": {
+                "_kind": 2,
+                "source": {
+                    "_kind": 0,
+                    "entity": "betsydevos_lsh_strippets_browser"
                 },
-                "type": {
-                    "underlyingType": 260,
-                    "category": null
-                },
-                "displayName": "documentID",
-                "queryName": "betsydevos_lsh_strippets_browser.documentID",
-                "expr": {
-                    "_kind": 2,
-                    "source": {
-                        "_kind": 0,
-                        "entity": "betsydevos_lsh_strippets_browser"
-                    },
-                    "ref": "documentID"
-                }
+                "ref": "documentID"
             }
-        );
+        });
     });
 
     it('hasColumns', () => {
         let options = _.cloneDeep(mockDataView);
         let dataView = options.dataViews[0];
-        expect(utils.hasColumns(dataView, ['document'])).to.be.true;
+        expect(utils.hasColumns(dataView, ['document'])).toBe(true);
     });
 
     it('hasRole', () => {
         const column = mockDataView.dataViews[0].metadata.columns[0];
-        expect(utils.hasRole(column, 'title')).to.be.false;
-        expect(utils.hasRole(column, 'id')).to.be.true;
-        expect(utils.hasRole(column, 'document')).to.be.true;
+        expect(utils.hasRole(column, 'title')).toBe(false);
+        expect(utils.hasRole(column, 'id')).toBe(true);
+        expect(utils.hasRole(column, 'document')).toBe(true);
     });
 
     it('removeScriptAttributes', () => {
         const $el = $('<p src=1 href=1 onerror="javascript:alert(13)"></p>');
         const element = $el[0];
-        expect([].find.call(element.attributes, (element, index, array) => element.nodeName === 'onerror')).to.be.ok;
+        expect([].find.call(element.attributes, (element, index, array) => element.nodeName === 'onerror')).toBeTruthy();
         utils.removeScriptAttributes(element);
-        expect([].find.call(element.attributes, (element, index, array) => element.nodeName === 'onerror')).to.be.undefined;
+        expect([].find.call(element.attributes, (element, index, array) => element.nodeName === 'onerror')).toBeUndefined();
     });
 
     it('sanitizes HTML', function () {
         const sanitized = utils.sanitizeHTML(testHtmlStrings.testArticle, HTML_WHITELIST_CONTENT);
-        expect(sanitized).to.be.ok;
-        expect(sanitized.indexOf('<script>')).to.equal(-1);
-        expect(sanitized.indexOf('<SCRIPT>')).to.equal(-1);
+        expect(sanitized).toBeTruthy();
+        expect(sanitized.indexOf('<script>')).toBe(-1);
+        expect(sanitized.indexOf('<SCRIPT>')).toBe(-1);
     });
 });

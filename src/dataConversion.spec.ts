@@ -25,7 +25,6 @@ window['powerbi'] = {
 
 import * as dataConversion from './dataConversion';
 import * as sinon from 'sinon';
-import { expect } from 'chai';
 import populateData from './test_data/testDataUtils';
 import colors from './test_data/colors';
 // import IVisualHost = powerbi.extensibility.v120.IVisualHost;
@@ -53,13 +52,13 @@ describe('dataConversion', () => {
 
     it('countDocuments', () => {
         const count = dataConversion.countDocuments(options.dataViews[0]);
-        expect(count).to.equal(4);
+        expect(count).toBe(4);
     });
 
     it('convertToDocumentData', () => {
         documentData = dataConversion.convertToDocumentData(options.dataViews[0], DEFAULT_SETTINGS, {}, {});
-        expect(documentData).to.be.ok;
-        expect(documentData.documentList.length).to.equal(4);
-        expect(documentData.documents).to.be.ok;
+        expect(documentData).toBeTruthy();
+        expect(documentData.documentList.length).toBe(4);
+        expect(documentData.documents).toBeTruthy();
     });
 });
