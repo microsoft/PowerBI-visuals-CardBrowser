@@ -32,13 +32,12 @@ import VisualObjectInstance = powerbi.VisualObjectInstance;
 import VisualDataChangeOperationKind = powerbi.VisualDataChangeOperationKind;
 
 import * as $ from 'jquery';
-
+import debounce from 'lodash-es/debounce';
 import Cards from '../lib/@uncharted/cards/src/index';
 import {
     EVENTS,
     DEFAULT_CONFIG,
 } from '../lib/@uncharted/cards/src/components/constants';
-
 import * as utils from './utils';
 import {
     convertToDocumentData,
@@ -46,7 +45,6 @@ import {
 } from './dataConversion';
 import * as constants from './constants';
 
-const debounce = require('lodash/debounce');
 const visualTemplate = require('./visual.handlebars');
 const loaderTemplate = require('./loader.handlebars');
 
@@ -251,7 +249,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
                 }
             }
         } else {
-            this.updateThumbnails(options.viewport);
+            this.updateCards(options.viewport);
         }
     }
 
@@ -291,7 +289,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         }
     }
 
-    private updateThumbnails(viewport) {
+    private updateCards(viewport) {
         this.isFlipped = this.settings.flipState.cardFaceDefault === constants.CARD_FACE_METADATA;
         const width = Math.max(constants.MIN_CARD_WIDTH, this.settings.presentation.cardWidth);
 
@@ -331,17 +329,9 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
     }
 
     private changeWrapMode(viewport: IViewport) {
-        const isViewPortHeightSmallEnoughForInlineThumbnails = this.isInlineSize(viewport);
-        this.cards.toggleInlineDisplayMode(isViewPortHeightSmallEnoughForInlineThumbnails);
-        this.isInline = isViewPortHeightSmallEnoughForInlineThumbnails;
-    }
-
-    private sendSelectionToHost(identities: DataViewScopeIdentity[]) {
-        const selectArgs = {
-            data: identities.map((identity: DataViewScopeIdentity) => ({ data: [identity] })),
-            visualObjects: [],
-        };
-        this.hostServices.onSelect(selectArgs);
+        const isViewPortHeightSmallEnoughForInlineCards = this.isInlineSize(viewport);
+        this.cards.toggleInlineDisplayMode(isViewPortHeightSmallEnoughForInlineCards);
+        this.isInline = isViewPortHeightSmallEnoughForInlineCards;
     }
 
     /**

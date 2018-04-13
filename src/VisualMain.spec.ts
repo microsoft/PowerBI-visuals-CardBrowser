@@ -14,10 +14,19 @@
  * limitations under the License.
  */
 
+window['powerbi'] = {
+    visuals: {
+    }
+};
+
 import * as $ from 'jquery';
 import populateData from './test_data/testDataUtils';
 import colors from './test_data/colors';
 import CardBrowser from './VisualMain';
+
+jest.mock('../lib/@uncharted/cards/src/index', () => {});
+jest.mock('./visual.handlebars', () => '');
+jest.mock('./loader.handlebars', () => '');
 
 describe('Card Browser Visual', () => {
     let visual;

@@ -17,6 +17,8 @@
 import DataView = powerbi.DataView;
 import DataViewMetadataColumn = powerbi.DataViewMetadataColumn;
 
+import * as $ from 'jquery';
+
 /**
  * Finds and returns the dataview column(s) that matches the given data role name.
  *

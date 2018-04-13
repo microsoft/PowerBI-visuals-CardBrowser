@@ -4,6 +4,7 @@
 node_modules
 typings
 dist
+coverage
 
 # Logs
 logs

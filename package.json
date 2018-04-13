@@ -14,7 +14,7 @@
     "dev": "node bin/startDev",
     "package": "node bin/packageVisual",
     "postinstall": "node bin/createSymLink",
-    "test": "jest",
+    "test": "jest --coverage",
     "test:watch": "jest --watch",
     "lint": "tslint --project ./tsconfig.json src/**/*.ts",
     "clean": "rm -rf node_modules .tmp"
@@ -30,7 +30,8 @@
   "devDependencies": {
     "@types/jest": "^22.2.3",
     "@types/jquery": "^3.3.0",
-    "@types/lodash": "^4.14.101",
+    "@types/lodash-es": "^4.17.0",
+    "@types/moment": "^2.13.0",
     "@types/node": "^9.4.1",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
@@ -69,13 +70,16 @@
   },
   "dependencies": {
     "font-awesome": "^4.7.0",
-    "lodash": "^4.17.5",
+    "lodash-es": "^4.17.8",
     "moment": "^2.20.1"
   },
   "jest": {
     "transform": {
-      "^.+\\.tsx?$": "ts-jest"
+      "^.+\\.(j|t)sx?$": "ts-jest"
     },
+    "transformIgnorePatterns": [
+      "<rootDir>/node_modules/(?!lodash-es/.*)"
+    ],
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     "moduleFileExtensions": [
       "ts",

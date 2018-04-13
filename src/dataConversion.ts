@@ -20,7 +20,8 @@ import IVisualHost = powerbi.extensibility.v120.IVisualHost;
 import SelectionId = powerbi.visuals.SelectionId;
 
 import * as utils from './utils';
-const moment = require('moment');
+import * as moment from 'moment';
+
 import { HTML_WHITELIST_SUMMARY, HTML_WHITELIST_CONTENT } from './constants';
 
 function flattenMetaData(metaData) {

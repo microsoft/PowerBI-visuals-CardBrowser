@@ -13,6 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import * as utils from './utils';
+import * as moment from 'moment';
+import {
+    convertToDocumentData,
+    countDocuments,
+} from './dataConversion';
+import populateData from './test_data/testDataUtils';
+
+jest.mock('moment');
+jest.mock('./utils');
 
 window['powerbi'] = {
     visuals: {
@@ -22,11 +32,6 @@ window['powerbi'] = {
         }
     }
 };
-
-import * as dataConversion from './dataConversion';
-import populateData from './test_data/testDataUtils';
-import colors from './test_data/colors';
-import IVisualHost = powerbi.extensibility.v120.IVisualHost;
 
 const DEFAULT_SETTINGS = {
     presentation: {
@@ -42,22 +47,18 @@ const DEFAULT_SETTINGS = {
 };
 
 describe('dataConversion', () => {
-    let options;
-    let documentData;
-
-    beforeAll(function () {
-        options = populateData([]);
+    describe('.convertToDocumentData', () => {
+        it('should convert powerbi dataview to document data', () => {
+            const { dataViews } = populateData([]);
+            const docData = convertToDocumentData(<any>dataViews[0], DEFAULT_SETTINGS, {}, <any>{});
+            expect(docData).toMatchSnapshot();
+        });
     });
-
-    it('countDocuments', () => {
-        const count = dataConversion.countDocuments(options.dataViews[0]);
-        expect(count).toBe(4);
-    });
-
-    it('convertToDocumentData', () => {
-        documentData = dataConversion.convertToDocumentData(options.dataViews[0], DEFAULT_SETTINGS, {}, <IVisualHost>{});
-        expect(documentData).toBeTruthy();
-        expect(documentData.documentList.length).toBe(4);
-        expect(documentData.documents).toBeTruthy();
+    describe('.countDocuments', () => {
+        it('should cont documents', () => {
+            const { dataViews } = populateData([]);
+            const count = countDocuments(<any>dataViews[0]);
+            expect(count).toBe(4);
+        });
     });
 });

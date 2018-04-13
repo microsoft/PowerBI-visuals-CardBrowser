@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
+import DataViewMetadataColumn = powerbi.DataViewMetadataColumn;
+
+import * as $ from 'jquery';
 import * as utils from './utils';
 import mockDataView from './test_data/mockdataview';
-import { cloneDeep } from 'lodash';
 import { HTML_WHITELIST_CONTENT } from './constants';
 import testHtmlStrings from './test_data/testHtmlStrings.js';
-import DataViewMetadataColumn = powerbi.DataViewMetadataColumn;
+import cloneDeep from 'lodash-es/cloneDeep';
 
 describe('utils', () => {
     it('findColumn', () => {
-        let options = _.cloneDeep(mockDataView);
+        let options = cloneDeep(mockDataView);
         let dataView = options.dataViews[0];
         const result = utils.findColumn(dataView, 'document', false);
         expect(result).toEqual({
@@ -49,7 +51,7 @@ describe('utils', () => {
     });
 
     it('hasColumns', () => {
-        let options = _.cloneDeep(mockDataView);
+        let options = cloneDeep(mockDataView);
         let dataView = options.dataViews[0];
         expect(utils.hasColumns(dataView, ['document'])).toBe(true);
     });
@@ -62,8 +64,7 @@ describe('utils', () => {
     });
 
     it('removeScriptAttributes', () => {
-        const $el = $('<p src=1 href=1 onerror="javascript:alert(13)"></p>');
-        const element = $el[0];
+        const element = $('<p src=1 href=1 onerror="javascript:alert(13)"></p>')[0];
         expect([].find.call(element.attributes, (element, index, array) => element.nodeName === 'onerror')).toBeTruthy();
         utils.removeScriptAttributes(element);
         expect([].find.call(element.attributes, (element, index, array) => element.nodeName === 'onerror')).toBeUndefined();
