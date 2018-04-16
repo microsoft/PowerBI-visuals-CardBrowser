@@ -18,6 +18,7 @@ const webpack = require('webpack');
 const path = require('path');
 const ENTRY = './src/VisualMain.ts';
 const regex = path.normalize(ENTRY).replace(/\\/g, '\\\\').replace(/\./g, '\\.');
+const HANDLEBAR_RUNTIME = 'handlebars/dist/handlebars.runtime.min';
 
 module.exports = {
     entry: ['./src/sandboxPolyfill.js', ENTRY],
@@ -25,7 +26,7 @@ module.exports = {
     resolve: {
         extensions: ['.js', '.json', '.ts', '.handlebars'],
         alias: {
-            handlebars: 'handlebars/dist/handlebars.min.js',
+            handlebars: HANDLEBAR_RUNTIME,
         },
     },
     module: {
@@ -46,6 +47,7 @@ module.exports = {
                     helperDirs: [
                         path.resolve(__dirname, 'lib/@uncharted/cards/src/handlebarHelper'),
                     ],
+                    runtime: HANDLEBAR_RUNTIME,
                 },
             },
             {

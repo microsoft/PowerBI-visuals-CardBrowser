@@ -25,7 +25,7 @@
   "license": "Apache-2.0",
   "privacyTerms": "https://privacy.microsoft.com/en-US/privacystatement/",
   "privateSubmodules": {
-    "@uncharted/cards": "0.12.1"
+    "@uncharted/cards": "0.13.0"
   },
   "devDependencies": {
     "@types/jest": "^22.2.3",
@@ -70,6 +70,7 @@
   },
   "dependencies": {
     "font-awesome": "^4.7.0",
+    "lodash": "^4.17.5",
     "lodash-es": "^4.17.8",
     "moment": "^2.20.1"
   },
