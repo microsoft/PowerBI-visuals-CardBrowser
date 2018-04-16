@@ -34,10 +34,7 @@ import VisualDataChangeOperationKind = powerbi.VisualDataChangeOperationKind;
 import * as $ from 'jquery';
 import debounce from 'lodash-es/debounce';
 import Cards from '../lib/@uncharted/cards/src/index';
-import {
-    EVENTS,
-    DEFAULT_CONFIG,
-} from '../lib/@uncharted/cards/src/components/constants';
+import { EVENTS } from '../lib/@uncharted/cards/src/components/constants';
 import * as utils from './utils';
 import {
     convertToDocumentData,
