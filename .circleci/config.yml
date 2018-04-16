@@ -38,5 +38,5 @@ jobs:
 
       # store artifacts!
       - store_artifacts: 
-          path: /dist
+          path: dist
 
