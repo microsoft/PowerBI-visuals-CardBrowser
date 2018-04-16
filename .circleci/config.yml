@@ -35,3 +35,10 @@ jobs:
         
       # run tests!
       - run: yarn test
+
+      # package!
+      - run: yarn package
+
+      # store artifacts!
+      - store_artifacts: /dist
+
