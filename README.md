@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/Microsoft/PowerBI-visuals-CardBrowser/tree/develop.svg?style=svg)](https://circleci.com/gh/Microsoft/PowerBI-visuals-CardBrowser/tree/develop)
+
 # Card Browser
 Browse documents using double-sided cards, and click to view in place.
 
@@ -21,3 +23,18 @@ provided by the bot. You will only need to do this once across all repos using o
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
+## Debugging
+
+* Install ssl certificate by running `yarn run install-certificate` and following the steps from: [https://github.com/Microsoft/PowerBI-visuals/blob/master/tools/CertificateSetup.md](https://github.com/Microsoft/PowerBI-visuals/blob/master/tools/CertificateSetup.md)
+* Enable Developer Tools in PowerBI: [https://github.com/Microsoft/PowerBI-visuals/blob/master/tools/DebugVisualSetup.md](https://github.com/Microsoft/PowerBI-visuals/blob/master/tools/DebugVisualSetup.md)
+* Run `yarn start` to start development.
+
+## Building
+
+* Run `yarn run package` to package the visual.
+* `.pbiviz` file will be generated in the `dist` folder
+
+## Testing
+
+* Run `yarn test`
