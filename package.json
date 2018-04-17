@@ -5,12 +5,11 @@
   "main": "src/index.js",
   "scripts": {
     "install-certificate": "node bin/openCert",
+    "install-private-submodule": "node bin/downloadPrivateSubmodules && node bin/installSubmoduleDeps",
     "start": "yarn run dev",
     "tdd": "npm-run-all --parallel dev test:watch",
     "dev": "node bin/startDev",
     "package": "node bin/packageVisual",
-    "postinstall": "yarn run install-private-submodule",
-    "install-private-submodule": "node bin/downloadPrivateSubmodules && node bin/installSubmoduleDeps",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
     "lint": "tslint --project ./tsconfig.json src/**/*.ts",
