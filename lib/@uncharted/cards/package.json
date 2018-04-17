@@ -1,6 +1,6 @@
 {
   "name": "@uncharted/cards",
-  "version": "0.13.2",
+  "version": "0.13.3",
   "main": "dist/uncharted.cards.js",
   "scripts": {
     "test": "./node_modules/.bin/karma start",
@@ -17,8 +17,7 @@
   "description": "",
   "dependencies": {
     "font-awesome": "^4.7.0",
-    "lodash": "^4.17.4",
-    "lodash-es": "^4.17.8"
+    "lodash": "^4.17.4"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",

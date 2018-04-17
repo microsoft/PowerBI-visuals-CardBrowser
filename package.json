@@ -4,16 +4,13 @@
   "description": "Card Browser, a custom visual for PowerBI",
   "main": "src/index.js",
   "scripts": {
-    "preinstall:prereq": "npm install targz mv --save-dev",
-    "preinstall:submodules": "node bin/downloadPrivateSubmodules",
-    "preinstall:dependencies": "node bin/installSubmoduleDeps",
-    "preinstall": "npm run preinstall:prereq && npm run preinstall:submodules && npm run preinstall:dependencies",
     "install-certificate": "node bin/openCert",
-    "start": "npm run dev",
+    "start": "yarn run dev",
     "tdd": "npm-run-all --parallel dev test:watch",
     "dev": "node bin/startDev",
     "package": "node bin/packageVisual",
-    "postinstall": "node bin/createSymLink",
+    "postinstall": "yarn run install-private-submodule",
+    "install-private-submodule": "node bin/downloadPrivateSubmodules && node bin/installSubmoduleDeps",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
     "lint": "tslint --project ./tsconfig.json src/**/*.ts",
@@ -25,7 +22,7 @@
   "license": "Apache-2.0",
   "privacyTerms": "https://privacy.microsoft.com/en-US/privacystatement/",
   "privateSubmodules": {
-    "@uncharted/cards": "0.13.2"
+    "@uncharted/cards": "0.13.3"
   },
   "devDependencies": {
     "@types/jest": "^22.2.3",
@@ -70,7 +67,6 @@
   },
   "dependencies": {
     "font-awesome": "^4.7.0",
-    "lodash": "^4.17.5",
     "lodash-es": "^4.17.8",
     "moment": "^2.20.1"
   },
