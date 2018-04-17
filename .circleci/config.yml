@@ -34,7 +34,7 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
         
       # run tests!
-      - run: yarn test && yarn package
+      - run: ls lib/\@uncharted/cards/src/ && yarn test && yarn package
 
       # store artifacts!
       - store_artifacts: 
