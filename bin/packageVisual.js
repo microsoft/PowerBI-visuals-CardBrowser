@@ -152,6 +152,7 @@ const compileScripts = (callback) => {
         if (errors.length > 0) {
             return process.exit(1);
         }
+        console.log('Building OSS report...');
         buildOSSReport(jsonStats.modules, ossReport => {
             const fileContent = fs.readFileSync("/visual.js").toString();
             callback(err, fileContent, ossReport);

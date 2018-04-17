@@ -6,7 +6,7 @@
 const fs = require('fs');
 const fileTools = require('./fileTools.js');
 const path = require('path');
-const cp = require('child_process');
+const { execSync } = require('child_process');
 
 /**
  * Iterates through the given object and retrieves the modules and their versions in "npm install" format.
@@ -137,14 +137,14 @@ function createSymLinks(modPath) {
 }
 
 /**
- * Runs "npm install" at the current working directory with the given arguments.
+ * Runs "yarn add" at the current working directory with the given arguments.
  *
- * @method npmInstall
+ * @method yarnAdd
  * @param {String} args - A string containing the arguments to append to the command.
  * @returns Promise
  */
-function npmInstall(args) {
-    return new Promise(resolve => cp.exec('npm install ' + args, {env: process.env, stdio: 'inherit'}, resolve));
+function yarnAdd(args) {
+    execSync('yarn add ' + args + '--ignore-scripts', { env: process.env, stdio: 'inherit' });
 }
 
 /**
@@ -154,16 +154,10 @@ function npmInstall(args) {
  */
 function main() {
     const libPath = path.resolve(__dirname, '../lib/');
-    cleanSymLinks(libPath).then(() => {
-        const installArgs = findDependencies(libPath);
-        if (installArgs.length) {
-            npmInstall(installArgs).then(() => {
-                return Promise.resolve(true);
-            });
-        }
-
-        return Promise.resolve(true);
-    });
+    const installArgs = findDependencies(libPath);
+    if (installArgs.length) {
+        yarnAdd(installArgs);
+    }
 }
 
 // run the script
