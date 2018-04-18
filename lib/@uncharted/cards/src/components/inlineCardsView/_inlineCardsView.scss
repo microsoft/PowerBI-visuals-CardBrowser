@@ -1,0 +1,22 @@
+/*
+ * Copyright 2018 Uncharted Software Inc.
+ */
+
+.uncharted-inline-cards-view {
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    .cards-container {
+        height: 100%;
+        display: flex;
+        flex-wrap: nowrap;
+        flex-direction: row;
+        justify-content: flex-start;
+    }
+
+    .uncharted-cards-card {
+        height: $inline-card-height;
+        max-height: $inline-card-max-height;
+        min-height: $inline-card-min-height;
+    }
+}

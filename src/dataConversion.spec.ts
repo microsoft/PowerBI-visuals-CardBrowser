@@ -1,18 +1,16 @@
 /*
  * Copyright 2018 Uncharted Software Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  */
+import * as utils from './utils';
+import * as moment from 'moment';
+import {
+    convertToDocumentData,
+    countDocuments,
+} from './dataConversion';
+import populateData from './test_data/testDataUtils';
+
+jest.mock('moment');
+jest.mock('./utils');
 
 window['powerbi'] = {
     visuals: {
@@ -22,13 +20,6 @@ window['powerbi'] = {
         }
     }
 };
-
-import * as dataConversion from './dataConversion';
-import * as sinon from 'sinon';
-import { expect } from 'chai';
-import populateData from './test_data/testDataUtils';
-import colors from './test_data/colors';
-import IVisualHost = powerbi.extensibility.v120.IVisualHost;
 
 const DEFAULT_SETTINGS = {
     presentation: {
@@ -44,23 +35,18 @@ const DEFAULT_SETTINGS = {
 };
 
 describe('dataConversion', () => {
-    let options;
-    let documentData;
-
-    before(function () {
-        options = populateData([]);
+    describe('.convertToDocumentData', () => {
+        it('should convert powerbi dataview to document data', () => {
+            const { dataViews } = populateData([]);
+            const docData = convertToDocumentData(<any>dataViews[0], DEFAULT_SETTINGS, {}, <any>{});
+            expect(docData).toMatchSnapshot();
+        });
     });
-
-    it('countDocuments', () => {
-        const count = dataConversion.countDocuments(options.dataViews[0]);
-        expect(count).to.equal(4);
-    });
-
-    it('convertToDocumentData', () => {
-        documentData = dataConversion.convertToDocumentData(options.dataViews[0], DEFAULT_SETTINGS, {},
-            <IVisualHost>{});
-        expect(documentData).to.be.ok;
-        expect(documentData.documentList.length).to.equal(4);
-        expect(documentData.documents).to.be.ok;
+    describe('.countDocuments', () => {
+        it('should cont documents', () => {
+            const { dataViews } = populateData([]);
+            const count = countDocuments(<any>dataViews[0]);
+            expect(count).toBe(4);
+        });
     });
 });

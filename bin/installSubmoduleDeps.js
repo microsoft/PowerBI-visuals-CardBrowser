@@ -1,30 +1,12 @@
 /**
- * Copyright (c) 2016 Uncharted Software Inc.
+ * Copyright (c) 2018 Uncharted Software Inc.
  * http://www.uncharted.software/
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
- * this software and associated documentation files (the "Software"), to deal in
- * the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
- * of the Software, and to permit persons to whom the Software is furnished to do
- * so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
  */
 
 const fs = require('fs');
 const fileTools = require('./fileTools.js');
 const path = require('path');
-const cp = require('child_process');
+const { execSync } = require('child_process');
 
 /**
  * Iterates through the given object and retrieves the modules and their versions in "npm install" format.
@@ -155,14 +137,14 @@ function createSymLinks(modPath) {
 }
 
 /**
- * Runs "npm install" at the current working directory with the given arguments.
+ * Runs "yarn add" at the current working directory with the given arguments.
  *
- * @method npmInstall
+ * @method yarnAdd
  * @param {String} args - A string containing the arguments to append to the command.
  * @returns Promise
  */
-function npmInstall(args) {
-    return new Promise(resolve => cp.exec('npm install ' + args, {env: process.env, stdio: 'inherit'}, resolve));
+function yarnAdd(args) {
+    execSync('yarn add ' + args + '--ignore-scripts', { env: process.env, stdio: 'inherit' });
 }
 
 /**
@@ -172,16 +154,10 @@ function npmInstall(args) {
  */
 function main() {
     const libPath = path.resolve(__dirname, '../lib/');
-    cleanSymLinks(libPath).then(() => {
-        const installArgs = findDependencies(libPath);
-        if (installArgs.length) {
-            npmInstall(installArgs).then(() => {
-                return Promise.resolve(true);
-            });
-        }
-
-        return Promise.resolve(true);
-    });
+    const installArgs = findDependencies(libPath);
+    if (installArgs.length) {
+        yarnAdd(installArgs);
+    }
 }
 
 // run the script

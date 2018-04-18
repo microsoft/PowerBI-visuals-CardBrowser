@@ -4,6 +4,8 @@
 node_modules
 typings
 dist
+coverage
+package-lock.json
 
 # Logs
 logs

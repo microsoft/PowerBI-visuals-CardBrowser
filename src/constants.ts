@@ -1,17 +1,5 @@
 /*
  * Copyright 2018 Uncharted Software Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  */
 
 export const METADATA_FIELDS = ['metadata'];
@@ -64,7 +52,7 @@ export const WRAP_HEIGHT_FACTOR = 1.25;
 export const WRAP_THRESHOLD = 400; // px
 export const FLIP_ANIMATION_DURATION = 317; // 300 ms from CSS plus one frame
 export const INFINITE_SCROLL_DELAY = 50;
-export const MIN_THUMBNAIL_WIDTH = 11;
+export const MIN_CARD_WIDTH = 11;
 
 /**
  * Default visual settings
@@ -75,7 +63,7 @@ export const DEFAULT_VISUAL_SETTINGS = {
         dateFormat: 'MMM D, YYYY',
         separator: ' \u2022 ',
         showImageOnBack: true,
-        thumbnailWidth: 200,
+        cardWidth: 200,
         filter: true,
         cropImages: true,
     },
