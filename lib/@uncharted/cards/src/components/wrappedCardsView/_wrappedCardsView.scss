@@ -1,0 +1,25 @@
+/*
+ * Copyright 2018 Uncharted Software Inc.
+ */
+
+@import '../variables';
+
+.uncharted-wrapped-cards-view {
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    .cards-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-content: flex-start;
+
+        .uncharted-cards-card {
+            order: unset !important;
+        }
+
+        .dummy-card {
+            height: 0;
+        }
+    }
+}

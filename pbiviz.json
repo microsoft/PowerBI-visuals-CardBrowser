@@ -6,7 +6,7 @@
     "visualClassName": "CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58",
     "description": "ESSEX Card Browser",
     "supportUrl": "http://community.powerbi.com",
-    "gitHubUrl": ""
+    "gitHubUrl": "https://github.com/Microsoft/PowerBI-visuals-CardBrowser"
   },
   "author": {
     "name": "Microsoft (experimental)",

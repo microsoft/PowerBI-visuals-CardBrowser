@@ -1,24 +1,12 @@
 /*
  * Copyright 2018 Uncharted Software Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  */
 
 @import url("https://opensource.keycdn.com/fontawesome/4.7.0/font-awesome.min.css");
 
-$thumbnail-card-border-width: 0px;
-$thumbnail-card-shadow: -1px 0 0 rgba(0,0,0,.12), 0 0 2px rgba(0,0,0,.12), 2px 0 4px rgba(0,0,0,.24);
-$thumbnail-flipping-animation-duration: 0.3s;
+$card-border-width: 0px;
+$card-shadow: -1px 0 0 rgba(0,0,0,.12), 0 0 2px rgba(0,0,0,.12), 2px 0 4px rgba(0,0,0,.24);
+$card-flipping-animation-duration: 0.3s;
 
 @import "../lib/@uncharted/cards/src/main.scss";
 
@@ -27,7 +15,7 @@ $thumbnail-flipping-animation-duration: 0.3s;
   padding: 0 !important;
 }
 
-.visual .uncharted-thumbnails-style {
+.visual .uncharted-cards-style {
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -61,7 +49,7 @@ $thumbnail-flipping-animation-duration: 0.3s;
   padding-right: 0;
 }
 
-.uncharted-thumbnails-thumbnail .card {
+.uncharted-cards-card .card {
   position: relative;
 }
 
@@ -168,19 +156,19 @@ $thumbnail-flipping-animation-duration: 0.3s;
       right: 100px;
     }
 
-    .uncharted-thumbnails.inline-mode {
+    .uncharted-cards.inline-mode {
       margin-left: 0;
       margin-right: 0;
     }
 
     &.disable-back-card-title {
-      .uncharted-thumbnails-thumbnail .meta-data-content .title-box {
+      .uncharted-cards-card .meta-data-content .title-box {
         display: none;
       }
     }
 
     &.disable-back-card-subtitle {
-      .uncharted-thumbnails-thumbnail .meta-data-content .meta-line {
+      .uncharted-cards-card .meta-data-content .meta-line {
         &.subtitle
         {
           display: none;
@@ -222,7 +210,7 @@ $thumbnail-flipping-animation-duration: 0.3s;
       }
     }
     &.uncropped {
-      .uncharted-thumbnails-header-image {
+      .uncharted-cards-header-image {
         .image {
           background-size: contain;
         }
@@ -263,8 +251,8 @@ $thumbnail-flipping-animation-duration: 0.3s;
 }
 
 .fix-blur-hack {
-  // make thumbnails clean crisp
-  .uncharted-thumbnails-thumbnail.flip-container {
+  // make cards clean crisp
+  .uncharted-cards-card.flip-container {
     .flipper {
       .front,
       .back {
@@ -297,10 +285,10 @@ $thumbnail-flipping-animation-duration: 0.3s;
   }
 
   // Flipping animation
-  &.animating .uncharted-thumbnails-thumbnail.flip-container {
+  &.animating .uncharted-cards-card.flip-container {
     perspective: 1000px;
     .flipper {
-      transition: $thumbnail-flipping-animation-duration;
+      transition: $card-flipping-animation-duration;
       transform-style: preserve-3d;
       &.flipped {
         transform: rotateY(180deg);
@@ -327,7 +315,7 @@ $thumbnail-flipping-animation-duration: 0.3s;
     }
   }
 
-  &.animating.cards-flipped .uncharted-thumbnails-thumbnail.flip-container {
+  &.animating.cards-flipped .uncharted-cards-card.flip-container {
     .flipper.flipped {
       transition: 0s;
     }

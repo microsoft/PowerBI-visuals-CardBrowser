@@ -10,12 +10,12 @@
       "name": "title",
       "kind": 0,
       "displayName": "Title",
-      "description": "Title of the document; shown on thumbnails and in the reader"
+      "description": "Title of the document; shown on cards and in the reader"
     },
     {
       "name": "summary",
       "displayName": "Preview",
-      "description": "Preview text; only displayed on thumbnails",
+      "description": "Preview text; only displayed on cards",
       "kind": 0
     },
     {
@@ -27,7 +27,7 @@
     {
       "name": "imageUrl",
       "displayName": "Title Image (URL)",
-      "description": "Main image(s) for the document; displayed on thumbnails and in the reader",
+      "description": "Main image(s) for the document; displayed on cards and in the reader",
       "kind": 0
     },
     {
@@ -39,7 +39,7 @@
     {
       "name": "sourceImage",
       "displayName": "Badge (Image URL)",
-      "description": "URL for an image to display in the top-right corner of the thumbnail",
+      "description": "URL for an image to display in the top-right corner of the card",
       "kind": 0
     },
     {
@@ -51,7 +51,7 @@
     {
       "name": "topBarColor",
       "displayName": "Top Bar Color",
-      "description": "Color of the bar at the top of the thumbnail card",
+      "description": "Color of the bar at the top of the card",
       "kind": 0
     },
     {
@@ -204,7 +204,7 @@
             "bool": "true"
           }
         },
-        "thumbnailWidth": {
+        "cardWidth": {
           "displayName": "Card Width",
           "description": "Width, in pixels, of each card",
           "type": {
@@ -220,7 +220,7 @@
         },
         "cropImages": {
           "displayName": "Crop Images",
-          "description": "If on, crop and recenter images to fill the top of the thumbnail",
+          "description": "If on, crop and recenter images to fill the top of the card",
           "type": {
             "bool": true
           }

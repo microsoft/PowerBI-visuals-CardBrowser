@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) 2018 Uncharted Software Inc.
+ * http://www.uncharted.software/
+ */
+
 var regex = new RegExp("\\bpowerbi-visuals.d.ts\\b");
 
 process.stdin.setEncoding('utf8');
