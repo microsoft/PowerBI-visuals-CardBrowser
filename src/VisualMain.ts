@@ -281,6 +281,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         // We do need innerHTML, so suppress tslint
         // tslint:disable-next-line
         this.$container.html(this.cards.reset({
+            'inlineMode': this.isInlineSize(viewport),
             'subtitleDelimiter': this.settings.presentation.separator,
             'card.disableFlipping': !this.settings.flipState.enableFlipping,
             'card.displayBackCardByDefault': this.isFlipped,
@@ -288,6 +289,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
             'card.enableBoxShadow': this.settings.presentation.shadow,
             'card.expandedWidth': this.settings.reader.width,
             'card.width': width,
+            'card.height': this.settings.presentation.cardHeight,
             'card.displayLargeImage': !this.settings.presentation.cropImages,
             'readerContent.headerBackgroundColor': this.settings.reader.headerBackgroundColor.solid.color,
             'readerContent.headerImageMaxWidth': this.settings.presentation.cardWidth - 10,
@@ -307,7 +309,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
     private isInlineSize(viewport: IViewport) {
         const cardHeight = (this.cards.cardInstances[0] && this.cards.cardInstances[0].$element) ?
             this.cards.cardInstances[0].$element.height() :
-            constants.WRAP_THRESHOLD; // a reasonable guess for when we're called before loadData (e.g. by ctor)
+            this.settings.presentation.cardHeight; // a reasonable guess for when we're called before loadData (e.g. by ctor)
         return cardHeight &&
             viewport.height <= cardHeight * constants.WRAP_HEIGHT_FACTOR;
 
