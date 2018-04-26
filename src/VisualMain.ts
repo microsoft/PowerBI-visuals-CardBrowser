@@ -184,9 +184,6 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
                     );
                     if (card) {
                         this.selectedData = card.data.id;
-
-                        // seems like sometimes this is followed by update, but not always, so select now just in case
-                        requestAnimationFrame(() => this.loadSelectionFromPowerBI());
                     }
                 }
             });
@@ -292,32 +289,11 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         }
     }
 
-    private scrollIntoView(callback) {
-        const selectedCard = this.cards.findCardById(this.selectedData);
-        if (selectedCard && !selectedCard.$element && this.isInline) {
-            // Cards are virtualized, and this one is out of the viewport
-            const viewport = this.cards.inlineCardsView;
-            viewport.$element.scrollLeft(selectedCard.data.index * viewport.CARD_WIDTH);
-            requestAnimationFrame(() => {
-                viewport.renderCardsInViewPort();
-                requestAnimationFrame(() => this.scrollIntoView(callback));
-            });
-        }
-        else {
-            callback(selectedCard);
-        }
-    }
-
     private loadSelectionFromPowerBI() {
         if (this.selectedData !== null) {
-            requestAnimationFrame(() => {
-                if (this.selectedData) {
-                    this.scrollIntoView((selectedCard) => {
-                        this.cards.updateReaderContent(selectedCard, selectedCard.data);
-                        this.cards.openReader(selectedCard);
-                    });
-                }
-            });
+            const card = this.cards.findCardById(this.selectedData);
+            this.cards.updateReaderContent(card, card.data);
+            this.cards.openReader(card);
         }
     }
 
