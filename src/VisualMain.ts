@@ -165,7 +165,6 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         });
 
         this.cards.on(`${EVENTS.INLINE_CARDS_VIEW_SCROLL_END} ${EVENTS.WRAPPED_CARDS_VIEW_SCROLL_END}`, debounce(() => {
-            console.log('scrollEnd');
             infiniteScrollTimeoutId = setTimeout(() => {
                 clearTimeout(infiniteScrollTimeoutId);
                 if (!this.isLoadingMore && this.hasMoreData && this.loadMoreData) {
@@ -311,11 +310,9 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
 
     private loadSelectionFromPowerBI() {
         if (this.selectedData !== null) {
-            console.log(`loadSelectionFromPowerBI: selectedCard ${this.selectedData}`);
             requestAnimationFrame(() => {
                 if (this.selectedData) {
                     this.scrollIntoView((selectedCard) => {
-                        console.log(`loadSelectionFromPowerBI: scrolled into view. element found: ${!!selectedCard.$element}`);
                         this.cards.updateReaderContent(selectedCard, selectedCard.data);
                         this.cards.openReader(selectedCard);
                     });
