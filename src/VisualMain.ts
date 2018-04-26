@@ -10,6 +10,7 @@ import VisualUpdateOptions = powerbi.VisualUpdateOptions;
 import IViewport = powerbi.IViewport;
 import DataViewMetadataColumn = powerbi.DataViewMetadataColumn;
 import ISelectionManager = powerbi.extensibility.ISelectionManager;
+import ISelectionId = powerbi.extensibility.ISelectionId;
 import IVisualHost = powerbi.extensibility.v120.IVisualHost;
 import DataViewScopeIdentity = powerbi.DataViewScopeIdentity;
 import IVisualHostServices = powerbi.IVisualHostServices;
@@ -55,6 +56,8 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
 
     private settings = $.extend({}, constants.DEFAULT_VISUAL_SETTINGS);
     private isFlipped = this.settings.flipState.cardFaceDefault === constants.CARD_FACE_METADATA;
+
+    private selectedData: any = null;
 
     /* init function for legacy api */
     constructor(options: VisualConstructorOptions) {
@@ -154,15 +157,14 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
             } : null;
         };
 
-        this.loadMoreData = findApi("loadMoreData");
-        this.launchUrl = findApi("launchUrl");
+        this.loadMoreData = findApi('loadMoreData');
+        this.launchUrl = findApi('launchUrl');
 
         this.launchUrl && this.cards.on(`${EVENTS.CARD_CLICK_LINK} ${EVENTS.READER_CONTENT_CLICK_LINK}`, (event) => {
             this.launchUrl(event.currentTarget.href);
         });
 
         this.cards.on(`${EVENTS.INLINE_CARDS_VIEW_SCROLL_END} ${EVENTS.WRAPPED_CARDS_VIEW_SCROLL_END}`, debounce(() => {
-            console.log('scrollEnd');
             infiniteScrollTimeoutId = setTimeout(() => {
                 clearTimeout(infiniteScrollTimeoutId);
                 if (!this.isLoadingMore && this.hasMoreData && this.loadMoreData) {
@@ -172,6 +174,19 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
                 }
             }, constants.INFINITE_SCROLL_DELAY);
         }));
+
+        this.selectionManager['registerOnSelectCallback'](
+            (ids: ISelectionId[]) => {
+                this.selectedData = null;
+                if (ids.length) {
+                    const card = this.cards.cardInstances.find(card =>
+                        (ids.find(element => card.data.selectionId.key === element['key']))
+                    );
+                    if (card) {
+                        this.selectedData = card.data.id;
+                    }
+                }
+            });
     }
 
     public update(options: VisualUpdateOptions) {
@@ -274,6 +289,14 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         }
     }
 
+    private loadSelectionFromPowerBI() {
+        if (this.selectedData !== null) {
+            const card = this.cards.findCardById(this.selectedData);
+            this.cards.updateReaderContent(card, card.data);
+            this.cards.openReader(card);
+        }
+    }
+
     private updateCards(viewport) {
         this.isFlipped = this.settings.flipState.cardFaceDefault === constants.CARD_FACE_METADATA;
         const width = Math.max(constants.MIN_CARD_WIDTH, this.settings.presentation.cardWidth);
@@ -303,6 +326,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
 
         window.setTimeout(() => {
             this.changeWrapMode(viewport);
+            this.loadSelectionFromPowerBI();
         }, 250);
     }
 
@@ -317,7 +341,9 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
 
     private changeWrapMode(viewport: IViewport) {
         const isViewPortHeightSmallEnoughForInlineCards = this.isInlineSize(viewport);
-        this.cards.toggleInlineDisplayMode(isViewPortHeightSmallEnoughForInlineCards);
+        if (isViewPortHeightSmallEnoughForInlineCards !== this.cards.inlineMode) {
+            this.cards.toggleInlineDisplayMode(isViewPortHeightSmallEnoughForInlineCards);
+        }
         this.isInline = isViewPortHeightSmallEnoughForInlineCards;
     }
 
@@ -371,9 +397,11 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         if (this.settings.presentation.filter) {
             if (selectedDocument && selectedDocument.selectionId) {
                 this.selectionManager.select(selectedDocument.selectionId);
+                this.selectedData = selectedDocument.id;
             }
             else {
                 this.selectionManager.clear();
+                this.selectedData = null;
             }
         }
     }
