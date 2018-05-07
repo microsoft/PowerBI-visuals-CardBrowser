@@ -177,15 +177,8 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
 
         this.selectionManager['registerOnSelectCallback'](
             (ids: ISelectionId[]) => {
-                this.selectedData = null;
-                if (ids.length) {
-                    const card = this.cards.cardInstances.find(card =>
-                        (ids.find(element => card.data.selectionId.key === element['key']))
-                    );
-                    if (card) {
-                        this.selectedData = card.data.id;
-                    }
-                }
+                this.selectedData = ids.length ? ids : null;
+                this.loadSelectionFromPowerBI();
             });
     }
 
@@ -291,9 +284,13 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
 
     private loadSelectionFromPowerBI() {
         if (this.selectedData !== null) {
-            const card = this.cards.findCardById(this.selectedData);
-            this.cards.updateReaderContent(card, card.data);
-            this.cards.openReader(card);
+            const card = this.cards.cardInstances.find(card =>
+                    (this.selectedData.find(element => card.data.selectionId.key === element['key']))
+            );
+            if (card) {
+                this.cards.updateReaderContent(card, card.data);
+                this.cards.openReader(card);
+            }
         }
     }
 
@@ -397,7 +394,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         if (this.settings.presentation.filter) {
             if (selectedDocument && selectedDocument.selectionId) {
                 this.selectionManager.select(selectedDocument.selectionId);
-                this.selectedData = selectedDocument.id;
+                this.selectedData = [{ key: selectedDocument.selectionId }];
             }
             else {
                 this.selectionManager.clear();

@@ -19,7 +19,7 @@
   "config": {},
   "keywords": [],
   "author": "Uncharted Software Inc.",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "privacyTerms": "https://privacy.microsoft.com/en-US/privacystatement/",
   "privateSubmodules": {
     "@uncharted/cards": "0.13.5"
