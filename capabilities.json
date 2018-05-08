@@ -211,6 +211,13 @@
             "numeric": 200
           }
         },
+        "cardHeight": {
+          "displayName": "Card Height",
+          "description": "Height, in pixels, of each card when using wrapped layout",
+          "type": {
+            "numeric": 300
+          }
+        },
         "filter": {
           "type": {
             "bool": true
