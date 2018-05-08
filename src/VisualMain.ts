@@ -134,8 +134,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         const onInput = (event) => {
             if (this.cards.cardInstances && this.cards.cardInstances.length) {
                 this.isFlipped = (event.currentTarget.id === this.context.metadataId);
-                const otherButtonId = '#' + (this.isFlipped ? this.context.previewId : this.context.metadataId);
-                $(event.target.parentElement).find(otherButtonId).removeAttr('checked');
+                this.updateFlipButton();
                 onChange();
                 return false;
             }
@@ -246,6 +245,13 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         }
     }
 
+    private updateFlipButton() {
+        const $previewButton: any = this.$element.find('#' + this.context.previewId);
+        $previewButton.prop('checked', !this.isFlipped);
+        const $metaDataButton: any = this.$element.find('#' + this.context.metadataId);
+        $metaDataButton.prop('checked', this.isFlipped);
+    }
+
     private updateVisualStyleConfigs() {
         this.$element.toggleClass('enable-flipping', this.settings.flipState.enableFlipping &&
             (this.dataView !== undefined &&
@@ -264,10 +270,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         this.$container.toggleClass('lightButton', headerHSL[2] < 0.5);
         this.$container.toggleClass('uncropped', !this.settings.presentation.cropImages);
 
-        const previewButton: any = this.$element.find('#' + this.context.previewId)[0];
-        previewButton.checked = !this.isFlipped;
-        const metaDataButton: any = this.$element.find('#' + this.context.metadataId)[0];
-        metaDataButton.checked = this.isFlipped;
+        this.updateFlipButton();
     }
 
     private hideRedundantInfo() {
