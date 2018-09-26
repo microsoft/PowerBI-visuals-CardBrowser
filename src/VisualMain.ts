@@ -209,7 +209,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         this.loadedDocumentCount = this.dataView ? countDocuments(this.dataView) : 0;
 
         this.hasMoreData = !!this.dataView.metadata.segment;
-        this.isLoadingMore = (this.settings.loadMoreData.enabled && this.loadMoreData
+        this.isLoadingMore = (this.settings.loadMoreData.show && this.loadMoreData
         && this.loadedDocumentCount < this.settings.loadMoreData.limit
         && this.hasMoreData);
         if (this.isLoadingMore) {
@@ -253,7 +253,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
     }
 
     private updateVisualStyleConfigs() {
-        this.$element.toggleClass('enable-flipping', this.settings.flipState.enableFlipping &&
+        this.$element.toggleClass('enable-flipping', this.settings.flipState.show &&
             (this.dataView !== undefined &&
                 // looking at back with front defined
             (this.settings.flipState.cardFaceDefault === constants.CARD_FACE_METADATA &&
@@ -306,7 +306,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 implements IVis
         this.$container.html(this.cards.reset({
             'inlineMode': this.isInlineSize(viewport),
             'subtitleDelimiter': this.settings.presentation.separator,
-            'card.disableFlipping': !this.settings.flipState.enableFlipping,
+            'card.disableFlipping': !this.settings.flipState.show,
             'card.displayBackCardByDefault': this.isFlipped,
             'card.disableLinkNavigation': true,
             'card.enableBoxShadow': this.settings.presentation.shadow,

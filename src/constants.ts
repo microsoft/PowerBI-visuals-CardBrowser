@@ -82,11 +82,11 @@ export const DEFAULT_VISUAL_SETTINGS = {
         height: 500,
     },
     flipState: {
-        enableFlipping: true,
+        show: true,
         cardFaceDefault: CARD_FACE_PREVIEW,
     },
     loadMoreData: {
-        enabled: false,
+        show: false,
         limit: 500
     },
 };

@@ -267,7 +267,7 @@
     },
     "flipState": {
       "properties": {
-        "enableFlipping": {
+        "show": {
           "description": "Whether to enable card flipping",
           "displayName": "Enable Flip",
           "type": {
@@ -286,11 +286,11 @@
         }
       },
       "description": "Cards flipping configuration",
-      "displayName": "Flip State"
+      "displayName": "Flip"
     },
     "loadMoreData": {
       "properties": {
-        "enabled": {
+        "show": {
           "description": "Whether to load more data than the initial rows",
           "displayName": "Enable",
           "type": {
