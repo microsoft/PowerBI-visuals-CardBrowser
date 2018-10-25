@@ -31,6 +31,9 @@ import {
 } from './dataConversion';
 import * as constants from './constants';
 
+require('@fortawesome/fontawesome-free/js/solid.min');
+require('@fortawesome/fontawesome-free/js/fontawesome.min');
+
 const visualTemplate = require('./visual.handlebars');
 const loaderTemplate = require('./loader.handlebars');
 
