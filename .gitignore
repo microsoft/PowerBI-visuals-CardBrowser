@@ -19,3 +19,5 @@ pids
 *.pid
 *.seed
 *.pid.lock
+
+.vscode
