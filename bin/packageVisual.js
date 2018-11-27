@@ -190,6 +190,8 @@ const _buildPackage = (fileContent) => {
         css: cssContent,
         iconBase64: iconBase64
     };
+    pbivizJson.visual.version = packageJson.version;
+
     zip.file('package.json', JSON.stringify(buildPackageJson, null, 2));
     zip.file(`resources/${pbivizJson.visual.guid}.pbiviz.json`, JSON.stringify(pbivizJson, null, 2));
     fs.writeFileSync(pbivizJson.output, zip.generate({ base64:false,compression:'DEFLATE' }), 'binary');
