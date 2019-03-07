@@ -16,13 +16,13 @@
       "name": "summary",
       "displayName": "Preview",
       "description": "Preview text; only displayed on cards",
-      "kind": 0
+      "kind": 1
     },
     {
       "name": "content",
       "displayName": "Content",
       "description": "Full content to display in the reader",
-      "kind": 0
+      "kind": 1
     },
     {
       "name": "imageUrl",
@@ -46,7 +46,7 @@
       "name": "metadata",
       "displayName": "MetaData Fields",
       "description": "Key-value pairs for the table on the back of the cards",
-      "kind": 0
+      "kind": 1
     },
     {
       "name": "topBarColor",
