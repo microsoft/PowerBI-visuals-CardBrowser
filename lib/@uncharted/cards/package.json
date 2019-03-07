@@ -1,6 +1,6 @@
 {
   "name": "@uncharted/cards",
-  "version": "0.13.6",
+  "version": "0.13.7",
   "main": "dist/uncharted.cards.js",
   "scripts": {
     "test": "./node_modules/.bin/karma start",
@@ -27,12 +27,11 @@
     "clean-webpack-plugin": "^0.1.16",
     "cross-env": "^5.0.5",
     "css-loader": "^0.28.4",
-    "eslint": "^4.6.1",
-    "eslint-loader": "^1.9.0",
-    "extract-text-webpack-plugin": "^3.0.0",
+    "eslint": "^5.15.1",
+    "eslint-loader": "^2.1.2",
     "handlebars": "^4.0.10",
     "handlebars-loader": "^1.7.0",
-    "karma": "^2.0.0",
+    "karma": "^4.0.1",
     "karma-chrome-launcher": "^2.2.0",
     "karma-mocha": "^1.3.0",
     "karma-mocha-reporter": "^2.2.5",
@@ -47,7 +46,8 @@
     "sinon": "^4.4.6",
     "sinon-chai": "^3.0.0",
     "style-loader": "^0.18.2",
-    "webpack": "^3.11.0",
-    "webpack-dev-server": "^2.11.1"
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.2.1"
   }
 }
