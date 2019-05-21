@@ -158,7 +158,7 @@
               }
             }
           ],
-          "dataReductionAlgorithm": {"window": {"count": 20000}}
+          "dataReductionAlgorithm": { "window": { "count": 20000 } }
         },
         "rowCount": {
           "preferred": {
@@ -176,13 +176,6 @@
   "objects": {
     "presentation": {
       "properties": {
-        "shadow": {
-          "displayName": "Shadow",
-          "description": "Control the style of border around cards.",
-          "type": {
-            "bool": "true"
-          }
-        },
         "dateFormat": {
           "displayName": "Date Format",
           "description": "Subtitle date format using tokens; e.g. YYYY MM DD h:mm:ss",
@@ -195,13 +188,6 @@
           "description": "Character to place between subtitle fields",
           "type": {
             "text": " \u2022 "
-          }
-        },
-        "showImageOnBack": {
-          "description": "Whether to show Title Images on the card's MetaData face",
-          "displayName": "Title Image on MetaData",
-          "type": {
-            "bool": "true"
           }
         },
         "cardWidth": {
@@ -230,6 +216,27 @@
           "description": "If on, crop and recenter images to fill the top of the card",
           "type": {
             "bool": true
+          }
+        },
+        "shadow": {
+          "displayName": "Shadow",
+          "description": "Control the style of border around cards.",
+          "type": {
+            "bool": "true"
+          }
+        },
+        "fade": {
+          "displayName": "Fade Text",
+          "description": "Fade text toward the bottom of the card",
+          "type": {
+            "bool": "true"
+          }
+        },
+        "showImageOnBack": {
+          "description": "Whether to show Title Images on the card's MetaData face",
+          "displayName": "Title Image on MetaData",
+          "type": {
+            "bool": "true"
           }
         }
       },
@@ -265,6 +272,64 @@
       },
       "displayName": "Reader"
     },
+    "metadata": {
+      "properties": {
+        "fontSizeValue": {
+          "description": "Format the MetaData text",
+          "displayName": "Text Size",
+          "type": {
+            "formatting": {
+              "fontSize": true
+            }
+          }
+        },
+        "fontFamily": {
+          "displayName": "Font family",
+          "type": {
+            "formatting": {
+              "fontFamily": true
+            }
+          }
+        },
+        "titleBold": {
+          "description": "Whether to Bold the row titles",
+          "displayName": "Titles Bold",
+          "type": {
+            "bool": false
+          }
+        },
+        "valueBold": {
+          "description": "Whether to Bold the MetaData values",
+          "displayName": "Values Bold",
+          "type": {
+            "bool": false
+          }
+        },
+        "titleColor": {
+          "description": "Color for the row titles",
+          "displayName": "Titles Color",
+          "type": {
+            "fill": {
+              "solid": {
+                "color": "#bbb"
+              }
+            }
+          }
+        },
+        "valueColor": {
+          "description": "Color for the MetaData values",
+          "displayName": "Values Color",
+          "type": {
+            "fill": {
+              "solid": {
+                "color": "#000"
+              }
+            }
+          }
+        }
+      },
+      "displayName": "MetaData Format"
+    },
     "flipState": {
       "properties": {
         "show": {
@@ -279,8 +344,8 @@
           "displayName": "Card Face",
           "type": {
             "enumeration": [
-              {"value": "preview", "displayName": "Preview"},
-              {"value": "metadata", "displayName": "MetaData"}
+              { "value": "preview", "displayName": "Preview" },
+              { "value": "metadata", "displayName": "MetaData" }
             ]
           }
         }

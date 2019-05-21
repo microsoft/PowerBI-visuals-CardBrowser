@@ -29,8 +29,8 @@
     "@uncharted/cards": "0.13.7"
   },
   "devDependencies": {
-    "@types/jest": "^22.2.3",
-    "@types/jquery": "^3.3.0",
+    "@types/jest": "^24.0.13",
+    "@types/jquery": "^3.3.29",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.4.1",
     "babel-core": "^6.26.0",
@@ -46,8 +46,8 @@
     "fs-extra": "^7.0.0",
     "handlebars": "^4.0.11",
     "handlebars-loader": "^1.6.0",
-    "jest": "^24.3.0",
-    "jquery": "^3.3.1",
+    "jest": "^24.8.0",
+    "jquery": "^3.4.1",
     "json": "^9.0.6",
     "memory-fs": "^0.4.1",
     "mkdirp": "^0.5.1",
@@ -55,26 +55,26 @@
     "node-sass": "^4.7.2",
     "node-zip": "^1.1.1",
     "npm-run-all": "^4.1.5",
-    "onchange": "^3.3.0",
+    "onchange": "^6.0.0",
     "powerbi-visuals": "^0.6.0",
     "serve-static": "^1.13.2",
     "sinon": "^7.2.7",
     "sinon-chai": "^3.3.0",
     "targz": "^1.0.1",
-    "ts-jest": "^22.4.2",
+    "ts-jest": "^24.0.2",
     "ts-loader": "^3.5.0",
     "tslint": "^5.9.1",
     "tslint-loader": "^3.5.3",
     "tslint-microsoft-contrib": "^5.0.3",
     "typescript": "^2.7.2",
     "upath": "^1.1.1",
-    "webpack": "^3.11.0"
+    "webpack": "^3.12.0"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.4.1",
-    "lodash": "^4.17.4",
-    "lodash-es": "^4.17.8",
-    "moment": "^2.20.1"
+    "@fortawesome/fontawesome-free": "^5.8.2",
+    "lodash": "^4.17.11",
+    "lodash-es": "^4.17.11",
+    "moment": "^2.24.0"
   },
   "engines": {
     "node": ">=8"

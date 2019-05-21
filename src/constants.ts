@@ -59,6 +59,7 @@ export const MIN_CARD_WIDTH = 11;
 export const DEFAULT_VISUAL_SETTINGS = {
     presentation: {
         shadow: true,
+        fade: true,
         dateFormat: 'MMM D, YYYY',
         separator: ' \u2022 ',
         showImageOnBack: true,
@@ -80,6 +81,22 @@ export const DEFAULT_VISUAL_SETTINGS = {
         },
         width: 520,
         height: 500,
+    },
+    metadata: {
+        fontSizeValue: 23,
+        boldTitle: false,
+        boldValue: false,
+        titleColor: {
+            solid: {
+                color: '#bbb',
+            }
+        },
+        valueColor: {
+            solid: {
+                color: '#000',
+            }
+        },
+        fontFamily: "Default"
     },
     flipState: {
         show: true,

@@ -3,11 +3,11 @@
  */
 
 $card-border-width: 0px;
-$card-shadow: -1px 0 0 rgba(0,0,0,.12), 0 0 2px rgba(0,0,0,.12), 2px 0 4px rgba(0,0,0,.24);
+$card-shadow: -1px 0 0 rgba(0, 0, 0, 0.12), 0 0 2px rgba(0, 0, 0, 0.12),
+  2px 0 4px rgba(0, 0, 0, 0.24);
 $card-flipping-animation-duration: 0.3s;
 
 @import "../lib/@uncharted/cards/src/main.scss";
-
 
 .visual-CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58 {
   padding: 0 !important;
@@ -31,8 +31,7 @@ $card-flipping-animation-duration: 0.3s;
   }
 
   ::-webkit-scrollbar-thumb:hover,
-  ::-webkit-scrollbar-thumb:active
-  {
+  ::-webkit-scrollbar-thumb:active {
     background: rgba(0, 0, 0, 0.5);
   }
 
@@ -40,7 +39,7 @@ $card-flipping-animation-duration: 0.3s;
 
   a {
     text-decoration: none;
-    color: #2C83C0;
+    color: #2c83c0;
   }
 
   padding-left: 0;
@@ -82,8 +81,8 @@ $card-flipping-animation-duration: 0.3s;
     right: 0;
     bottom: 0;
     background-color: transparent;
-    -webkit-transition: .4s;
-    transition: .4s;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
 
     .box {
       display: inline-block;
@@ -92,13 +91,13 @@ $card-flipping-animation-duration: 0.3s;
       margin: auto 0 auto 1px;
       width: 8px;
       height: 8px;
-      -webkit-transition: .3s;
-      transition: .3s;
+      -webkit-transition: 0.3s;
+      transition: 0.3s;
     }
 
     /* Hide default HTML checkbox */
     input[type="radio"] {
-      display:none;
+      display: none;
     }
 
     input[type="radio"] + label {
@@ -167,8 +166,7 @@ $card-flipping-animation-duration: 0.3s;
 
     &.disable-back-card-subtitle {
       .uncharted-cards-card .meta-data-content .meta-line {
-        &.subtitle
-        {
+        &.subtitle {
           display: none;
         }
       }
@@ -197,7 +195,7 @@ $card-flipping-animation-duration: 0.3s;
     &.lightButton {
       .reader-content-header {
         .close-button {
-          color: #C0C0C0;
+          color: #c0c0c0;
           &:hover {
             color: #909090;
             i {
@@ -212,6 +210,11 @@ $card-flipping-animation-duration: 0.3s;
         .image {
           background-size: contain;
         }
+      }
+    }
+    &.disable-fade {
+      .uncharted-cards-card .card-content-container:after {
+        background: none;
       }
     }
   }
@@ -331,7 +334,7 @@ $card-flipping-animation-duration: 0.3s;
   -webkit-animation: moreData20 1.8s infinite ease-in-out;
   animation: moreData20 1.8s infinite ease-in-out;
 }
-.moreDataLoader{
+.moreDataLoader {
   margin: 0 20px 0 30px;
   width: 1em;
   height: 1em;
@@ -356,7 +359,7 @@ $card-flipping-animation-duration: 0.3s;
 }
 .moreDataLoader:before,
 .moreDataLoader:after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
 }
