@@ -1,6 +1,6 @@
 {
   "name": "powerbi-visuals-cardbrowser",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Card Browser, a custom visual for PowerBI",
   "main": "src/index.js",
   "scripts": {
@@ -26,7 +26,7 @@
     "url": "https://github.com/Microsoft/PowerBI-visuals-CardBrowser"
   },
   "privateSubmodules": {
-    "@uncharted/cards": "0.13.7"
+    "@uncharted/cards": "0.13.8"
   },
   "devDependencies": {
     "@types/jest": "^24.0.13",
@@ -45,7 +45,7 @@
     "eslint-loader": "^2.1.2",
     "fs-extra": "^7.0.0",
     "handlebars": "^4.0.11",
-    "handlebars-loader": "^1.6.0",
+    "handlebars-loader": "^1.7.0",
     "jest": "^24.8.0",
     "jquery": "^3.4.1",
     "json": "^9.0.6",

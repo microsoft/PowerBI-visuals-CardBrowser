@@ -47,18 +47,15 @@
                                     </div>
                                 {{/if}}
                             </div>
-                            <div class="meta-data-table">
-                                <div class="keys-container">
+                            <div class="meta-data-table" style="font-size: {{metaDataFontSize}}pt;">
+                                <table width ="100%">
                                     {{#each metadata}}
-                                        <div class="value-box overflow-box">
-                                            <span class="value overflow-value">{{@key}}</span> 
-                                        </div>
-                                    {{/each}}
-                                </div>
-                                <div class="values-container">
-                                    {{#each metadata}}
-                                        <div class="value-box overflow-box">
-                                            <span class="value overflow-value">
+                                        <tr>
+                                            <td class="key-box value-box overflow-box">
+                                                <span class="value overflow-value" style="color: {{../metaDataTitleColor}}; font-family: {{../metaDataTitleFontFamily}}">{{@key}}</span>
+                                            </td>
+                                            <td class="meta-data-box value-box overflow-box">
+                                            <span class="value overflow-value" style="color: {{../metaDataValueColor}}; font-family: {{../metaDataValueFontFamily}}">
                                                 {{#if this}}
                                                     {{#isImageDataUrl this}}
                                                         <img src="{{this}}" alt="">
@@ -67,17 +64,18 @@
                                                     {{/isImageDataUrl}}
                                                 {{/if}}
                                             </span>
-                                        </div>
+                                            </td>
+                                        </tr>
                                     {{/each}}
-                                </div>
+                                </table>
                             </div>
                         </div>
                         {{#if imageUrl}}
-                        <div class="meta-data-images-container">
-                            {{#cardImages imageUrl}}
-                            <div class="image" data-url="{{url}}" style="background-image:url({{url}})"></div>
-                            {{/cardImages}}
-                        </div>
+                            <div class="meta-data-images-container">
+                                {{#cardImages imageUrl}}
+                                    <div class="image" data-url="{{url}}" style="background-image:url({{url}})"></div>
+                                {{/cardImages}}
+                            </div>
                         {{/if}}
                     </div>
                 </div>

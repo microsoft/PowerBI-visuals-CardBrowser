@@ -274,8 +274,8 @@
     },
     "metadata": {
       "properties": {
-        "fontSizeValue": {
-          "description": "Format the MetaData text",
+        "fontSize": {
+          "description": "MetaData text size",
           "displayName": "Text Size",
           "type": {
             "formatting": {
@@ -283,26 +283,20 @@
             }
           }
         },
-        "fontFamily": {
-          "displayName": "Font family",
+        "titleFontFamily": {
+          "displayName": "Title font family",
           "type": {
             "formatting": {
               "fontFamily": true
             }
           }
         },
-        "titleBold": {
-          "description": "Whether to Bold the row titles",
-          "displayName": "Titles Bold",
+        "valueFontFamily": {
+          "displayName": "Value font family",
           "type": {
-            "bool": false
-          }
-        },
-        "valueBold": {
-          "description": "Whether to Bold the MetaData values",
-          "displayName": "Values Bold",
-          "type": {
-            "bool": false
+            "formatting": {
+              "fontFamily": true
+            }
           }
         },
         "titleColor": {

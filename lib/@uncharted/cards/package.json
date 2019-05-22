@@ -1,6 +1,6 @@
 {
   "name": "@uncharted/cards",
-  "version": "0.13.7",
+  "version": "0.13.8",
   "main": "dist/uncharted.cards.js",
   "scripts": {
     "test": "./node_modules/.bin/karma start",
@@ -16,12 +16,12 @@
   "author": "Uncharted Software Inc.",
   "description": "",
   "dependencies": {
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.11"
   },
   "devDependencies": {
-    "babel-core": "^6.25.0",
-    "babel-loader": "^7.1.1",
-    "babel-polyfill": "^6.23.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-latest": "^6.24.1",
     "chai": "^4.1.2",
     "clean-webpack-plugin": "^0.1.16",
@@ -29,7 +29,7 @@
     "css-loader": "^0.28.4",
     "eslint": "^5.15.1",
     "eslint-loader": "^2.1.2",
-    "handlebars": "^4.0.10",
+    "handlebars": "^4.0.11",
     "handlebars-loader": "^1.7.0",
     "karma": "^4.0.1",
     "karma-chrome-launcher": "^2.2.0",

@@ -83,9 +83,7 @@ export const DEFAULT_VISUAL_SETTINGS = {
         height: 500,
     },
     metadata: {
-        fontSizeValue: 23,
-        boldTitle: false,
-        boldValue: false,
+        fontSize: 10,
         titleColor: {
             solid: {
                 color: '#bbb',
@@ -96,7 +94,8 @@ export const DEFAULT_VISUAL_SETTINGS = {
                 color: '#000',
             }
         },
-        fontFamily: "Default"
+        titleFontFamily: "Default",
+        valueFontFamily: "Default"
     },
     flipState: {
         show: true,

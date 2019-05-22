@@ -37,8 +37,6 @@
             box-shadow: $card-shadow;
         }
         .card-content-container {
-            padding-left: 0;
-            left: 0;
             padding-left: $card-margin * 2;
             left: -(2 * $card-margin);
             &:after {
@@ -101,8 +99,8 @@
         bottom: 0;
     }
 
-   .metadata-content-container.has-image:after {
-       bottom: 50px;
+    .metadata-content-container.has-image:after {
+        bottom: 50px;
     }
 
     .card-reader-container:after {
@@ -213,30 +211,24 @@
     .meta-data-table {
         margin-top: 10px;
         font-size: 12px;
-        display: flex;
-
-        .keys-container,
-        .values-container {
-            display: flex;
-            flex-direction: column;
+        vertical-align: bottom;
+        table {
+            table-layout: fixed;
         }
-
         .value-box {
             &.overflow:after {
                 width: 15px;
             }
         }
 
-        .keys-container {
+        .key-box {
             max-width: 38.2%;
-            .value-box {
-                text-align: right;
-                padding-right: 2px;
-                color: #bbb;
-            }
+            text-align: right;
+            padding-right: 2px;
+            color: #bbb;
         }
 
-        .values-container {
+        .meta-data-box {
             overflow: hidden;
             .value {
                 padding-left: 2px;
