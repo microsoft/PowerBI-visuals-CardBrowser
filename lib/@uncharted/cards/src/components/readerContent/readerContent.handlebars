@@ -6,20 +6,20 @@
 
 <div class="uncharted-cards-reader-content" style="{{#if topBarColor}}border-top: 5px solid {{topBarColor}};{{/if}}">
     <div class="reader-content-header">
-            {{#if source}}
-                <div class="header-source-link-box">
-                    <div class="header-source-link-background" style="background: {{headerBackgroundColor}};"></div>
-                    <a class="source-link" style="color: {{headerSourceLinkColor}};" href="{{sourceUrl}}" target="_blank" title="{{sourceUrl}}">{{source}}</a>
-                </div>
-            {{/if}}
-            <div class="close-button">
-                <div class="icon-box">
-                    <i class="fa fa-compress"></i>
-                </div>
+        {{#if source}}
+            <div class="header-source-link-box">
+                <div class="header-source-link-background" style="background: {{headerBackgroundColor}};"></div>
+                <a class="source-link" style="color: {{headerSourceLinkColor}};" href="{{sourceUrl}}" target="_blank" title="{{sourceUrl}}">{{source}}</a>
             </div>
-            {{#if iconUrl}}
-                <div class="source-icon" style="background-image: url({{iconUrl}})"></div>
-            {{/if}}
+        {{/if}}
+        <div class="close-button">
+            <div class="icon-box">
+                <i class="fa fa-compress"></i>
+            </div>
+        </div>
+        {{#if iconUrl}}
+            <div class="source-icon" style="background-image: url({{iconUrl}})"></div>
+        {{/if}}
     </div>
     <div class="reader-content-viewport">
         <div class="reader-content-header-image">
@@ -38,13 +38,13 @@
 
             {{#if metadata}}
                 <hr>
-                <table class="reader-content-meta-data-table">
+                <table class="reader-content-meta-data-table" width ="100%" style="font-size: {{metaDataFontSize}}pt;">
                     {{#each metadata}}
                         <tr>
                             <td class="value-box key-column">
-                                <span class="value" title="{{@key}}">{{@key}}</span>
+                                <span class="value" title="{{@key}}" style="color: {{../metaDataTitleColor}}; font-family: {{../metaDataTitleFontFamily}}">{{@key}}</span>
                             </td>
-                            <td class="value-box value-column">
+                            <td class="value-box value-column" style="color: {{../metaDataValueColor}}; font-family: {{../metaDataValueFontFamily}}">
                                 <span class="value">
                                     {{#if this}}
                                         {{#isImageDataUrl this}}
