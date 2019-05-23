@@ -391,6 +391,13 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58
       this.settings.presentation.cardWidth
     );
 
+    const chooseFontFamily = (fontFamily) => {
+      if (fontFamily.indexOf('Default') > -1) {
+        return 'inherit';
+      }
+      return fontFamily;
+    }
+
     // We do need innerHTML, so suppress tslint
     // tslint:disable-next-line
     this.$container.html(
@@ -408,9 +415,9 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58
           "card.displayLargeImage": !this.settings.presentation.cropImages,
           "card.metadata.fontSize": this.settings.metadata.fontSize,
           "card.metadata.title.color": this.settings.metadata.titleColor.solid.color,
-          "card.metadata.title.fontFamily": this.settings.metadata.titleFontFamily,
+          "card.metadata.title.fontFamily": chooseFontFamily(this.settings.metadata.titleFontFamily),
           "card.metadata.value.color": this.settings.metadata.valueColor.solid.color,
-          "card.metadata.value.fontFamily": this.settings.metadata.valueFontFamily,
+          "card.metadata.value.fontFamily": chooseFontFamily(this.settings.metadata.valueFontFamily),
           "readerContent.headerBackgroundColor": this.settings.reader
             .headerBackgroundColor.solid.color,
           "readerContent.headerImageMaxWidth":
