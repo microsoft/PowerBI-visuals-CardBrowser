@@ -69,6 +69,7 @@ describe('Card Browser Visual', () => {
         expect(instances.length).toBe(1);
         const instanceProperties = instances[0].properties;
         expect(instanceProperties.shadow).toBe(true);
+        expect(instanceProperties.fade).toBe(true);
         expect(instanceProperties.dateFormat).toBe('MMM D, YYYY');
         expect(instanceProperties.separator).toBe(' \u2022 ');
         expect(instanceProperties.separator).toBe(' \u2022 ');
