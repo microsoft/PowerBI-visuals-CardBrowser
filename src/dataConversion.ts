@@ -79,6 +79,9 @@ function assignValue(role, columns, idx, columnValue) {
                 value: columnValue,
                 index: idx,
             };
+        case 'content':
+            var columnValue2 = columnValue.replace(/[\n\r]/g ,'<br>');
+            return columnValue2;
         case 'summary':
             return utils.sanitizeHTML(columnValue, HTML_WHITELIST_SUMMARY);
         default:
