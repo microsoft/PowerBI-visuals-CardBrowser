@@ -157,6 +157,9 @@
                 max-height: 1em;
                 max-width: 100%;
             }
+			.value {
+				white-space: pre-wrap;
+			}
         }
     }
 }

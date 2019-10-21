@@ -80,8 +80,7 @@ function assignValue(role, columns, idx, columnValue) {
                 index: idx,
             };
         case 'content':
-            var columnValue2 = columnValue.replace(/[\n\r]/g ,'<br>');
-            return columnValue2;
+            return columnValue.replace(/[\n\r]/g ,'<br>');
         case 'summary':
             return utils.sanitizeHTML(columnValue, HTML_WHITELIST_SUMMARY);
         default:
