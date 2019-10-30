@@ -45,14 +45,7 @@
                                 <span class="value" title="{{@key}}" style="color: {{../metaDataTitleColor}}; font-family: {{../metaDataTitleFontFamily}}">{{@key}}</span>
                             </td>
                             <td class="value-box value-column" style="color: {{../metaDataValueColor}}; font-family: {{../metaDataValueFontFamily}}">
-                                <span class="value">
-                                    {{#if this}}
-                                        {{#isImageDataUrl this}}
-                                            <img src="{{this}}" alt="">
-                                        {{else}}
-                                            {{#linkify this}}{{/linkify}}
-                                        {{/isImageDataUrl}}
-                                    {{/if}}
+                                <span class="value"> {{#if this}} {{#isImageDataUrl this}} <img src="{{this}}" alt=""> {{else}} {{#linkify this}}{{/linkify}} {{/isImageDataUrl}}  {{/if}}
                                 </span>
                             </td>
                         </tr>
