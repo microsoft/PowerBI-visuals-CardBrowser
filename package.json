@@ -1,12 +1,10 @@
 {
-  "name": "powerbi-visuals-cardbrowser",
-  "version": "1.1.5",
+  "name": "powerbi-visuals-card",
+  "version": "1.1.10",
   "description": "Card Browser, a custom visual for PowerBI",
   "main": "src/index.js",
   "scripts": {
     "install-certificate": "node bin/openCert",
-    "postinstall": "npm run install-private-submodule",
-    "install-private-submodule": "node bin/installPrivateSubmodules",
     "start": "yarn run dev",
     "tdd": "npm-run-all --parallel dev test:watch",
     "dev": "node bin/startDev",
@@ -72,6 +70,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.8.2",
+    "@uncharted/cards": "file:lib/@uncharted/cards",
     "lodash": "^4.17.11",
     "lodash-es": "^4.17.11",
     "moment": "^2.24.0"

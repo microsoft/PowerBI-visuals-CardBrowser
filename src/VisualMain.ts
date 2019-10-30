@@ -34,7 +34,7 @@ require("@fortawesome/fontawesome-free/js/fontawesome.min");
 const visualTemplate = require("./visual.handlebars");
 const loaderTemplate = require("./loader.handlebars");
 
-export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58
+export default class CardBrowser
   implements IVisual {
   private $element: JQuery;
   private $container: JQuery;

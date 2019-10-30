@@ -2,8 +2,8 @@
   "visual": {
     "name": "CardBrowser",
     "displayName": "Card Browser",
-    "guid": "CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58",
-    "visualClassName": "CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58",
+    "guid": "CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA55",
+    "visualClassName": "CardBrowser",
     "description": "ESSEX Card Browser",
     "supportUrl": "http://community.powerbi.com",
     "gitHubUrl": "https://github.com/Microsoft/PowerBI-visuals-CardBrowser"
