@@ -76,7 +76,7 @@ function assignValue(role, columns, idx, columnValue) {
         case 'metadata':
             return {
                 key: columns[idx].displayName,
-                value: columnValue,
+                value: columnValue.trim(),
                 index: idx,
             };
         case 'content':
