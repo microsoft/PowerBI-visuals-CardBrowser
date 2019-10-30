@@ -41,10 +41,10 @@
                 <table class="reader-content-meta-data-table" width ="100%" style="font-size: {{metaDataFontSize}}pt;">
                     {{#each metadata}}
                         <tr>
-                            <td class="value-box key-column">
+                            <td class="value-box key-column left-column">
                                 <span class="value" title="{{@key}}" style="color: {{../metaDataTitleColor}}; font-family: {{../metaDataTitleFontFamily}}">{{@key}}</span>
                             </td>
-                            <td class="value-box value-column" style="color: {{../metaDataValueColor}}; font-family: {{../metaDataValueFontFamily}}">
+                            <td class="value-box value-column right-column" style="color: {{../metaDataValueColor}}; font-family: {{../metaDataValueFontFamily}}">
                                 <span class="value"> {{#if this}} {{#isImageDataUrl this}} <img src="{{this}}" alt=""> {{else}} {{#linkify this}}{{/linkify}} {{/isImageDataUrl}}  {{/if}}
                                 </span>
                             </td>

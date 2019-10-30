@@ -384,3 +384,15 @@ $card-flipping-animation-duration: 0.3s;
     box-shadow: 0 1em 0 0;
   }
 }
+
+.uncharted-cards-style {
+  .uncharted-cards-reader-content {
+    .reader-content-meta-data-table {
+	  .right-column {
+        width:100%;
+	  }
+	}
+  }
+}
+
+
