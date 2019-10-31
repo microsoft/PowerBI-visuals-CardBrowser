@@ -330,7 +330,7 @@
           "description": "Whether to enable card flipping",
           "displayName": "Enable Flip",
           "type": {
-            "bool": "true"
+            "bool": true
           }
         },
         "cardFaceDefault": {
@@ -347,20 +347,29 @@
       "description": "Cards flipping configuration",
       "displayName": "Flip"
     },
-    "subtitle": {
+    "cardTitle": {
       "properties": {
-        "fontSize": {
-          "description": "Size of subtitle",
-          "displayName": "Font size",
+        "titleFontSize": {
+          "description": "Size of title",
+          "displayName": "Title font size",
           "type": {
             "formatting": {
-              "fontSize": true
+              "fontSize": 10
+            }
+          }
+        },
+        "secFontSize": {
+          "description": "Size of subtitle",
+          "displayName": "Subtitle font size",
+          "type": {
+            "formatting": {
+              "fontSize": 10
             }
           }
         }
       },
-      "description": "Subtitle configuration",
-      "displayName": "Subtitle"
+      "description": "Card title configuration",
+      "displayName": "Reader title"
     },
     "loadMoreData": {
       "properties": {
