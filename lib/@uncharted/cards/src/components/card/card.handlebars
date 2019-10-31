@@ -16,10 +16,10 @@
                         <div class="card-image"></div>
                         <div class="card-body">
                             {{#if title}}
-                                <h1 class="title">{{title}}</h1>
+                                <h1 class="title" style="font-size: {{titleFontSize}}pt;">{{title}}</h1>
                             {{/if}}
                             {{#if subtitle.length }}
-                                <div class="subtitle meta-line">
+                                <div class="subtitle meta-line" style="font-size: {{subtitleFontSize}}pt;">
                                     {{#each subtitle}}{{#unless @first}}<span class="delimiter">{{../subtitleDelimiter}}</span>{{/unless}}<span class="value">{{this}}</span>{{/each}}
                                 </div>
                             {{/if}}
@@ -37,11 +37,11 @@
                         <div class="card-body">
                             <div class="meta-data-content-header">
                                 <div class="title-box overflow-box">
-                                    <h1 class="title overflow-value">{{title}}</h1>
+                                    <h1 class="title overflow-value" style="font-size: {{titleFontSize}}pt;">{{title}}</h1>
                                 </div>
                                 {{#if subtitle.length }}
                                     <div class="subtitle-box overflow-box">
-                                        <div class="subtitle meta-line overflow-value">
+                                        <div class="subtitle meta-line overflow-value" style="font-size: {{subtitleFontSize}}pt;">
                                             {{#each subtitle}}{{#unless @first}}<span class="delimiter">{{../subtitleDelimiter}}</span>{{/unless}}<span class="value">{{this}}</span>{{/each}}
                                         </div>
                                     </div>
