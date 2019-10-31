@@ -17,12 +17,12 @@
   },
   "config": {},
   "keywords": [],
-  "author": "Microsoft, wiktorek140",
+  "author": "Microsoft",
   "license": "MIT",
   "privacyTerms": "https://privacy.microsoft.com/en-US/privacystatement/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/wiktorek140/PowerBI-visuals-CardBrowser"
+    "url": ""
   },
   "privateSubmodules": {
     "@uncharted/cards": "0.13.9"

@@ -83,7 +83,7 @@ export const DEFAULT_VISUAL_SETTINGS = {
         height: 500,
     },
     metadata: {
-        fontSize: 10,
+        fontSize: 9,
         titleColor: {
             solid: {
                 color: '#bbb',
