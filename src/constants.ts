@@ -103,7 +103,7 @@ export const DEFAULT_VISUAL_SETTINGS = {
     },
     cardTitle: {
         titleFontSize: 10,
-        secFontSize: 10
+        secFontSize: 9
     },
     loadMoreData: {
         show: false,

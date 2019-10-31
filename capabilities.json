@@ -363,7 +363,7 @@
           "displayName": "Subtitle font size",
           "type": {
             "formatting": {
-              "fontSize": 10
+              "fontSize": 9
             }
           }
         }
