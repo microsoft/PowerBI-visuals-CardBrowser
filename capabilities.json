@@ -347,6 +347,21 @@
       "description": "Cards flipping configuration",
       "displayName": "Flip"
     },
+    "subtitle": {
+      "properties": {
+        "fontSize": {
+          "description": "Size of subtitle",
+          "displayName": "Font size",
+          "type": {
+            "formatting": {
+              "fontSize": true
+            }
+          }
+        }
+      },
+      "description": "Subtitle configuration",
+      "displayName": "Subtitle"
+    },
     "loadMoreData": {
       "properties": {
         "show": {

@@ -426,7 +426,8 @@ export default class CardBrowser
             .headerTextColor.solid.color,
           "readerContent.disableLinkNavigation": true,
           "readerContent.cropImages": this.settings.presentation.cropImages,
-          "verticalReader.height": this.settings.reader.height
+          "verticalReader.height": this.settings.reader.height,
+          "card.subtitle.fontSize": this.settings.subtitle.fontSize,
         })
         .render()
     );

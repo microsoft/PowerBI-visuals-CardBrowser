@@ -101,6 +101,9 @@ export const DEFAULT_VISUAL_SETTINGS = {
         show: true,
         cardFaceDefault: CARD_FACE_PREVIEW,
     },
+    subtitle: {
+        fontSize: 10
+    },
     loadMoreData: {
         show: false,
         limit: 500

@@ -27,7 +27,7 @@
         <div class="reader-content-body">
             <h1 class="title">{{title}}</h1>
             {{#if subtitle}}
-                <div class="subtitle meta-line">
+                <div class="subtitle meta-line" style="font-size: {{subtitleFontSize}}pt;">
                     {{#each subtitle}}{{#unless @first}}<span class="delimiter">{{../subtitleDelimiter}}</span>{{/unless}}<span class="value">{{this}}</span>{{/each}}
                 </div>
             {{/if}}
