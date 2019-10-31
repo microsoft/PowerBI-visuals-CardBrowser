@@ -354,7 +354,7 @@
           "displayName": "Title font size",
           "type": {
             "formatting": {
-              "fontSize": 10
+              "fontSize": 12
             }
           }
         },
