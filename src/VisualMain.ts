@@ -375,7 +375,7 @@ export default class CardBrowserVisual
         return 'inherit';
       }
       return fontFamily;
-    }
+    };
 
     // We do need innerHTML, so suppress tslint
     // tslint:disable-next-line
