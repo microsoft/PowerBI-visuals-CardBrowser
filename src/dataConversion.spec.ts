@@ -43,7 +43,7 @@ describe('dataConversion', () => {
         });
     });
     describe('.countDocuments', () => {
-        it('should cont documents', () => {
+        it('should count documents', () => {
             const { dataViews } = populateData([]);
             const count = countDocuments(<any>dataViews[0]);
             expect(count).toBe(4);
