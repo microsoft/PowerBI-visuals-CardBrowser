@@ -1,6 +1,8 @@
 /*
  * Copyright 2018 Uncharted Software Inc.
  */
+const packageJSON = require("../package.json");
+const isDev = process.env.NODE_ENV !== 'production';
 
 export const METADATA_FIELDS = ['metadata'];
 export const REQUIRED_FIELDS = ['id'];
@@ -105,4 +107,7 @@ export const DEFAULT_VISUAL_SETTINGS = {
         show: false,
         limit: 500
     },
+    general: {
+        version: `${packageJSON.version}${isDev ? '+dev' : ''}`
+    }
 };

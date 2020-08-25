@@ -28,7 +28,7 @@ require("@fortawesome/fontawesome-free/js/fontawesome.min");
 const visualTemplate = require("./visual.handlebars");
 const loaderTemplate = require("./loader.handlebars");
 
-export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58
+export default class CardBrowserVisual
   implements IVisual {
   private $element: JQuery;
   private $container: JQuery;
@@ -49,8 +49,6 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58
   private settings = $.extend({}, constants.DEFAULT_VISUAL_SETTINGS);
   private isFlipped =
     this.settings.flipState.cardFaceDefault === constants.CARD_FACE_METADATA;
-
-  private selectedData: ISelectionId[] = null;
 
   /* init function for legacy api */
   constructor(options: VisualConstructorOptions) {
@@ -185,8 +183,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58
     );
 
     this.selectionManager["registerOnSelectCallback"]((ids: ISelectionId[]) => {
-      this.selectedData = ids.length ? ids : null;
-      this.loadSelectionFromPowerBI();
+      this.loadSelectionFromPowerBI(ids);
     });
   }
 
@@ -352,18 +349,16 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58
     }
   }
 
-  private loadSelectionFromPowerBI() {
-    if (this.selectedData !== null) {
-      const card = this.cards.cardInstances.find(card => {
-        const data: CardBrowserDocument = card.data;
-        return this.selectedData.find(
-          element => utils.getKeyFromSelectionId(data.selectionId) === utils.getKeyFromSelectionId(element)
-        );
-      });
-      if (card) {
-        this.cards.updateReaderContent(card, card.data);
-        this.cards.openReader(card);
-      }
+  private loadSelectionFromPowerBI(selectedIds: ISelectionId[] = []) {
+    const card = this.cards.cardInstances.find(card => {
+      const data: CardBrowserDocument = card.data;
+      return selectedIds.find(
+        element => data.selectionId.equals(element)
+      );
+    });
+    if (card) {
+      this.cards.updateReaderContent(card, card.data);
+      this.cards.openReader(card);
     }
   }
 
@@ -435,7 +430,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58
 
     window.setTimeout(() => {
       this.changeWrapMode(viewport);
-      this.loadSelectionFromPowerBI();
+      this.loadSelectionFromPowerBI(this.selectionManager.getSelectionIds() as any);
     }, 250);
   }
 
@@ -514,10 +509,8 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58
     if (this.settings.presentation.filter) {
       if (selectedDocument && selectedDocument.selectionId) {
         this.selectionManager.select(selectedDocument.selectionId);
-        this.selectedData = [selectedDocument.selectionId];
       } else {
         this.selectionManager.clear();
-        this.selectedData = null;
       }
     }
   }
