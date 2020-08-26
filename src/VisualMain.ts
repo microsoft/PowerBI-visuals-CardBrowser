@@ -1,20 +1,13 @@
 /*
  * Copyright 2018 Uncharted Software Inc.
  */
-
-/// <reference path="../node_modules/powerbi-visuals/lib/powerbi-visuals.d.ts"/>
-
-import IVisual = powerbi.extensibility.v120.IVisual;
-import VisualConstructorOptions = powerbi.extensibility.v120.VisualConstructorOptions;
-import VisualUpdateOptions = powerbi.VisualUpdateOptions;
+import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions;
+import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
 import IViewport = powerbi.IViewport;
-import DataViewMetadataColumn = powerbi.DataViewMetadataColumn;
 import ISelectionManager = powerbi.extensibility.ISelectionManager;
-import ISelectionId = powerbi.extensibility.ISelectionId;
-import IVisualHost = powerbi.extensibility.v120.IVisualHost;
-import DataViewScopeIdentity = powerbi.DataViewScopeIdentity;
-import IVisualHostServices = powerbi.IVisualHostServices;
-import IColorInfo = powerbi.IColorInfo;
+import ISelectionId = powerbi.visuals.ISelectionId;
+import IVisualHost = powerbi.extensibility.visual.IVisualHost;
+import IVisual = powerbi.extensibility.visual.IVisual;
 import DataView = powerbi.DataView;
 import EnumerateVisualObjectInstancesOptions = powerbi.EnumerateVisualObjectInstancesOptions;
 import VisualObjectInstance = powerbi.VisualObjectInstance;
@@ -27,6 +20,7 @@ import { EVENTS } from "../lib/@uncharted/cards/src/components/constants";
 import * as utils from "./utils";
 import { convertToDocumentData, countDocuments } from "./dataConversion";
 import * as constants from "./constants";
+import { CardBrowserDocumentData, CardBrowserDocument } from "./types";
 
 require("@fortawesome/fontawesome-free/js/solid.min");
 require("@fortawesome/fontawesome-free/js/fontawesome.min");
@@ -34,15 +28,13 @@ require("@fortawesome/fontawesome-free/js/fontawesome.min");
 const visualTemplate = require("./visual.handlebars");
 const loaderTemplate = require("./loader.handlebars");
 
-export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58
+export default class CardBrowserVisual
   implements IVisual {
   private $element: JQuery;
   private $container: JQuery;
   private dataView: DataView;
   private cards: any;
-  private documentData: any;
-  private hostServices: IVisualHostServices;
-  private isSandboxed: Boolean;
+  private documentData: CardBrowserDocumentData;
   private context: any;
   private loadedDocumentCount = 0;
   private isLoadingMore = false;
@@ -58,27 +50,16 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58
   private isFlipped =
     this.settings.flipState.cardFaceDefault === constants.CARD_FACE_METADATA;
 
-  private selectedData: any = null;
-
   /* init function for legacy api */
   constructor(options: VisualConstructorOptions) {
     this.host = options.host;
     this.selectionManager = options.host.createSelectionManager();
-    this.hostServices = this.selectionManager["hostServices"];
-
-    // Start hacks to detect sandboxing & desktop...
-    this.isSandboxed = this.hostServices["messageProxy"];
-    // console.log(!!options.host.createSelectionManager()['hostServices']['applyJsonFilter']);
-    // this.isSandboxed = (this.hostServices.constructor.name === "SandboxVisualHostServices");
-    // this.isSandboxed = (this.hostServices.constructor.name.toLowerCase().indexOf('sandbox') !== -1);
-    // const anyData : any = powerbi.data;
-    // ... end hacks
 
     this.context = {
       enableBlurFix: true,
       // enableBlurFix: (anyData.dsr.wireContracts !== undefined), // this check isn't working in sand-box mode
-      previewId: "preview-" + this.hostServices["instanceId"],
-      metadataId: "metadata-" + this.hostServices["instanceId"]
+      previewId: "preview-" + this.host.instanceId,
+      metadataId: "metadata-" + this.host.instanceId
     };
     this.$element = $(visualTemplate(this.context)).appendTo(options.element);
     this.$loaderElement = $(loaderTemplate());
@@ -167,14 +148,14 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58
         ? arg => {
             this.host[methodName](arg);
           }
-        : this.hostServices && this.hostServices[methodName]
+        : this.host && this.host[methodName]
         ? arg => {
-            this.hostServices[methodName](arg);
+            this.host[methodName](arg);
           }
         : null;
     };
 
-    this.loadMoreData = findApi("loadMoreData");
+    this.loadMoreData = findApi("fetchMoreData");
     this.launchUrl = findApi("launchUrl");
 
     this.launchUrl &&
@@ -202,8 +183,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58
     );
 
     this.selectionManager["registerOnSelectCallback"]((ids: ISelectionId[]) => {
-      this.selectedData = ids.length ? ids : null;
-      this.loadSelectionFromPowerBI();
+      this.loadSelectionFromPowerBI(ids);
     });
   }
 
@@ -369,17 +349,16 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58
     }
   }
 
-  private loadSelectionFromPowerBI() {
-    if (this.selectedData !== null) {
-      const card = this.cards.cardInstances.find(card =>
-        this.selectedData.find(
-          element => card.data.selectionId.key === element["key"].key
-        )
+  private loadSelectionFromPowerBI(selectedIds: ISelectionId[] = []) {
+    const card = this.cards.cardInstances.find(card => {
+      const data: CardBrowserDocument = card.data;
+      return selectedIds.find(
+        element => data.selectionId.equals(element)
       );
-      if (card) {
-        this.cards.updateReaderContent(card, card.data);
-        this.cards.openReader(card);
-      }
+    });
+    if (card) {
+      this.cards.updateReaderContent(card, card.data);
+      this.cards.openReader(card);
     }
   }
 
@@ -396,7 +375,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58
         return 'inherit';
       }
       return fontFamily;
-    }
+    };
 
     // We do need innerHTML, so suppress tslint
     // tslint:disable-next-line
@@ -451,7 +430,7 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58
 
     window.setTimeout(() => {
       this.changeWrapMode(viewport);
-      this.loadSelectionFromPowerBI();
+      this.loadSelectionFromPowerBI(this.selectionManager.getSelectionIds() as any);
     }, 250);
   }
 
@@ -505,7 +484,6 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58
    */
   public destroy(): void {
     this.cards = null;
-    this.hostServices = null;
   }
 
   /**
@@ -531,10 +509,8 @@ export default class CardBrowser8D7CFFDA2E7E400C9474F41B9EDBBA58
     if (this.settings.presentation.filter) {
       if (selectedDocument && selectedDocument.selectionId) {
         this.selectionManager.select(selectedDocument.selectionId);
-        this.selectedData = [{ key: selectedDocument.selectionId }];
       } else {
         this.selectionManager.clear();
-        this.selectedData = null;
       }
     }
   }

@@ -1,4 +1,5 @@
-[![CircleCI](https://circleci.com/gh/Microsoft/PowerBI-visuals-CardBrowser/tree/develop.svg?style=svg)](https://circleci.com/gh/Microsoft/PowerBI-visuals-CardBrowser/tree/develop)
+
+[![Node.js CI](https://github.com/microsoft/PowerBI-visuals-CardBrowser/workflows/Node.js%20CI/badge.svg)](https://github.com/microsoft/PowerBI-visuals-CardBrowser/actions)
 
 # Card Browser
 Browse documents using double-sided cards, and click to view in place.

@@ -1,7 +1,8 @@
 /*
  * Copyright 2018 Uncharted Software Inc.
  */
-
+/// <reference path="../types/PowerBI-Visuals-2.6.0.d.ts" />
+import ISelectionId = powerbi.visuals.ISelectionId;
 import DataView = powerbi.DataView;
 import DataViewMetadataColumn = powerbi.DataViewMetadataColumn;
 
@@ -185,3 +186,17 @@ export function convertToHSL(colorString: string) {
     return toHSL([r, g, b]);
 }
 
+/**
+ * Gets the key from the given selection id
+ * @param id The selection id to get the key from
+ */
+export function getKeyFromSelectionId(id: ISelectionId): string | null | undefined {
+    let key: string | null | undefined = id["key"];
+    if (!key && id.getKey) {
+        key = id.getKey();
+    }
+    if (!key) {
+        key = id["keyWithoutHighlight"];
+    }
+    return key;
+}
