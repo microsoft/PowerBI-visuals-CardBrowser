@@ -72,7 +72,7 @@
     "@fortawesome/fontawesome-free": "^5.8.2",
     "@uncharted/cards": "./lib/@uncharted/cards",
     "lodash": "^4.17.19",
-    "lodash-es": "^4.17.11",
+    "lodash-es": "^4.17.14",
     "moment": "^2.24.0"
   },
   "engines": {
