@@ -24,7 +24,16 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: yarn
-    - run: yarn run lint
-    - run: NODE_ENV=production yarn run package
-    - run: yarn test
+    - name: Install Deps
+      run: yarn
+    - name: Lint
+      run: yarn run lint
+    - name: Build
+      run: NODE_ENV=production yarn run package
+    - name: Test
+      run: yarn test
+    - name: Archive pbiviz
+      uses: actions/upload-artifact@v2
+      with:
+        name: pbiviz
+        path: dist/essex.cardbrowser.pbiviz
