@@ -108,6 +108,6 @@ export const DEFAULT_VISUAL_SETTINGS = {
         limit: 500
     },
     general: {
-        version: `${packageJSON.version}${isDev ? '+dev' : ''}`
+        version: `${packageJSON.version}`
     }
 };
