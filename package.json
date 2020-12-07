@@ -1,6 +1,6 @@
 {
   "name": "powerbi-visuals-cardbrowser",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Card Browser, a custom visual for PowerBI",
   "main": "src/index.js",
   "scripts": {
