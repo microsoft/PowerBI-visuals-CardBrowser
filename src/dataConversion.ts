@@ -114,12 +114,16 @@ function convertToRowObjs(dataView: DataView, settings, roles = null): CardBrows
         });
     }
     if (categories && categories.length > 0 && categories[0].values && categories[0].values.length > 0) {
+
+        // We can get duplicated categories if the user passes in the same column for multiple fields
+        const uniqueCategories = dedupeCategories(categories);
         const idValues = categories[0].values;
         for (let rowIdx = 0; rowIdx < idValues.length; rowIdx++) {
             rowObj = {
                 index: rowIdx,
             };
-            for (const cat of categories) {
+
+            for (const cat of uniqueCategories) {
                 parseColumn(cat.source, cat.values[rowIdx], 0);
             }
 
@@ -169,6 +173,14 @@ function convertToRowObjs(dataView: DataView, settings, roles = null): CardBrows
         }
     }
     return result;
+}
+
+function dedupeCategories(categories: powerbi.DataViewCategoryColumn[]) {
+    const uniqueCategoryMap = categories.reduce((map, category, i) => {
+        map[category.source.queryName || `category_${i}`] = category;
+        return map;
+    }, {});
+    return Object.keys(uniqueCategoryMap).map(n => uniqueCategoryMap[n]);
 }
 
 function convertToDocumentData(dataView: DataView, settings, roles, host: IVisualHost) {
