@@ -73,7 +73,7 @@
     "@uncharted/cards": "./lib/@uncharted/cards",
     "lodash": "^4.17.19",
     "lodash-es": "^4.17.14",
-    "moment": "^2.24.0"
+    "moment": "^2.29.2"
   },
   "engines": {
     "node": ">=8"
